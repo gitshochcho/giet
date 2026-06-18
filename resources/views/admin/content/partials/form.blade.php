@@ -29,7 +29,6 @@
                     <div class="collapse" id="presetGroupHeroes">
                         <div class="d-flex flex-wrap gap-2 pb-1">
                             <button type="button" id="applyServicesPagePreset" class="btn btn-sm btn-outline-primary preset-btn">Services Page</button>
-                            <button type="button" id="applyContactPagePreset" class="btn btn-sm btn-outline-primary preset-btn">Contact Page</button>
                             <button type="button" id="applyTeamPagePreset" class="btn btn-sm btn-outline-primary preset-btn">Team Page</button>
                             <button type="button" id="applyTeamLeadershipPreset" class="btn btn-sm btn-outline-primary preset-btn">Team Leadership</button>
                             <button type="button" id="applyTeamCorePreset" class="btn btn-sm btn-outline-primary preset-btn">Team Core</button>
@@ -54,6 +53,21 @@
                             <button type="button" id="applyProjectPhasePreset" class="btn btn-sm btn-outline-primary preset-btn">Project Phase</button>
                             <button type="button" id="applyProjectOutcomePreset" class="btn btn-sm btn-outline-primary preset-btn">Project Outcome</button>
                             <button type="button" id="applyProjectsWorkWithUsPreset" class="btn btn-sm btn-outline-primary preset-btn">Projects CTA Toggle</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Contact Page --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em; cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupContact" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i> Contact Page
+                    </small>
+                    <div class="collapse" id="presetGroupContact">
+                        <div class="d-flex flex-wrap gap-2 pb-1">
+                            <button type="button" id="applyContactHeroPreset" class="btn btn-sm btn-outline-primary preset-btn">Contact Page Hero</button>
+                            <button type="button" id="applyContactFaqSectionPreset" class="btn btn-sm btn-outline-primary preset-btn">Contact FAQ Section</button>
                         </div>
                     </div>
                 </div>
@@ -407,12 +421,38 @@ if (removeIconBtn) {
         if (contactPagePresetBtn) {
             contactPagePresetBtn.addEventListener('click', function () {
                 if (slugField) slugField.value = 'contact-page';
-                if (sectionField) sectionField.value = 'REACH OUT';
-                if (headingField) headingField.value = "Let's start a";
+                if (sectionField) sectionField.value = 'Contact Us';
+                if (headingField) headingField.value = 'Get In Touch';
                 if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = 'conversation.';
+                if (designWordField) designWordField.value = '';
                 if (typeField) typeField.value = 'Hero';
-                setDescriptionValue('');
+                setDescriptionValue("Whether you're interested in collaborating on a project, commissioning research, attending an event, or just learning more about GIET — we'd love to hear from you.");
+            });
+        }
+
+        const contactHeroPresetBtn = document.getElementById('applyContactHeroPreset');
+        if (contactHeroPresetBtn) {
+            contactHeroPresetBtn.addEventListener('click', function () {
+                if (slugField) slugField.value = 'contact-page';
+                if (sectionField) sectionField.value = 'Contact Us';
+                if (headingField) headingField.value = 'Get In Touch';
+                if (subHeadingField) subHeadingField.value = '';
+                if (designWordField) designWordField.value = '';
+                if (typeField) typeField.value = 'Hero';
+                setDescriptionValue("Whether you're interested in collaborating on a project, commissioning research, attending an event, or just learning more about GIET — we'd love to hear from you.");
+            });
+        }
+
+        const contactFaqSectionPresetBtn = document.getElementById('applyContactFaqSectionPreset');
+        if (contactFaqSectionPresetBtn) {
+            contactFaqSectionPresetBtn.addEventListener('click', function () {
+                if (slugField) slugField.value = 'contact-faq-section';
+                if (sectionField) sectionField.value = 'FAQs';
+                if (headingField) headingField.value = 'Frequently Asked Questions';
+                if (subHeadingField) subHeadingField.value = '';
+                if (designWordField) designWordField.value = '';
+                if (typeField) typeField.value = 'FAQ Section';
+                setDescriptionValue("Can't find the answer you're looking for? Send us a message using the form above.");
             });
         }
 

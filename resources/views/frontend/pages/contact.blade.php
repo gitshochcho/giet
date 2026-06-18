@@ -1,489 +1,293 @@
 @extends('frontend.layout.app')
-
-@push('custome-css')
-<style>
-    .service-breadcrumb {
-    background: #F8F9FB;
-    border-bottom: 1px solid #E5E9ED;
-    padding: 12px 0;
-}
-.breadcrumb-links { font-size: 13px; color: #94A3B8; }
-.breadcrumb-links a { color: #64748B; text-decoration: none; }
-.breadcrumb-links .sep { margin: 0 8px; }
-.breadcrumb-links .active { color: #01354B; font-weight: 600; }
-    /* TRACE Contact Page Custom Styles */
-    :root {
-        --dark-navy: #002d3a;
-        --trace-cyan: #00bfc5;
-        --trace-orange: #e85d26;
-        --bg-gray: #f8fafc;
-        --text-muted: #64748b;
-    }
-
-    .contact-wrapper {
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        background-color: #fff;
-        overflow-x: hidden;
-    }
-
-    /* Hero Section */
-    .contact-hero {
-        background-color: var(--dark-navy);
-        color: #ffffff;
-        padding: 100px 0 160px 0;
-        position: relative;
-    }
-    .hero-label {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        color: var(--trace-orange);
-        margin-bottom: 20px;
-        text-transform: uppercase;
-    }
-    .hero-label::before {
-        content: "";
-        display: inline-block;
-        width: 30px;
-        height: 2px;
-        background: var(--trace-orange);
-    }
-    .contact-hero-title {
-        font-size: 56px;
-        font-weight: 800;
-        line-height: 1.1;
-        margin-bottom: 25px;
-    }
-    .contact-hero-title span { color: var(--trace-cyan); }
-    .contact-hero-desc {
-        font-size: 18px;
-        line-height: 1.6;
-        max-width: 550px;
-        opacity: 0.85;
-    }
-
-    /* Contact Form Card (Overlapping) */
-    .contact-form-card {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 40px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-        margin-top: -170px;
-        position: relative;
-        z-index: 10;
-        border: 1px solid #ffffff;
-        
-    }
-    .contact-form-header {
-        background: var(--dark-navy);
-        border-radius: 16px 16px 0 0;
-        padding: 26px 30px 8px;
-        margin: -40px -40px 10px;
-        color: #ffffff;
-    }
-    .form-label-top {
-        font-size: 10px;
-        font-weight: 700;
-        color: #4DC0C4;
-        letter-spacing: 1px;
-        margin-bottom: 10px;
-    }
-    .form-title {
-        font-size: 20px;
-        font-weight: 800;
-        color: #ffffff;
-        margin-bottom: 5px;
-    }
-    .form-subtitle {
-        font-size: 13px;
-        color: rgba(255,255,255,0.8);
-        margin-bottom: 20px;
-    }
-    .contact-form label {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--dark-navy);
-        margin-bottom: 8px;
-        display: block;
-    }
-    .contact-form label .req { color: var(--trace-orange); }
-    .contact-form .form-control, .contact-form .form-select {
-        background-color: #f8fafc;
-        border: 1px solid #e2e8f0;
-        padding: 12px 15px;
-        font-size: 14px;
-        border-radius: 8px;
-    }
-    .btn-send {
-        background-color: var(--trace-orange);
-        color: white;
-        width: 100%;
-        padding: 14px;
-        border-radius: 8px;
-        font-weight: 700;
-        border: none;
-        margin-top: 20px;
-        transition: 0.3s;
-    }
-    .btn-send:hover { background-color: #d14d1b; }
-    .form-privacy {
-        font-size: 11px;
-        color: #94a3b8;
-        text-align: center;
-        margin-top: 15px;
-    }
-    .form-privacy a {
-        color: var(--dark-navy);
-    }
-
-    /* Info Sections */
-    .info-heading {
-        font-size: 24px;
-        font-weight: 800;
-        color: var(--dark-navy);
-        margin-bottom: 30px;
-        display: flex;
-        align-items: center;
-    }
-    .accent-bar {
-        width: 4px;
-        height: 24px;
-        background-color: var(--trace-orange);
-        margin-right: 12px;
-        display: inline-block;
-    }
-    .info-group-label {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--text-muted);
-        margin-bottom: 15px;
-        text-transform: uppercase;
-    }
-    .info-row {
-        background: #f8fafc;
-        border: 1px solid #eef2f6;
-        padding: 20px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-        transition: 0.3s;
-    }
-    .info-icon-wrap {
-        width: 45px;
-        height: 45px;
-        background: #e6f7f8;
-        color: var(--trace-cyan);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 10px;
-        margin-right: 20px;
-        font-size: 18px;
-    }
-    .info-primary {
-        font-weight: 700;
-        color: var(--dark-navy);
-        margin-bottom: 0;
-        font-size: 16px;
-    }
-    .info-secondary {
-        font-size: 13px;
-        color: var(--text-muted);
-        margin-bottom: 0;
-    }
-    .info-action-btn {
-        margin-left: auto;
-        background: var(--dark-navy);
-        color: white;
-        font-size: 12px;
-        font-weight: 700;
-        padding: 8px 18px;
-        border-radius: 50px;
-        text-decoration: none;
-    }
-
-    /* Office Card */
-    .office-card {
-        display: flex;
-        gap: 20px;
-        padding: 30px;
-        background: #f8fafc;
-        border-radius: 16px;
-    }
-    .office-icon-wrap { color: var(--trace-cyan); font-size: 24px; }
-    .office-tag {
-        font-size: 10px;
-        font-weight: 800;
-        color: var(--trace-cyan);
-        letter-spacing: 1px;
-    }
-    .office-name { font-weight: 800; color: var(--dark-navy); font-size: 18px; margin: 5px 0; }
-    .office-addr { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
-    .office-hours { font-size: 13px; font-weight: 600; color: var(--dark-navy); margin-top: 10px; }
-    .map-link { color: var(--trace-cyan); font-weight: 700; text-decoration: none; font-size: 14px; }
-
-    /* Social Pills */
-    .social-pill {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 20px;
-        border-radius: 50px;
-        border: 1px solid #e2e8f0;
-        color: var(--dark-navy);
-        font-weight: 700;
-        font-size: 13px;
-        text-decoration: none;
-        transition: 0.3s;
-        margin-bottom: 12px;
-    }
-    .social-pill:hover { background: #f1f5f9; }
-    .social-pill i { font-size: 16px; }
-
-    .page-align-container { max-width: 1072px; margin: 0 auto; }
-
-    @media (max-width: 991px) {
-        .contact-hero { padding: 60px 0 100px 0; text-align: center; }
-        .contact-hero-desc { margin: 0 auto; }
-        .contact-hero-title { font-size: 38px; }
-        .contact-form-card { margin-top: -70px; }
-        .info-row { flex-direction: column; text-align: center; }
-        .info-icon-wrap { margin-right: 0; margin-bottom: 15px; }
-        .info-action-btn { margin-left: 0; margin-top: 15px; width: 100%; }
-    }
-</style>
-@endpush
-
+  
 @section('content')
-<nav class="service-breadcrumb">
-    <div class="container-fluid px-lg-5 page-align-container">
-        <div class="breadcrumb-links">
-            <a href="{{ route('home') }}">Home</a>
-            <span class="sep">›</span>
-            <span class="active">Contact</span>
-        </div>
+<section class="bg-[#003054] w-full h-auto md:h-[363.3px] relative flex flex-col justify-center items-center text-white overflow-hidden pt-[72px] pb-[72px] px-4 md:px-8">
+
+  <!-- RIGHT UPPER CORNER BACKGROUND DECORATION SHAPE -->
+  <div class="absolute -top-[100px] -right-[100px] pointer-events-none bg-[rgba(24,144,156,0.07)] w-[400px] h-[400px] rounded-full"></div>
+
+  <!-- INNER CONTENT INNER CONTAINER -->
+  <div class="w-full max-w-[1204px] mx-auto h-auto flex flex-col items-start text-left z-10 gap-[13.3px]">
+    
+    <!-- BREADCRUMBS WRAPPER SYSTEM -->
+    <div style="font-family:'Inter',sans-serif;font-size:12px;line-height:19.8px;"
+         class="text-white/45 flex items-center gap-1.5 tracking-normal">
+      <a href="{{ url('/') }}" class="hover:text-white transition-colors">Home</a>
+      <span class="text-white/30">/</span>
+      <span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;line-height:19.8px;color:rgba(255,255,255,0.45);">
+        {{ $heroContent?->section }}
+      </span>
     </div>
-</nav>
 
-<div class="contact-wrapper">
-    <section class="contact-hero">
-        <div class="container-fluid px-lg-5 page-align-container">
-            <div class="row">
-                <div class="col-lg-6">
-                    @php
-                        $resolvedHero = $heroContent ?? $contactHeader;
-                        $heroSection = $resolvedHero?->section ?? '';
-                        $heroHeading = $resolvedHero?->heading ?? "";
-                        $heroDesignWord = $resolvedHero?->design_word ?? '.';
-                        $heroDescription = $resolvedHero?->description ?? "";
+    <!-- Teal Accent Underline Indicator Line -->
+    <div class="bg-[#18909C] w-[40px] h-[3px] rounded-[2px] my-[6px]"></div>
 
-                        if (!empty($heroDesignWord) && str_contains($heroHeading, $heroDesignWord)) {
-                            $heroHeading = str_replace(
-                                $heroDesignWord,
-                                "<span>{$heroDesignWord}</span>",
-                                e($heroHeading)
-                            );
-                        } else {
-                            $heroHeading = e($heroHeading);
-                        }
-                    @endphp
+    <!-- MAIN SECTION TITLE (Merriweather Font Layout) -->
+    @if($heroContent?->heading)
+    <h1 style="font-family:'Merriweather',serif;font-weight:800;font-size:clamp(28px,5vw,52px);line-height:1.1;letter-spacing:-0.5px;"
+        class="text-white tracking-tight drop-shadow-sm">
+      {{ $heroContent->heading }}@if($heroContent->design_word) <span style="color:#18909C;">{{ $heroContent->design_word }}</span>@endif
+    </h1>
+    @endif
 
-                    <div class="hero-label">{{ $heroSection }}</div>
-                    <h1 class="contact-hero-title">{!! $heroHeading !!}</h1>
-                    <p class="contact-hero-desc">{!! strip_tags($heroDescription) !!}</p>
-                </div>
-            </div>
+    <!-- SUMMARY PARAGRAPH SPECIFICATION -->
+    @if($heroContent?->description)
+    <p style="font-family:'Newsreader',serif;font-weight:400;font-size:17px;line-height:29.75px;color:rgba(255,255,255,0.6);max-width:601px;" class="drop-shadow-sm">
+      {{ $heroContent->description }}
+    </p>
+    @endif
+
+  </div>
+</section>
+
+<!-- MAIN CONTACT SECTION -->
+<section class="w-full bg-white py-[48px] md:py-[88px] px-4 md:px-8">
+  <div class="max-w-[1204px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_400px] gap-[40px] items-start">
+    
+    <!-- LEFT: CONTACT FORM -->
+    <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-2">
+        <p class="font-['Newsreader'] text-[12px] font-bold text-[#0E606B] uppercase tracking-wider">Send us a message</p>
+        <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:36px;line-height:42.48px;letter-spacing:-0.36px;" class="text-[#0F172A]">How Can We Help?</h2>
+        <p class="font-['Newsreader'] font-normal text-[15px] leading-[26.25px] text-[#475569] max-w-[640px]">Fill out the form below and a member of our team will get back to you within 2 business days. For event enquiries or media requests, please indicate this in your message.</p>
+      </div>
+      
+      @if(session('success'))
+        <div class="bg-green-50 border border-green-200 text-green-800 text-[14px] rounded-[8px] px-4 py-3">
+          {{ session('success') }}
         </div>
-    </section>
+      @endif
 
-    <div class="container-fluid px-lg-5 page-align-container pb-5">
-        <div class="row">
-            <div class="col-lg-7 py-lg-5 order-2 order-lg-1">
-                
-                <div class="mb-5 mt-5 mt-lg-0">
-                    <h2 class="info-heading"><span class="accent-bar"></span> Contact Us</h2>
-                    
-                    @if($contactPhones->count() > 0)
-                    <div class="info-group mb-4">
-                        <p class="info-group-label"><i class="fas fa-phone-alt me-2"></i> Phone</p>
-                        @foreach($contactPhones as $phone)
-                        <div class="info-row">
-                            <div class="info-icon-wrap"><i class="{{ $phone->icon_class ?? 'fas fa-phone-alt' }}"></i></div>
-                            <div class="info-text">
-                                <p class="info-primary">{{ $phone->primary_text }}</p>
-                                <p class="info-secondary">{{ $phone->secondary_text ?? $phone->title }}</p>
-                            </div>
-                            @if($phone->link_value)
-                            @php $telHref = Str::startsWith($phone->link_value, 'tel:') ? $phone->link_value : 'tel:'.preg_replace('/\s+/', '', $phone->link_value); @endphp
-                            <a href="{{ $telHref }}" class="info-action-btn"><i class="fas fa-phone-alt me-2"></i>Call Now</a>
-                            @endif
-                        </div>
-                        @endforeach
-                    </div>
-                    @endif
-
-                    @if($contactEmails->count() > 0)
-                    <div class="info-group mb-4">
-                        <p class="info-group-label"><i class="fas fa-envelope me-2"></i> Send Email</p>
-                        @foreach($contactEmails as $email)
-                        <div class="info-row">
-                            <div class="info-icon-wrap"><i class="{{ $email->icon_class ?? 'fas fa-envelope' }}"></i></div>
-                            <div class="info-text">
-                                <p class="info-primary">{{ $email->primary_text }}</p>
-                                <p class="info-secondary">{{ $email->secondary_text ?? $email->title }}</p>
-                            </div>
-                            @if($email->link_value)
-                            <a href="mailto:{{ $email->link_value }}" class="info-action-btn"><i class="fas fa-envelope me-2"></i>Send Email</a>
-                            @endif
-                        </div>
-                        @endforeach
-                    </div>
-                    @endif
-                </div>
-
-                @if($contactAddresses->count() > 0)
-                <div class="mb-5">
-                    <h2 class="info-heading"><span class="accent-bar"></span> Our Office</h2>
-                    @foreach($contactAddresses as $address)
-                    <div class="office-card">
-                        <div class="office-icon-wrap"><i class="{{ $address->icon_class ?? 'fas fa-map-marker-alt' }}"></i></div>
-                        <div class="office-details">
-                            <span class="office-tag">{{ strtoupper($address->title) }}</span>
-                            <p class="office-name">{{ $address->name ?? '' }}</p>
-                            <p class="office-addr">
-                                {!! nl2br(e($address->address)) ?? '' !!}
-                            </p>
-                            @if($address->office_hours)
-                            <p class="office-hours">{{ $address->office_hours }}</p>
-                            @endif
-                            @if($address->link_value)
-                            <a href="{{ $address->link_value }}" target="_blank" class="map-link">View on Google Maps →</a>
-                            @endif
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-                @endif
-
-                <div>
-                    <h2 class="info-heading"><span class="accent-bar"></span> Find Us</h2>
-                    <div class="rounded-4 overflow-hidden border">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d912.7376598098944!2d90.392688!3d23.784772!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c78ec6d80eb7%3A0x7c6f4169be0c1efc!2sTRACE%20Consulting!5e0!3m2!1sen!2sus!4v1777529722708!5m2!1sen!2sus" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-5 order-1 order-lg-2">
-                <div class="contact-form-card">
-                    <div class="contact-form-header">
-                        <p class="form-label-top">SEND A MESSAGE</p>
-                        <h3 class="form-title">Get a Consultation</h3>
-                        <p class="form-subtitle">We'll respond within one business day.</p>
-                    </div>
-
-                    @if (session('success'))
-                        <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="position: fixed; top: 100px; right: 20px; width: 350px; border-radius: 8px; border-left: 4px solid #28a745; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2); z-index: 9999;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="fas fa-check-circle" style="font-size: 20px; color: #28a745; flex-shrink: 0;"></i>
-                                <div>
-                                    <strong>Success!</strong>
-                                    <p style="margin: 5px 0 0 0; font-size: 14px;">{{ session('success') }}</p>
-                                </div>
-                            </div>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
-                    <form action="{{ route('contact.store') }}" method="POST" class="contact-form">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label>First Name <span class="req">*</span></label>
-                                <input type="text" name="first_name" class="form-control" placeholder="First name" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label>Last Name <span class="req">*</span></label>
-                                <input type="text" name="last_name" class="form-control" placeholder="Last name" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Email Address <span class="req">*</span></label>
-                            <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Mobile Number <span class="req">*</span></label>
-                            <input type="number" name="mobile_number" class="form-control" placeholder="Your mobile number" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Organization</label>
-                            <input type="text" name="organization" class="form-control" placeholder="Your organisation or institution">
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Subject / Service Area <span class="req">*</span></label>
-                            <input 
-                                type="text" 
-                                name="subject" 
-                                list="subject-options" 
-                                class="form-control" 
-                                placeholder="Select or type your subject..." 
-                                required>
-                            <datalist id="subject-options">
-                                <option value="Trade Facilitation"></option>
-                                <option value="Policy Reform"></option>
-                                <option value="Digital Solutions"></option>
-                                <option value="Research & Publications"></option>
-                                <option value="General Enquiry"></option>
-                            </datalist>
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Message <span class="req">*</span></label>
-                            <textarea name="message" class="form-control" rows="4" placeholder="Tell us about your project or challenge..." required></textarea>
-                        </div>
-
-                        <button type="submit" class="btn-send">
-                            Send Message <i class="fas fa-paper-plane ms-2"></i>
-                        </button>
-
-                        <p class="form-privacy">
-                            By submitting this form you agree to our <a href="#" class="text-decoration-none">Privacy Policy</a>. We never share your data.
-                        </p>
-                    </form>
-                </div>
-
-                <!-- <div class="mb-5 mt-4">
-                    <h2 class="info-heading"><span class="accent-bar"></span> Follow Us</h2>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a href="#" class="social-pill"><i class="fab fa-linkedin-in text-primary"></i> LinkedIn</a>
-                        <a href="#" class="social-pill"><i class="fab fa-twitter text-info"></i> Twitter</a>
-                        <a href="#" class="social-pill"><i class="fab fa-facebook-f text-primary"></i> Facebook</a>
-                        <a href="#" class="social-pill"><i class="fab fa-youtube text-danger"></i> Youtube</a>
-                    </div>
-                </div> -->
-            </div>
+      <form action="{{ route('contact.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        @csrf
+        <div class="flex flex-col gap-1">
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">First Name *</label>
+          <input type="text" name="first_name" value="{{ old('first_name') }}" placeholder="e.g. Aminur" class="p-3 rounded-[8px] w-full text-[14px] border {{ $errors->has('first_name') ? 'border-red-400' : 'border-[#E4EAF0]' }}">
+          @error('first_name')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
         </div>
+        <div class="flex flex-col gap-1">
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Last Name *</label>
+          <input type="text" name="last_name" value="{{ old('last_name') }}" placeholder="e.g. Rahman" class="p-3 rounded-[8px] w-full text-[14px] border {{ $errors->has('last_name') ? 'border-red-400' : 'border-[#E4EAF0]' }}">
+          @error('last_name')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
+        </div>
+        <div class="flex flex-col gap-1 col-span-2">
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Email Address *</label>
+          <input type="email" name="email" value="{{ old('email') }}" placeholder="you@organisation.org" class="p-3 rounded-[8px] w-full text-[14px] border {{ $errors->has('email') ? 'border-red-400' : 'border-[#E4EAF0]' }}">
+          @error('email')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Organisation</label>
+          <input type="text" name="organization" value="{{ old('organization') }}" placeholder="Your organisation name" class="p-3 rounded-[8px] w-full text-[14px] border border-[#E4EAF0]">
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Phone (optional)</label>
+          <input type="text" name="mobile_number" value="{{ old('mobile_number') }}" placeholder="+880 17..." class="p-3 rounded-[8px] w-full text-[14px] border {{ $errors->has('mobile_number') ? 'border-red-400' : 'border-[#E4EAF0]' }}">
+          @error('mobile_number')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
+        </div>
+        <div class="flex flex-col gap-1 col-span-2">
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Reason for Contact *</label>
+          <select name="subject" class="p-3 rounded-[8px] w-full text-[14px] text-[#475569] border {{ $errors->has('subject') ? 'border-red-400' : 'border-[#E4EAF0]' }}">
+            <option value="">— Select a topic —</option>
+            <option value="Governance Frameworks & Public Sector Management" {{ old('subject') == 'Governance Frameworks & Public Sector Management' ? 'selected' : '' }}>Governance Frameworks & Public Sector Management</option>
+            <option value="Institutional Reforms & Regulatory Architecture" {{ old('subject') == 'Institutional Reforms & Regulatory Architecture' ? 'selected' : '' }}>Institutional Reforms & Regulatory Architecture</option>
+            <option value="Macroeconomic Innovations & Financial Structures" {{ old('subject') == 'Macroeconomic Innovations & Financial Structures' ? 'selected' : '' }}>Macroeconomic Innovations & Financial Structures</option>
+            <option value="Trade Facilitation & Business Environment Reforms" {{ old('subject') == 'Trade Facilitation & Business Environment Reforms' ? 'selected' : '' }}>Trade Facilitation & Business Environment Reforms</option>
+            <option value="Investment Promotion & Export Diversification" {{ old('subject') == 'Investment Promotion & Export Diversification' ? 'selected' : '' }}>Investment Promotion & Export Diversification</option>
+            <option value="Digital Transformation & E-Governance" {{ old('subject') == 'Digital Transformation & E-Governance' ? 'selected' : '' }}>Digital Transformation & E-Governance</option>
+            <option value="Research, Publications & Knowledge Platforms" {{ old('subject') == 'Research, Publications & Knowledge Platforms' ? 'selected' : '' }}>Research, Publications & Knowledge Platforms</option>
+            <option value="Capacity Building & Professional Development" {{ old('subject') == 'Capacity Building & Professional Development' ? 'selected' : '' }}>Capacity Building & Professional Development</option>
+            <option value="Social Inclusion, Equity & Human Capital" {{ old('subject') == 'Social Inclusion, Equity & Human Capital' ? 'selected' : '' }}>Social Inclusion, Equity & Human Capital</option>
+            <option value="Project or Research Collaboration" {{ old('subject') == 'Project or Research Collaboration' ? 'selected' : '' }}>Project or Research Collaboration</option>
+          </select>
+          @error('subject')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
+        </div>
+        <div class="flex flex-col gap-1 col-span-2">
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Message *</label>
+          <textarea name="message" placeholder="Tell us about your enquiry, project idea, or collaboration proposal..." class="p-3 rounded-[8px] w-full h-[150px] text-[14px] border {{ $errors->has('message') ? 'border-red-400' : 'border-[#E4EAF0]' }}">{{ old('message') }}</textarea>
+          @error('message')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
+        </div>
+        <button type="submit" class="col-span-2 bg-[#A80C18] text-white py-3 rounded-[8px] font-bold hover:bg-[#8e0a14] transition">Send Message →</button>
+      </form>
+      <p class="font-['Newsreader'] font-normal text-[12px] leading-none text-[#64748B] text-center">We respect your privacy. Your information will not be shared with third parties.</p>
     </div>
-</div>
+
+    <!-- RIGHT: CONTACT DETAILS & MAP -->
+    <div class="w-full md:w-[400px] flex flex-col gap-[14px]">
+      <p class="font-['Newsreader'] text-[12px] font-bold text-[#0E606B] uppercase tracking-wider">Our Contact Details</p>
+
+      <!-- Address -->
+      @foreach($contactAddresses as $addr)
+      <div class="border border-[#E4EAF0] rounded-[14px] p-[18px] flex gap-4 items-start">
+        <div class="w-[44px] h-[44px] rounded-[10px] bg-[#E6F3F5] flex items-center justify-center shrink-0">
+          @if($addr->icon_class)
+            <i class="{{ $addr->icon_class }}" style="color:#0E606B;font-size:18px;"></i>
+          @else
+            <i class="fas fa-map-marker-alt" style="color:#0E606B;font-size:18px;"></i>
+          @endif
+        </div>
+        <div class="flex flex-col gap-1">
+          <p class="font-['Inter'] text-[11px] font-bold uppercase text-[#64748B] tracking-wider">{{ $addr->title }}</p>
+          @if($addr->name)
+            <p class="font-['Inter'] text-[14px] font-bold text-[#0F172A]">{{ $addr->name }}</p>
+          @endif
+          @if($addr->address)
+            <p class="font-['Inter'] text-[13px] text-[#64748B]">{!! nl2br(e($addr->address)) !!}</p>
+          @endif
+          @if($addr->secondary_text)
+            <p style="font-family:'Inter',sans-serif;font-size:13px;color:#64748B;">{{ $addr->secondary_text }}</p>
+          @endif
+          <!-- @if($addr->office_hours)
+            <p class="font-['Inter'] text-[13px] text-[#475569] mt-1">{{ $addr->office_hours }}</p>
+          @endif -->
+          <!-- @if($addr->map_location)
+            <a href="#" class="font-['Inter'] text-[13px] text-[#0E606B] mt-1">{{ $addr->map_location }}</a>
+          @endif -->
+        </div>
+      </div>
+      @endforeach
+
+      <!-- Email -->
+      @foreach($contactEmails as $emailInfo)
+      <div class="border border-[#E4EAF0] rounded-[14px] p-[18px] flex gap-4 items-start">
+        <div class="w-[44px] h-[44px] rounded-[10px] bg-[#E6F3F5] flex items-center justify-center shrink-0">
+          @if($emailInfo->icon_class)
+            <i class="{{ $emailInfo->icon_class }}" style="color:#0E606B;font-size:18px;"></i>
+          @else
+            <i class="fas fa-envelope" style="color:#0E606B;font-size:18px;"></i>
+          @endif
+        </div>
+        <div class="flex flex-col gap-1 min-w-0">
+          <p class="font-['Inter'] text-[11px] font-bold uppercase text-[#64748B] tracking-wider">{{ $emailInfo->title }}</p>
+          <a href="mailto:{{ $emailInfo->primary_text }}" class="font-['Inter'] text-[14px] font-bold break-all" style="color:#003054;">{{ $emailInfo->primary_text }}</a>
+          @if($emailInfo->secondary_text)
+            <p class="font-['Inter'] text-[13px]" style="color:#64748B;">{{ $emailInfo->secondary_text }}</p>
+          @endif
+          @if($emailInfo->office_hours)
+            <p class="font-['Inter'] text-[12px] mt-1" style="color:#94A3B8;">{{ $emailInfo->office_hours }}</p>
+          @endif
+        </div>
+      </div>
+      @endforeach
+
+      <!-- Phone -->
+      @foreach($contactPhones as $phone)
+      <div class="border border-[#E4EAF0] rounded-[14px] p-[18px] flex gap-4 items-start">
+        <div class="w-[44px] h-[44px] rounded-[10px] bg-[#E6F3F5] flex items-center justify-center shrink-0">
+          @if($phone->icon_class)
+            <i class="{{ $phone->icon_class }}" style="color:#0E606B;font-size:18px;"></i>
+          @else
+            <i class="fas fa-phone-alt" style="color:#0E606B;font-size:18px;"></i>
+          @endif
+        </div>
+        <div class="flex flex-col gap-1 min-w-0">
+          <p class="font-['Inter'] text-[11px] font-bold uppercase tracking-wider" style="color:#64748B;">{{ $phone->title }}</p>
+          <a href="{{ $phone->link_value }}" class="font-['Inter'] text-[14px] font-bold break-all" style="color:#0F172A;">{{ $phone->primary_text }}</a>
+          @if($phone->secondary_text)
+            <p class="font-['Inter'] text-[13px]" style="color:#64748B;">{{ $phone->secondary_text }}</p>
+          @endif
+          @if($phone->office_hours)
+            <p class="font-['Inter'] text-[12px] mt-1" style="color:#94A3B8;">{{ $phone->office_hours }}</p>
+          @endif
+        </div>
+      </div>
+      @endforeach
+
+      <!-- Careers Box -->
+      @foreach($contactCareers as $career)
+      <div class="bg-[#003054] rounded-[14px] p-[18px] flex gap-4 items-start">
+        <div class="w-[40px] h-[40px] rounded-[10px] bg-[#FFFFFF14] flex items-center justify-center shrink-0">
+          @if($career->icon_class)
+            <i class="{{ $career->icon_class }}" style="color:#18909C;font-size:18px;"></i>
+          @else
+            <i class="fas fa-briefcase" style="color:#18909C;font-size:18px;"></i>
+          @endif
+        </div>
+        <div class="flex flex-col gap-1 min-w-0">
+          <p class="font-['Inter'] text-[11px] font-bold uppercase text-[#18909C] tracking-wider">{{ $career->title }}</p>
+          @if($career->name)
+            <p class="font-['Inter'] text-[14px] font-bold text-white">{{ $career->name }}</p>
+          @endif
+          @if($career->link_value)
+            <a href="{{ $career->link_value }}" class="font-['Inter'] text-[13px] break-all" style="color:#8FB2C9;">{{ $career->primary_text }}</a>
+          @else
+            <p class="font-['Inter'] text-[13px] break-all" style="color:#8FB2C9;">{{ $career->primary_text }}</p>
+          @endif
+          @if($career->secondary_text)
+            <p class="font-['Inter'] text-[13px]" style="color:rgba(255,255,255,0.5);">{{ $career->secondary_text }}</p>
+          @endif
+        </div>
+      </div>
+      @endforeach
+
+      <!-- Google Map -->
+      <div class="w-full h-[250px] rounded-[14px] border border-[#E4EAF0] overflow-hidden">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.7765103442656!2d90.39958377519969!3d23.79155988775464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c70c6a51d8b3%3A0x6006e89798cc0d4f!2sBRAC%20Centre%20Inn!5e0!3m2!1sen!2sbd!4v1717696668744!5m2!1sen!2sbd"
+          width="100%" height="100%" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+      <!-- Follow Us -->
+      <div class="bg-[#F7F9FB] border border-[#E4EAF0] rounded-[14px] p-[18px] flex flex-col gap-3">
+        <p class="font-['Newsreader'] text-[11px] font-bold uppercase text-[#64748B] tracking-wider">Follow Us</p>
+        <div class="flex gap-2">
+          <button class="border border-[#E4EAF0] px-4 py-2 rounded-[8px] text-[13px] font-semibold hover:bg-gray-50 flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </button>
+          <button class="border border-[#E4EAF0] px-4 py-2 rounded-[8px] text-[13px] font-semibold hover:bg-gray-50 flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X / Twitter
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="w-full bg-[#F7F9FB] py-[48px] md:py-[80px] px-4 md:px-8">
+  <div class="w-full max-w-[1204px] mx-auto grid grid-cols-1 md:grid-cols-[440px_1fr] gap-x-[80px] gap-y-[40px] items-start">
+
+    <!-- Left: Title -->
+    <div class="flex flex-col gap-[11.2px]">
+      <p style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#0E606B;text-transform:uppercase;letter-spacing:0.08em;">
+        {{ $faqSection?->section ?? 'FAQs' }}
+      </p>
+      <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:40px;line-height:48px;letter-spacing:-0.4px;color:#0F172A;">
+        {{ $faqSection?->heading ?? 'Frequently Asked Questions' }}
+      </h2>
+      <p style="font-family:'Inter',sans-serif;font-size:16px;color:#475569;line-height:28px;">
+        {{ $faqSection?->description ?? "Can't find the answer you're looking for? Send us a message using the form above." }}
+      </p>
+    </div>
+
+    <!-- Right: FAQ List -->
+    <div class="flex flex-col w-full">
+
+      @forelse($faqs as $faq)
+      <div class="faq-item border-b border-[#E4EAF0] py-[24px] cursor-pointer" onclick="toggleFaq(this)">
+        <div class="flex justify-between items-start gap-4">
+          <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:16px;line-height:1;color:#0F172A;margin:0;">{{ $faq->question }}</h4>
+          <span class="faq-icon shrink-0" style="color:#64748B;font-size:18px;font-weight:300;line-height:1;">+</span>
+        </div>
+        <p class="faq-answer hidden" style="font-family:'Inter',sans-serif;font-weight:400;font-size:14px;line-height:24.5px;color:#1A1A1A;margin-top:12px;">{{ $faq->answer }}</p>
+      </div>
+      @empty
+      <p style="font-family:'Inter',sans-serif;font-size:15px;color:#94A3B8;">No FAQs available at the moment.</p>
+      @endforelse
+
+    </div>
+  </div>
+</section>
+
 @endsection
 
-@push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const successAlert = document.getElementById('successAlert');
-        if (successAlert) {
-            setTimeout(function() {
-                const alert = new bootstrap.Alert(successAlert);
-                alert.close();
-            }, 1000); // 10 seconds
-        }
-    });
+function toggleFaq(item) {
+  var answer = item.querySelector('.faq-answer');
+  var icon = item.querySelector('.faq-icon');
+  var isOpen = !answer.classList.contains('hidden');
+  answer.classList.toggle('hidden', isOpen);
+  icon.textContent = isOpen ? '+' : '-';
+}
 </script>
-@endpush

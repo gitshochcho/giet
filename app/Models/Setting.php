@@ -48,10 +48,11 @@ class Setting extends Model implements HasMedia
             }
 
             return [
-                'title' => $item['title'] ?? null,
-                'link' => $item['link'] ?? null,
-                'media_key' => $mediaKey,
-                'icon_url' => $iconUrl,
+                'title'      => $item['title'] ?? null,
+                'link'       => $item['link'] ?? null,
+                'media_key'  => $mediaKey,
+                'icon_url'   => $iconUrl,
+                'icon_class' => $item['icon_class'] ?? null,
             ];
         })->all();
     }

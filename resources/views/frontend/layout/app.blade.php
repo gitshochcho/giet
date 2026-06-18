@@ -4,6 +4,7 @@
     @include('frontend.layout.meta')
     @include('frontend.layout.css')
     @stack('custome-css')
+        @vite(['resources/css/app.css'])
 </head>
 <body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
     <div class="app-wrapper">

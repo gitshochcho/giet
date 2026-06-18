@@ -22,7 +22,7 @@ class ContactInfoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type' => 'required|in:phone,email,address',
+            'type' => 'required|in:phone,email,address,career',
             'icon_class' => 'nullable|string|max:255',
             'title' => 'required|string|max:255',
             'primary_text' => 'required|string|max:255',
@@ -38,6 +38,9 @@ class ContactInfoController extends Controller
 
         $validated['is_active'] = $request->has('is_active');
         $validated['order'] = $request->input('order', 0);
+        if ($request->filled('address_name')) {
+            $validated['name'] = $request->input('address_name');
+        }
 
         ContactInfo::create($validated);
 
@@ -52,7 +55,7 @@ class ContactInfoController extends Controller
     public function update(Request $request, ContactInfo $contactInfo)
     {
         $validated = $request->validate([
-            'type' => 'required|in:phone,email,address',
+            'type' => 'required|in:phone,email,address,career',
             'icon_class' => 'nullable|string|max:255',
             'title' => 'required|string|max:255',
             'primary_text' => 'required|string|max:255',
@@ -68,6 +71,9 @@ class ContactInfoController extends Controller
 
         $validated['is_active'] = $request->has('is_active');
         $validated['order'] = $request->input('order', 0);
+        if ($request->filled('address_name')) {
+            $validated['name'] = $request->input('address_name');
+        }
 
         $contactInfo->update($validated);
 

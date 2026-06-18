@@ -36,16 +36,18 @@
                                     <option value="phone" @selected(old('type') === 'phone')>Phone</option>
                                     <option value="email" @selected(old('type') === 'email')>Email</option>
                                     <option value="address" @selected(old('type') === 'address')>Address</option>
+                                    <option value="career" @selected(old('type') === 'career')>Career / Fellowship</option>
                                 </select>
                                 @error('type') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
-                            <!-- <div class="mb-3">
+                            <div class="mb-3">
                                 <label class="form-label">Icon Class (Font Awesome)</label>
-                                <input type="text" name="icon_class" class="form-control @error('icon_class') is-invalid @enderror" 
-                                    placeholder="e.g., fas fa-phone-alt" value="{{ old('icon_class') }}">
+                                <input type="text" name="icon_class" class="form-control @error('icon_class') is-invalid @enderror"
+                                    placeholder="e.g., fas fa-phone-alt, fas fa-envelope, fas fa-map-marker-alt" value="{{ old('icon_class') }}">
+                                <small class="text-muted">FontAwesome class নাম দিন। খালি রাখলে default icon দেখাবে।</small>
                                 @error('icon_class') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div> -->
+                            </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Title <span class="text-danger">*</span></label>
@@ -56,45 +58,67 @@
 
                             <div class="mb-3">
                                 <label class="form-label" id="primaryLabel">Primary Text <span class="text-danger">*</span></label>
-                                <input type="text" name="primary_text" class="form-control @error('primary_text') is-invalid @enderror" 
+                                <input type="text" name="primary_text" class="form-control @error('primary_text') is-invalid @enderror"
                                     placeholder="e.g., +880 1715-056952 or contact@example.com" value="{{ old('primary_text') }}" required>
                                 @error('primary_text') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
-                            <!-- <div class="mb-3">
+                            {{-- Secondary Text: phone/email এ primary_text এর নিচে --}}
+                            <div class="mb-3" id="secondaryTextField" style="display: none;">
                                 <label class="form-label">Secondary Text</label>
-                                <input type="text" name="secondary_text" class="form-control @error('secondary_text') is-invalid @enderror" 
-                                    placeholder="e.g., Dhaka or Head Office — Dhaka" value="{{ old('secondary_text') }}">
+                                <input type="text" name="secondary_text" class="form-control @error('secondary_text') is-invalid @enderror"
+                                    placeholder="e.g., General enquiries · We reply within 2 business days" value="{{ old('secondary_text') }}">
+                                <small class="text-muted">Phone/email number এর নিচে ছোট করে দেখাবে।</small>
                                 @error('secondary_text') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div> -->
+                            </div>
+
+                            {{-- Career Fields --}}
+                            <div id="careerFields" style="display: none;">
+                                <div class="mb-3">
+                                    <label class="form-label">Label / Sub-title</label>
+                                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                                        placeholder="e.g., Career & Fellowship Enquiries" value="{{ old('name') }}">
+                                    <small class="text-muted">Primary Text এর উপরে bold দেখাবে।</small>
+                                    @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Secondary Text</label>
+                                    <input type="text" name="secondary_text" class="form-control @error('secondary_text') is-invalid @enderror"
+                                        placeholder="e.g., We reply within 3 business days" value="{{ old('secondary_text') }}">
+                                    <small class="text-muted">Primary Text এর নিচে ছোট করে দেখাবে।</small>
+                                    @error('secondary_text') <span class="text-danger">{{ $message }}</span> @enderror
+                                </div>
+                            </div>
 
                             <!-- Address Fields (Hidden by default) -->
                             <div id="addressFields" style="display: none;">
                                 <div class="mb-3">
                                     <label class="form-label">Office Name</label>
-                                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" 
-                                        placeholder="e.g., Trace Consulting Limited" value="{{ old('name') }}">
+                                    <input type="text" name="address_name" class="form-control @error('name') is-invalid @enderror"
+                                        placeholder="e.g., GIET Foundation" value="{{ old('name') }}">
                                     @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">Full Address</label>
-                                    <textarea name="address" class="form-control @error('address') is-invalid @enderror" rows="3" 
+                                    <textarea name="address" class="form-control @error('address') is-invalid @enderror" rows="3"
                                         placeholder="Full address">{{ old('address') }}</textarea>
                                     @error('address') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
 
+                                {{-- Secondary Text: address এ Full Address এর নিচে --}}
                                 <div class="mb-3">
-                                    <label class="form-label">Office Hours</label>
-                                    <input type="text" name="office_hours" class="form-control @error('office_hours') is-invalid @enderror" 
-                                        placeholder="e.g., Sunday – Thursday, 9:00 AM – 6:00 PM" value="{{ old('office_hours') }}">
-                                    @error('office_hours') <span class="text-danger">{{ $message }}</span> @enderror
+                                    <label class="form-label">Secondary Text</label>
+                                    <input type="text" name="secondary_text" class="form-control @error('secondary_text') is-invalid @enderror"
+                                        placeholder="e.g., Dhaka, Bangladesh" value="{{ old('secondary_text') }}">
+                                    <small class="text-muted">Full Address এর নিচে দেখাবে।</small>
+                                    @error('secondary_text') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Map Location</label>
-                                    <textarea name="map_location" class="form-control @error('map_location') is-invalid @enderror" rows="2" 
-                                        placeholder="Google Maps embed code or coordinates">{{ old('map_location') }}</textarea>
+                                    <label class="form-label">Map Location Text</label>
+                                    <input type="text" name="map_location" class="form-control @error('map_location') is-invalid @enderror"
+                                        placeholder="e.g., View on Google Maps →" value="{{ old('map_location') }}">
                                     @error('map_location') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>
@@ -121,7 +145,7 @@
                                 </div>
                             </div>
 
-                            <div class="card-footer">
+                            <div class="card-footer d-flex justify-content-end gap-2">
                                 <a href="{{ route('admin.contact-info.index') }}" class="btn btn-secondary">Cancel</a>
                                 <button type="submit" class="btn btn-primary">Save Contact Info</button>
                             </div>
@@ -133,18 +157,36 @@
     </div>
 
     <script>
+        function setInputsDisabled(container, disabled) {
+            container.querySelectorAll('input, textarea, select').forEach(el => el.disabled = disabled);
+        }
+
         function updateFields() {
             const type = document.querySelector('select[name="type"]').value;
             const addressFields = document.getElementById('addressFields');
-            
+            const secondaryTextField = document.getElementById('secondaryTextField');
+            const careerFields = document.getElementById('careerFields');
+
+            addressFields.style.display = 'none';
+            secondaryTextField.style.display = 'none';
+            careerFields.style.display = 'none';
+
+            setInputsDisabled(addressFields, true);
+            setInputsDisabled(secondaryTextField, true);
+            setInputsDisabled(careerFields, true);
+
             if (type === 'address') {
                 addressFields.style.display = 'block';
-            } else {
-                addressFields.style.display = 'none';
+                setInputsDisabled(addressFields, false);
+            } else if (type === 'phone' || type === 'email') {
+                secondaryTextField.style.display = 'block';
+                setInputsDisabled(secondaryTextField, false);
+            } else if (type === 'career') {
+                careerFields.style.display = 'block';
+                setInputsDisabled(careerFields, false);
             }
         }
-        
-        // Initialize on page load
+
         updateFields();
     </script>
 @endsection

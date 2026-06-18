@@ -103,6 +103,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('admin.faq.index') }}" class="nav-link {{ request()->routeIs('admin.faq.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-question-circle"></i>
+                        <p>FAQs</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ route('admin.job-postings.index') }}" class="nav-link {{ request()->routeIs('admin.job-postings.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-briefcase"></i>
                         <p>Job Postings</p>
