@@ -57,7 +57,7 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-collection"></i>
-                        <p>Services Manager</p>
+                        <p>Work Manager</p>
                     </a>
                 </li>
 

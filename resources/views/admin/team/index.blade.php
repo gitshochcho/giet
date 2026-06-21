@@ -65,7 +65,16 @@
                                     </td>
                                     <td data-search="{{ strtolower($team->fullName()) }}">{{ $team->fullName() }}</td>
                                     <td data-search="{{ strtolower($team->designation ?? '') }}">{{ $team->designation ?: '-' }}</td>
-                                    <td>{{ $team->type == 1 ? 'Leadership' : ($team->type == 2 ? 'Core Team' : 'Advisor') }}</td>
+                                    <td>
+                                        @if($team->type == 1) Leadership
+                                        @elseif($team->type == 2) Core Team
+                                        @else
+                                            Advisor
+                                            @if($team->advisor_category)
+                                                <span class="badge bg-secondary ms-1">{{ ucfirst($team->advisor_category) }}</span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td>{{ $team->projects->count() }}</td>
                                     <td>{{ $team->sort_order }}</td>
                                     <td>

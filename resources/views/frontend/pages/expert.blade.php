@@ -45,11 +45,14 @@
   <div class="w-full max-w-[1204px] flex flex-col mx-auto gap-[52px]">
 
     <div class="flex flex-col gap-[12px]">
-      <h2 class="font-['Newsreader'] font-extrabold text-[38px] leading-[44.84px] text-[#0F172A]">
-        Leadership Team
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:38px;line-height:1.18;color:#0F172A;margin:0;">
+        {{ $leadershipContent?->heading ?? 'Leadership Team' }}
+        @if($leadershipContent?->design_word)
+          <span style="color:#18909C;">{{ $leadershipContent->design_word }}</span>
+        @endif
       </h2>
-      @if($leadershipContent && $leadershipContent->sub_heading)
-      <p class="font-['Newsreader'] text-[16px] leading-[28px] text-[#1A1A1A] max-w-[540px] pt-[2.39px]">
+      @if($leadershipContent?->sub_heading)
+      <p style="font-family:'Newsreader',Georgia,serif;font-size:16px;line-height:28px;color:#1A1A1A;max-width:540px;margin:0;">
         {{ $leadershipContent->sub_heading }}
       </p>
       @endif
@@ -118,16 +121,14 @@
 <section class="w-full bg-white py-[48px] md:py-[88px] px-4 md:px-8 box-border">
   <div class="max-w-[1204px] mx-auto flex flex-col gap-[32px] px-0">
 
-    <div class="flex flex-col gap-[12px]">
-      <span class="font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] text-[#0E606B] uppercase">Core Team</span>
-      @if($coreTeamContent && $coreTeamContent->heading)
-      <h2 class="font-serif text-[38px] font-extrabold text-[#0F172A]">{{ $coreTeamContent->heading }}</h2>
-      @else
-      <h2 class="font-serif text-[38px] font-extrabold text-[#0F172A]">Core Team</h2>
-      @endif
-      @if($coreTeamContent && $coreTeamContent->sub_heading)
-      <p class="font-['Newsreader'] text-[16px] leading-[28px] text-[#1A1A1A] max-w-[540px]">{{ $coreTeamContent->sub_heading }}</p>
-      @endif
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <span style="font-family:'Newsreader',Georgia,serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#18909C;">{{ $coreTeamContent?->heading ?? 'Research Team' }}</span>
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:38px;line-height:1.18;color:#0F172A;margin:0;">
+        {{ $coreTeamContent?->sub_heading ?? 'Fellows & Analysts' }}
+        @if($coreTeamContent?->design_word)
+          <span style="color:#18909C;">{{ $coreTeamContent->design_word }}</span>
+        @endif
+      </h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-[20px] w-full max-w-[1204px] mx-auto">
@@ -165,44 +166,66 @@
 
 
 <!-- ADVISORY BOARD SECTION -->
-@if($advisors->count())
+@if($nationalAdvisors->count() || $internationalAdvisors->count())
 <section class="w-full bg-[#F7F9FB] py-[48px] md:py-[88px] px-4 md:px-8 box-border">
 
   <div class="w-full max-w-[1204px] mx-auto flex flex-col gap-[56px] px-4 md:px-0">
 
-    <div class="flex flex-col gap-[12px]">
-      <h2 class="font-serif text-[38px] font-extrabold text-[#003054]">Advisors &amp; Fellows</h2>
-      @if($expertsContent && $expertsContent->sub_heading)
-      <p class="font-['Newsreader'] text-[16px] text-[#1A1A1A] max-w-[500px]">
-        {{ $expertsContent->sub_heading }}
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:38px;line-height:1.18;color:#003054;margin:0;">
+        {{ $expertsContent?->heading ?? '' }}
+        @if($expertsContent?->design_word)
+          <span style="color:#18909C;">{{ $expertsContent->design_word }}</span>
+        @endif
+      </h2>
+      <p style="font-family:'Newsreader',Georgia,serif;font-size:16px;line-height:28px;color:#1A1A1A;max-width:600px;margin:0;">
+        {{ $expertsContent?->sub_heading ?? '' }}
       </p>
-      @endif
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-[20px] w-full max-w-[1204px] mx-auto">
-      @foreach($advisors as $advisor)
-      <div class="w-full bg-white border border-[#EEF3F8] rounded-[14px] p-[20px] md:p-[28px] flex gap-[18px] items-center">
-        @if($advisor->imageUrl())
-          <img src="{{ $advisor->imageUrl() }}" alt="{{ $advisor->fullName() }}" class="w-[60px] h-[60px] rounded-full object-cover shrink-0" />
-        @else
-          <div class="w-[60px] h-[60px] rounded-full bg-[#EEF3F8] flex items-center justify-center shrink-0">
-            <span class="text-[#6B7280] text-[10px] text-center">No<br>Photo</span>
-          </div>
-        @endif
-        <div class="flex flex-col gap-[4px]">
-          <h3 class="font-['Newsreader'] font-extrabold text-[15px] leading-[24.75px] text-[#0F172A]">{{ $advisor->fullName() }}</h3>
-          <p class="font-['Newsreader'] text-[12px] text-[#64748B] leading-none">{{ $advisor->designation }}</p>
-          @if($advisor->experties->count())
-          <div class="flex gap-[8px] mt-1 flex-wrap">
-            @foreach($advisor->experties->take(2) as $exp)
-              <span class="px-2 py-0.5 bg-[#F0F7F7] text-[#0E606B] text-[10.5px] font-semibold rounded-full border border-[#D1E5E5]">{{ $exp->heading }}</span>
-            @endforeach
-          </div>
+    @php
+      $advisorCard = function($advisor) { return $advisor; };
+    @endphp
+
+    {{-- National Advisors --}}
+    @php
+      $advisorGroups = [
+        'National' => $nationalAdvisors,
+        'International' => $internationalAdvisors,
+      ];
+    @endphp
+
+    @foreach($advisorGroups as $groupLabel => $groupMembers)
+    @if($groupMembers->count())
+    <div style="display:flex;flex-direction:column;gap:20px;">
+      <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:700;font-size:20px;color:#003054;border-bottom:1px solid #E2E8F0;padding-bottom:12px;margin:0;">{{ $groupLabel }}</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-[20px]">
+        @foreach($groupMembers as $advisor)
+        <a href="{{ route('teamdetails', $advisor->id) }}" style="background:#fff;border:1px solid #EEF3F8;border-radius:14px;padding:24px;display:flex;gap:18px;align-items:center;text-decoration:none;cursor:pointer;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+          @if($advisor->imageUrl())
+            <img src="{{ $advisor->imageUrl() }}" alt="{{ $advisor->fullName() }}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+          @else
+            <div style="width:60px;height:60px;border-radius:50%;background:#EEF3F8;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span style="color:#6B7280;font-size:10px;text-align:center;">No<br>Photo</span>
+            </div>
           @endif
-        </div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <h4 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:15px;line-height:1.65;color:#0F172A;margin:0;">{{ $advisor->fullName() }}</h4>
+            <p style="font-family:'Newsreader',Georgia,serif;font-size:12px;color:#64748B;margin:0;line-height:1;">{{ $advisor->designation }}</p>
+            @if($advisor->experties->count())
+            <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;">
+              @foreach($advisor->experties->take(2) as $exp)
+                <span style="padding:2px 8px;background:#F0F7F7;color:#0E606B;font-size:10.5px;font-weight:600;border-radius:999px;border:1px solid #D1E5E5;">{{ $exp->heading }}</span>
+              @endforeach
+            </div>
+            @endif
+          </div>
+        </a>
+        @endforeach
       </div>
-      @endforeach
     </div>
+    @endif
+    @endforeach
 
   </div>
 </section>

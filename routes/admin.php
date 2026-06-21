@@ -62,12 +62,12 @@ Route::prefix('admin')->group(function () {
         });
 
         Route::controller(ServiceController::class)->group(function () {
-            Route::get('services-manager', 'index')->name('admin.services.index');
-            Route::get('services-manager/create', 'create')->name('admin.services.create');
-            Route::post('services-manager', 'store')->name('admin.services.store');
-            Route::get('services-manager/{service}/edit', 'edit')->name('admin.services.edit');
-            Route::put('services-manager/{service}', 'update')->name('admin.services.update');
-            Route::delete('services-manager/{service}', 'destroy')->name('admin.services.destroy');
+            Route::get('work-manager', 'index')->name('admin.services.index');
+            Route::get('work-manager/create', 'create')->name('admin.services.create');
+            Route::post('work-manager', 'store')->name('admin.services.store');
+            Route::get('work-manager/{service}/edit', 'edit')->name('admin.services.edit');
+            Route::put('work-manager/{service}', 'update')->name('admin.services.update');
+            Route::delete('work-manager/{service}', 'destroy')->name('admin.services.destroy');
         });
 
         Route::controller(ProjectController::class)->group(function () {

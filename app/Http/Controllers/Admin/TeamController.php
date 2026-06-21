@@ -46,7 +46,12 @@ class TeamController extends Controller
             'description' => $validated['description'] ?? null,
             'sort_order' => $validated['sort_order'] ?? 0,
             'type' => $validated['type'] ?? 1,
+            'advisor_category' => $validated['advisor_category'] ?? null,
             'headtitle' => $validated['headtitle'] ?? null,
+            'education' => $validated['education'] ?? null,
+            'experience' => $validated['experience'] ?? null,
+            'languages' => $validated['languages'] ?? null,
+            'location' => $validated['location'] ?? null,
             'expertise_label' => $validated['expertise_label'] ?? null,
         ]);
 
@@ -96,7 +101,12 @@ class TeamController extends Controller
             'description' => $validated['description'] ?? null,
             'sort_order' => $validated['sort_order'] ?? 0,
             'type' => $validated['type'],
+            'advisor_category' => $validated['advisor_category'] ?? null,
             'headtitle' => $validated['headtitle'] ?? null,
+            'education' => $validated['education'] ?? null,
+            'experience' => $validated['experience'] ?? null,
+            'languages' => $validated['languages'] ?? null,
+            'location' => $validated['location'] ?? null,
             'expertise_label' => $validated['expertise_label'] ?? null,
         ]);
         $team->save();
@@ -158,6 +168,11 @@ class TeamController extends Controller
             'short_description' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string'],
             'type' => ['nullable', 'string', 'in:1,2,3'],
+            'advisor_category' => ['nullable', 'string', 'in:national,international'],
+            'education' => ['nullable', 'string', 'max:255'],
+            'experience' => ['nullable', 'string', 'max:255'],
+            'languages' => ['nullable', 'string', 'max:255'],
+            'location' => ['nullable', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'headtitle' => ['nullable', 'string', 'max:255'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'],
