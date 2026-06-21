@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\CvSubmissionController;
 use App\Http\Controllers\Admin\InsightTypeController;
+use App\Http\Controllers\Admin\FaqController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -161,6 +162,16 @@ Route::prefix('admin')->group(function () {
             Route::get('insight-types/{insightType}/edit', 'edit')->name('admin.insight-types.edit');
             Route::put('insight-types/{insightType}', 'update')->name('admin.insight-types.update');
             Route::delete('insight-types/{insightType}', 'destroy')->name('admin.insight-types.destroy');
+        });
+
+        Route::controller(FaqController::class)->group(function () {
+            Route::get('faqs', 'index')->name('admin.faq.index');
+            Route::get('faqs/create', 'create')->name('admin.faq.create');
+            Route::post('faqs', 'store')->name('admin.faq.store');
+            Route::get('faqs/{faq}/edit', 'edit')->name('admin.faq.edit');
+            Route::put('faqs/{faq}', 'update')->name('admin.faq.update');
+            Route::delete('faqs/{faq}', 'destroy')->name('admin.faq.destroy');
+            Route::post('faqs/update-order', 'updateOrder')->name('admin.faq.update-order');
         });
 
     });

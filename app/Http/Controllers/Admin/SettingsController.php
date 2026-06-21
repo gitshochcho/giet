@@ -29,6 +29,7 @@ class SettingsController extends Controller
             'social_links.*.title' => ['nullable', 'string', 'max:255'],
             'social_links.*.link' => ['nullable', 'string', 'max:2048'],
             'social_links.*.media_key' => ['nullable', 'string', 'max:64'],
+            'social_links.*.icon_class' => ['nullable', 'string', 'max:100'],
             'social_links_icons' => ['nullable', 'array'],
             'social_links_icons.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
             'footer_contact_mobile' => ['nullable', 'string', 'max:255'],
@@ -63,9 +64,10 @@ class SettingsController extends Controller
             }
 
             $preparedSocialLinks[] = [
-                'title' => $title,
-                'link' => $link,
-                'media_key' => $mediaKey,
+                'title'      => $title,
+                'link'       => $link,
+                'media_key'  => $mediaKey,
+                'icon_class' => trim((string) ($item['icon_class'] ?? '')),
             ];
 
             $keptMediaKeys[] = $mediaKey;

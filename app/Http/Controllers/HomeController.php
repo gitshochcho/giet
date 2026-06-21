@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ForgetPassMail;
 use App\Models\ContactInfo;
+use App\Models\Faq;
 use App\Models\Country;
 use App\Models\Gender;
 use App\Models\Insight;
@@ -302,11 +303,14 @@ class HomeController extends Controller
     public function contact(Request $request)
     {
         $heroContent      = contentBlock('contact-page');
-        $contactHeader = contentBlock('contact-us-head');
+        $contactHeader    = contentBlock('contact-us-head');
+        $faqSection       = contentBlock('contact-faq-section');
         $contactPhones    = ContactInfo::where('type', 'phone')->active()->ordered()->get();
         $contactEmails    = ContactInfo::where('type', 'email')->active()->ordered()->get();
         $contactAddresses = ContactInfo::where('type', 'address')->active()->ordered()->get();
-        return view('frontend.pages.contact', compact('heroContent', 'contactHeader', 'contactPhones', 'contactEmails', 'contactAddresses'));
+        $contactCareers   = ContactInfo::where('type', 'career')->active()->ordered()->get();
+        $faqs             = Faq::active()->ordered()->get();
+        return view('frontend.pages.contact', compact('heroContent', 'contactHeader', 'faqSection', 'contactPhones', 'contactEmails', 'contactAddresses', 'contactCareers', 'faqs'));
     }
 
     public function about(Request $request)
