@@ -80,13 +80,17 @@ Route::prefix('admin')->group(function () {
             Route::delete('projects-manager/{project}/images/{mediaId}', 'destroyImage')->name('admin.projects.images.destroy');
         });
 
+        Route::get('teams-manager', fn() => redirect()->route('admin.experts.index'));
+        Route::get('teams-manager/create', fn() => redirect()->route('admin.experts.create'));
+        Route::get('teams-manager/{team}/edit', fn($team) => redirect()->route('admin.experts.edit', $team));
+
         Route::controller(TeamController::class)->group(function () {
-            Route::get('teams-manager', 'index')->name('admin.teams.index');
-            Route::get('teams-manager/create', 'create')->name('admin.teams.create');
-            Route::post('teams-manager', 'store')->name('admin.teams.store');
-            Route::get('teams-manager/{team}/edit', 'edit')->name('admin.teams.edit');
-            Route::put('teams-manager/{team}', 'update')->name('admin.teams.update');
-            Route::delete('teams-manager/{team}', 'destroy')->name('admin.teams.destroy');
+            Route::get('experts-manager', 'index')->name('admin.experts.index');
+            Route::get('experts-manager/create', 'create')->name('admin.experts.create');
+            Route::post('experts-manager', 'store')->name('admin.experts.store');
+            Route::get('experts-manager/{team}/edit', 'edit')->name('admin.experts.edit');
+            Route::put('experts-manager/{team}', 'update')->name('admin.experts.update');
+            Route::delete('experts-manager/{team}', 'destroy')->name('admin.experts.destroy');
         });
 
         Route::controller(PartnerController::class)->group(function () {
@@ -103,7 +107,7 @@ Route::prefix('admin')->group(function () {
             Route::get('insights-manager/create', 'create')->name('admin.insights.create');
             Route::post('insights-manager', 'store')->name('admin.insights.store');
 
-            Route::get('/insights/{insight}', 'show')->name('admin.insights.show');
+            Route::get('/insights/{insight}', fn($insight) => redirect()->route('admin.insights.edit', $insight))->name('admin.insights.show');
 
             Route::get('insights-manager/{insight}/edit', 'edit')->name('admin.insights.edit');
             Route::put('insights-manager/{insight}', 'update')->name('admin.insights.update');

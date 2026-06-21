@@ -59,7 +59,7 @@ class TeamController extends Controller
         $this->syncSocialMedia($team, $validated['social_media'] ?? [], $request->file('social_media_icons', []));
 
         return redirect()
-            ->route('admin.teams.index')
+            ->route('admin.experts.index')
             ->with([
                 'message' => 'Team member created successfully',
                 'alert-type' => 'success',
@@ -115,7 +115,7 @@ class TeamController extends Controller
         $this->syncSocialMedia($team, $validated['social_media'] ?? [], $request->file('social_media_icons', []));
 
         return redirect()
-            ->route('admin.teams.index')
+            ->route('admin.experts.index')
             ->with([
                 'message' => 'Team member updated successfully',
                 'alert-type' => 'success',
@@ -141,7 +141,7 @@ class TeamController extends Controller
         $team->delete();
 
         return redirect()
-            ->route('admin.teams.index')
+            ->route('admin.experts.index')
             ->with([
                 'message' => 'Team member deleted successfully',
                 'alert-type' => 'success',
@@ -157,7 +157,7 @@ class TeamController extends Controller
             'designation' => ['nullable', 'string', 'max:255'],
             'short_description' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string'],
-            'type' => ['nullable', 'string', 'in:1,2'],
+            'type' => ['nullable', 'string', 'in:1,2,3'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'headtitle' => ['nullable', 'string', 'max:255'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'],

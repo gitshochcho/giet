@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.teams.index') }}">Team Manager</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.experts.index') }}">Expert Manager</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
                 </div>
@@ -43,7 +43,7 @@
 
     <div class="app-content">
         <div class="container-fluid">
-            <form action="{{ route('admin.teams.update', $team) }}" method="POST" enctype="multipart/form-data" id="teamForm">
+            <form action="{{ route('admin.experts.update', $team) }}" method="POST" enctype="multipart/form-data" id="teamForm">
                 @csrf
                 @method('PUT')
                 <div class="row g-4">
@@ -72,8 +72,9 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Type</label>
                                         <select name="type" class="form-select">
-                                            <option value="1" {{ old('type', $team->type) == 1 ? 'selected' : '' }}>Team Member</option>
-                                            <option value="2" {{ old('type', $team->type) == 2 ? 'selected' : '' }}>Advisor</option>
+                                            <option value="1" {{ old('type', $team->type) == 1 ? 'selected' : '' }}>Leadership</option>
+                                            <option value="2" {{ old('type', $team->type) == 2 ? 'selected' : '' }}>Core Team</option>
+                                            <option value="3" {{ old('type', $team->type) == 3 ? 'selected' : '' }}>Advisor</option>
                                         </select>
                                     </div>
                                      <div class="col-md-6">

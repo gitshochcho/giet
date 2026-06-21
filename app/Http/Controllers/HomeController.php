@@ -384,26 +384,28 @@ class HomeController extends Controller
         $coreTeamContent   = contentBlock('team-core');
         $expertsContent    = contentBlock('team-experts');
 
-        $advisors = Team::query()
+        $leadership = Team::query()
+            ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
+            ->where('type', 1)
+            ->orderBy('sort_order')
+            ->latest('id')
+            ->get();
+
+        $coreTeams = Team::query()
             ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
             ->where('type', 2)
             ->orderBy('sort_order')
             ->latest('id')
             ->get();
 
-        $teams = Team::query()
-            ->with(['experties.media', 'socialMedia.media', 'projects', 'media']) 
-            ->where('type', 1)
-            ->orderBy('sort_order')         
+        $advisors = Team::query()
+            ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
+            ->where('type', 3)
+            ->orderBy('sort_order')
             ->latest('id')
             ->get();
-    
-        $leadTeam = $teams->first();
-        $coreTeams = $teams->filter(function (Team $member) use ($leadTeam) {
-            return ! $leadTeam || $member->id !== $leadTeam->id;
-        })->values();
 
-        return view('frontend.pages.team', compact('teamPageContent', 'leadershipContent', 'coreTeamContent', 'expertsContent', 'teams', 'leadTeam', 'coreTeams', 'advisors'));
+        return view('frontend.pages.expert', compact('teamPageContent', 'leadershipContent', 'coreTeamContent', 'expertsContent', 'leadership', 'coreTeams', 'advisors'));
     }
 
     public function teamdetails(Request $request, ?Team $team = null)
@@ -426,7 +428,7 @@ class HomeController extends Controller
 
         $allTeamMembersCount = Team::query()->count();
 
-        return view('frontend.pages.teamdetails', compact('team', 'otherTeamMembers', 'allTeamMembersCount'));
+        return view('frontend.pages.expertdetails', compact('team', 'otherTeamMembers', 'allTeamMembersCount'));
     }
 
     public function dashboard(Request $request)

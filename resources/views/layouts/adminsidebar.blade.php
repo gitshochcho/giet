@@ -69,9 +69,9 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('admin.teams.index') }}" class="nav-link {{ request()->routeIs('admin.teams.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.experts.index') }}" class="nav-link {{ request()->routeIs('admin.experts.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-people"></i>
-                        <p>Team Manager</p>
+                        <p>Expert Manager</p>
                     </a>
                 </li>
                 

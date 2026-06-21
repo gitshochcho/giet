@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Team Manager</h3>
+                    <h3 class="mb-0">Expert Manager</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Team Manager</li>
+                        <li class="breadcrumb-item active" aria-current="page">Expert Manager</li>
                     </ol>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                         <h3 class="card-title mb-0">Team Members ({{ $teams->count() }})</h3>
                         <div class="d-flex gap-2 align-items-center">
                             <input type="text" id="teamSearch" class="form-control form-control-sm" placeholder="Search by name or designation..." style="width: 240px;">
-                            <a href="{{ route('admin.teams.create') }}" class="btn btn-primary btn-sm">
+                            <a href="{{ route('admin.experts.create') }}" class="btn btn-primary btn-sm">
                                 <i class="fas fa-plus"></i> Add Team Member
                             </a>
                         </div>
@@ -65,15 +65,15 @@
                                     </td>
                                     <td data-search="{{ strtolower($team->fullName()) }}">{{ $team->fullName() }}</td>
                                     <td data-search="{{ strtolower($team->designation ?? '') }}">{{ $team->designation ?: '-' }}</td>
-                                    <td>{{ $team->type == 1 ? 'Team Member' : 'Advisor' }}</td>
+                                    <td>{{ $team->type == 1 ? 'Leadership' : ($team->type == 2 ? 'Core Team' : 'Advisor') }}</td>
                                     <td>{{ $team->projects->count() }}</td>
                                     <td>{{ $team->sort_order }}</td>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <a href="{{ route('admin.teams.edit', $team) }}" class="btn btn-warning" title="Edit" data-bs-toggle="tooltip">
+                                            <a href="{{ route('admin.experts.edit', $team) }}" class="btn btn-warning" title="Edit" data-bs-toggle="tooltip">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
-                                            <form action="{{ route('admin.teams.destroy', $team) }}" method="POST" style="display: inline;"
+                                            <form action="{{ route('admin.experts.destroy', $team) }}" method="POST" style="display: inline;"
                                                 onsubmit="return confirm('Delete this team member?')">
                                                 @csrf
                                                 @method('DELETE')

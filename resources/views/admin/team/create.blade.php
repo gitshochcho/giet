@@ -16,7 +16,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.teams.index') }}">Team Manager</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.experts.index') }}">Expert Manager</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Add</li>
                     </ol>
                 </div>
@@ -26,7 +26,7 @@
 
     <div class="app-content">
         <div class="container-fluid">
-            <form action="{{ route('admin.teams.store') }}" method="POST" enctype="multipart/form-data" id="teamForm">
+            <form action="{{ route('admin.experts.store') }}" method="POST" enctype="multipart/form-data" id="teamForm">
                 @csrf
                 <div class="row g-4">
 
@@ -55,8 +55,9 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Type</label>
                                         <select name="type" class="form-select">
-                                            <option value="1" {{ old('type', 1) == 1 ? 'selected' : '' }}>Team Member</option>
-                                            <option value="2" {{ old('type', 1) == 2 ? 'selected' : '' }}>Advisor</option>
+                                            <option value="1" {{ old('type', 1) == 1 ? 'selected' : '' }}>Leadership</option>
+                                            <option value="2" {{ old('type', 1) == 2 ? 'selected' : '' }}>Core Team</option>
+                                            <option value="3" {{ old('type', 1) == 3 ? 'selected' : '' }}>Advisor</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
@@ -190,7 +191,7 @@
                     </div>
 
                     <div class="col-12 d-flex justify-content-end gap-2">
-                        <a href="{{ route('admin.teams.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.experts.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Back
                         </a>
                         <button type="submit" class="btn btn-primary px-4">
