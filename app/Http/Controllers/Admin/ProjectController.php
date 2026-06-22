@@ -43,6 +43,7 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'project_title' => ['required', 'string', 'max:255'],
             'client' => ['nullable', 'string', 'max:255'],
+            'partner' => ['nullable', 'string', 'max:255'],
             'project_standard' => ['nullable', 'string', 'max:255'],
             'overview' => ['nullable', 'string'],
             'start_date' => ['nullable', 'date'],
@@ -70,6 +71,7 @@ class ProjectController extends Controller
         $project = Project::create([
             'project_title' => $validated['project_title'],
             'client' => $validated['client'] ?? null,
+            'partner' => $validated['partner'] ?? null,
             'project_standard' => $validated['project_standard'] ?? null,
             'overview' => $validated['overview'] ?? null,
             'start_date' => $validated['start_date'] ?? null,
@@ -107,6 +109,7 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'project_title' => ['required', 'string', 'max:255'],
             'client' => ['nullable', 'string', 'max:255'],
+            'partner' => ['nullable', 'string', 'max:255'],
             'project_standard' => ['nullable', 'string', 'max:255'],
             'overview' => ['nullable', 'string'],
             'start_date' => ['nullable', 'date'],
@@ -134,6 +137,7 @@ class ProjectController extends Controller
         $project->fill([
             'project_title' => $validated['project_title'],
             'client' => $validated['client'] ?? null,
+            'partner' => $validated['partner'] ?? null,
             'project_standard' => $validated['project_standard'] ?? null,
             'overview' => $validated['overview'] ?? null,
             'start_date' => $validated['start_date'] ?? null,
