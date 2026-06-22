@@ -30,11 +30,11 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Edit Service</h3>
+                    <h3 class="mb-0">Edit Work</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.services.index') }}">Services Manager</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.services.index') }}">Work Manager</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
                 </div>
@@ -50,66 +50,70 @@
                 <div class="row g-4">
                     <div class="col-12 col-xl-5">
                         <div class="card card-outline card-primary">
-                            <div class="card-header"><h3 class="card-title">Service Information</h3></div>
+                            <div class="card-header"><h3 class="card-title">Work Information</h3></div>
                             <div class="card-body">
                                 <div class="row g-3">
-                                    <div class="col-md-8">
-                                        <label class="form-label">Heading</label>
-                                        <input type="text" name="heading" value="{{ old('heading', $service->heading) }}" class="form-control @error('heading') is-invalid @enderror" placeholder="Trade Facilitation">
+
+                                    <div class="col-12">
+                                        <label class="form-label">Work Name <small class="text-muted">(card title & breadcrumb)</small></label>
+                                        <input type="text" name="service_name" value="{{ old('service_name', $service->service_name) }}" class="form-control @error('service_name') is-invalid @enderror">
+                                        @error('service_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+
+                                    <div class="col-md-7">
+                                        <label class="form-label">Hero Title <small class="text-muted">(details page headline)</small></label>
+                                        <input type="text" name="heading" value="{{ old('heading', $service->heading) }}" class="form-control @error('heading') is-invalid @enderror" placeholder="Governance Innovation">
                                         @error('heading')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
 
-                                    <div class="col-md-4">
-                                        <label class="form-label">Design Word</label>
-                                        <input type="text" name="design_word" value="{{ old('design_word', $service->design_word) }}" class="form-control @error('design_word') is-invalid @enderror" placeholder="Facilitation">
+                                    <div class="col-md-5">
+                                        <label class="form-label">Hero Colored Word <small class="text-muted">(teal, 2nd line)</small></label>
+                                        <input type="text" name="design_word" value="{{ old('design_word', $service->design_word) }}" class="form-control @error('design_word') is-invalid @enderror" placeholder="& Public Service">
                                         @error('design_word')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="form-label">Section Tag</label>
-                                        <input type="text" name="section" value="{{ old('section', $service->section) }}" class="form-control @error('section') is-invalid @enderror" placeholder="WHAT WE DO">
+                                        <label class="form-label">Section Tag <small class="text-muted">(small label on card)</small></label>
+                                        <input type="text" name="section" value="{{ old('section', $service->section) }}" class="form-control @error('section') is-invalid @enderror" placeholder="Governance & Accountability">
                                         @error('section')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
 
-                                    <div class="col-12">
-                                        <label class="form-label">Description <small class="text-muted">(shows on card &amp; hero)</small></label>
-                                        <textarea name="description" class="form-control description-editor @error('description') is-invalid @enderror" rows="5" data-raw="1">{{ old('description', $service->description ?? '') }}</textarea>
-                                        @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label class="form-label">Overview <small class="text-muted">(shows on details page body)</small></label>
-                                        <textarea name="overview" class="form-control overview-editor" rows="6">{{ old('overview', $service->overview ?? '') }}</textarea>
-                                        @error('overview')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="form-label">Slug</label>
-                                        <input type="text" name="slug" value="{{ old('slug', $service->slug) }}" class="form-control @error('slug') is-invalid @enderror">
-                                        @error('slug')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                    </div>
-
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label class="form-label">Sort Order</label>
                                         <input type="number" name="sort_order" value="{{ old('sort_order', $service->sort_order) }}" class="form-control @error('sort_order') is-invalid @enderror">
                                         @error('sort_order')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
 
-                                    <div class="col-12">
-                                        <label class="form-label">Service Name</label>
-                                        <input type="text" name="service_name" value="{{ old('service_name', $service->service_name) }}" class="form-control @error('service_name') is-invalid @enderror">
-                                        @error('service_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                    </div>
-
-                                    <div class="col-12">
-                                        <div class="form-check">
+                                    <div class="col-md-3">
+                                        <label class="form-label d-block">&nbsp;</label>
+                                        <div class="form-check mt-2">
                                             <input class="form-check-input" type="checkbox" name="active" value="1" id="activeEdit" @checked(old('active', $service->active))>
                                             <label class="form-check-label" for="activeEdit">Active</label>
                                         </div>
                                     </div>
 
+                                    <div class="col-12">
+                                        <label class="form-label">Short Description <small class="text-muted">(shows on work card)</small></label>
+                                        <textarea name="description" class="form-control description-editor @error('description') is-invalid @enderror" rows="3" data-raw="1">{{ old('description', $service->description ?? '') }}</textarea>
+                                        @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label class="form-label">Overview <small class="text-muted">(details page — Overview section, each line = new paragraph)</small></label>
+                                        <textarea name="overview" class="form-control overview-editor" rows="7">{{ old('overview', $service->overview ?? '') }}</textarea>
+                                        @error('overview')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+
                                     <div class="col-md-6">
-                                        <label class="form-label">Service Image</label>
+                                        <label class="form-label">Slug <small class="text-muted">(URL key)</small></label>
+                                        <input type="text" name="slug" value="{{ old('slug', $service->slug) }}" class="form-control @error('slug') is-invalid @enderror">
+                                        @error('slug')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+
+                                    <div class="col-md-6"></div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Cover Image <small class="text-muted">(card + hero background)</small></label>
                                         <input type="hidden" name="remove_image" value="0" id="serviceRemoveImageInput">
                                         <input type="file" id="serviceImageInput" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*" data-max-size="4096" data-max-width="800" data-max-height="600">
                                         @if($service->imageUrl())
@@ -127,7 +131,7 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="form-label">Service Icon</label>
+                                        <label class="form-label">Icon <small class="text-muted">(optional)</small></label>
                                         <input type="file" name="icon" class="form-control @error('icon') is-invalid @enderror" accept="image/*" data-max-size="2048" data-max-width="128" data-max-height="128">
                                         <small class="text-muted"><i class="fas fa-info-circle"></i> Recommended: 128×128px square (max 2MB)</small>
                                         @error('icon')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -143,8 +147,8 @@
                     <div class="col-12 col-xl-7">
                         <div class="card card-outline card-secondary mb-4">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h3 class="card-title mb-0">Service Details</h3>
-                                <button type="button" class="btn btn-sm btn-outline-primary" id="addDetailRow">Add Detail</button>
+                                <h3 class="card-title mb-0">Our Services Include <small class="text-muted fw-normal">(details page right column)</small></h3>
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="addDetailRow">+ Add Row</button>
                             </div>
                             <div class="card-body">
                                 <div id="detailsWrapper" class="d-grid gap-3">
@@ -261,7 +265,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
         const activeEditors = new Map();
-        const form = document.querySelector('form[action*="admin/services-manager"]');
+        const form = document.querySelector('form[action*="admin/work-manager"]');
         const serviceImageInput = document.getElementById('serviceImageInput');
         const serviceImagePreviewWrap = document.getElementById('serviceImagePreviewWrap');
         const serviceImagePreview = document.getElementById('serviceImagePreview');

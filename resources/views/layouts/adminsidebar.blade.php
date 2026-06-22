@@ -57,7 +57,7 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-collection"></i>
-                        <p>Services Manager</p>
+                        <p>Work Manager</p>
                     </a>
                 </li>
 
@@ -69,9 +69,9 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('admin.teams.index') }}" class="nav-link {{ request()->routeIs('admin.teams.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.experts.index') }}" class="nav-link {{ request()->routeIs('admin.experts.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-people"></i>
-                        <p>Team Manager</p>
+                        <p>Expert Manager</p>
                     </a>
                 </li>
                 

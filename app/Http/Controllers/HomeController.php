@@ -92,7 +92,7 @@ class HomeController extends Controller
             ];
         })->values();
 
-        return view('frontend.pages.services', compact('servicesHero', 'workWithUs', 'serviceCards'));
+        return view('frontend.pages.work', compact('servicesHero', 'workWithUs', 'serviceCards'));
     }
 
     
@@ -100,15 +100,28 @@ class HomeController extends Controller
     public function serviceDetails(Request $request, $id)
     {
         $service = Service::query()
-            ->with(['details' => fn($q) => $q->orderBy('sort_order'), 'solutions' => fn($q) => $q->orderBy('sort_order'), 'media'])
+            ->with([
+                'details'   => fn($q) => $q->orderBy('sort_order'),
+                'solutions' => fn($q) => $q->orderBy('sort_order'),
+                'projects'  => fn($q) => $q->with(['media', 'services'])->orderBy('sort_order')->take(3),
+                'media',
+            ])
             ->findOrFail($id);
+
+        $experts = Team::query()
+            ->with(['media', 'experties'])
+            ->whereIn('type', [1, 2])
+            ->orderBy('sort_order')
+            ->take(4)
+            ->get();
 
         $otherServices = Service::query()
             ->where('active', true)
+            ->whereKeyNot($id)
             ->orderBy('sort_order')
             ->get(['id', 'service_name', 'section']);
 
-        return view('frontend.pages.service-details', compact('service', 'otherServices'));
+        return view('frontend.pages.workdetails', compact('service', 'experts', 'otherServices'));
     }
 
     public function projects(Request $request)
@@ -374,49 +387,57 @@ class HomeController extends Controller
         $coreTeamContent   = contentBlock('team-core');
         $expertsContent    = contentBlock('team-experts');
 
-        $advisors = Team::query()
+        $leadership = Team::query()
+            ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
+            ->where('type', 1)
+            ->orderBy('sort_order')
+            ->latest('id')
+            ->get();
+
+        $coreTeams = Team::query()
             ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
             ->where('type', 2)
             ->orderBy('sort_order')
             ->latest('id')
             ->get();
 
-        $teams = Team::query()
-            ->with(['experties.media', 'socialMedia.media', 'projects', 'media']) 
-            ->where('type', 1)
-            ->orderBy('sort_order')         
+        $nationalAdvisors = Team::query()
+            ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
+            ->where('type', 3)
+            ->where('advisor_category', 'national')
+            ->orderBy('sort_order')
             ->latest('id')
             ->get();
-    
-        $leadTeam = $teams->first();
-        $coreTeams = $teams->filter(function (Team $member) use ($leadTeam) {
-            return ! $leadTeam || $member->id !== $leadTeam->id;
-        })->values();
 
-        return view('frontend.pages.team', compact('teamPageContent', 'leadershipContent', 'coreTeamContent', 'expertsContent', 'teams', 'leadTeam', 'coreTeams', 'advisors'));
+        $internationalAdvisors = Team::query()
+            ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
+            ->where('type', 3)
+            ->where('advisor_category', 'international')
+            ->orderBy('sort_order')
+            ->latest('id')
+            ->get();
+
+        return view('frontend.pages.expert', compact('teamPageContent', 'leadershipContent', 'coreTeamContent', 'expertsContent', 'leadership', 'coreTeams', 'nationalAdvisors', 'internationalAdvisors'));
     }
 
     public function teamdetails(Request $request, ?Team $team = null)
     {
         $team ??= Team::query()
-            ->with(['experties.media', 'socialMedia.media', 'projects', 'media'])
             ->orderBy('sort_order')
             ->latest('id')
             ->firstOrFail();
 
-        $team->load(['experties.media', 'socialMedia.media', 'projects', 'media']);
+        $team->load(['experties.media', 'socialMedia.media', 'projects.media', 'media', 'insightArticles.insight.insightType']);
 
-        $otherTeamMembers = Team::query()
+        $relatedTeams = Team::query()
             ->with(['media'])
             ->whereKeyNot($team->id)
             ->orderBy('sort_order')
             ->latest('id')
-            ->take(3)
+            ->take(4)
             ->get();
 
-        $allTeamMembersCount = Team::query()->count();
-
-        return view('frontend.pages.teamdetails', compact('team', 'otherTeamMembers', 'allTeamMembersCount'));
+        return view('frontend.pages.expertdetails', compact('team', 'relatedTeams'));
     }
 
     public function dashboard(Request $request)

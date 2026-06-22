@@ -6,12 +6,12 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-sm-6">
-                    <h3 class="mb-0">Services Manager</h3>
+                    <h3 class="mb-0">Work Manager</h3>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Services Manager</li>
+                        <li class="breadcrumb-item active" aria-current="page">Work Manager</li>
                     </ol>
                 </div>
             </div>

@@ -18,8 +18,8 @@ Route::get('/projectdetails/{project?}', [App\Http\Controllers\HomeController::c
  
 
 
-Route::get('/services', [App\Http\Controllers\HomeController::class, 'services'])->name('services');
-Route::get('/service-details/{id}', [App\Http\Controllers\HomeController::class, 'serviceDetails'])->name('serviceDetails');
+Route::get('/work', [App\Http\Controllers\HomeController::class, 'services'])->name('services');
+Route::get('/work-details/{id}', [App\Http\Controllers\HomeController::class, 'serviceDetails'])->name('serviceDetails');
 Route::get('/insights', [App\Http\Controllers\HomeController::class, 'insights'])->name('insights');
 Route::get('/article-details/{article?}', [App\Http\Controllers\HomeController::class, 'articleDetails'])->name('articleDetails');
 Route::get('/career', [App\Http\Controllers\HomeController::class, 'career'])->name('career');

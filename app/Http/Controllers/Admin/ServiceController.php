@@ -15,12 +15,12 @@ class ServiceController extends Controller
     {
         $services = Service::with(['media', 'details', 'solutions'])->latest()->get();
 
-        return view('admin.service.index', compact('services'));
+        return view('admin.work.index', compact('services'));
     }
 
     public function create()
     {
-        return view('admin.service.create');
+        return view('admin.work.create');
     }
 
     public function store(Request $request): RedirectResponse
@@ -85,7 +85,7 @@ class ServiceController extends Controller
         $service->load(['media', 'details.media', 'solutions']);
         $services = Service::with(['media'])->latest()->get();
 
-        return view('admin.service.edit', compact('service', 'services'));
+        return view('admin.work.edit', compact('service', 'services'));
     }
 
     public function update(Request $request, Service $service): RedirectResponse

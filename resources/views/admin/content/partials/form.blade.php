@@ -410,11 +410,11 @@ if (removeIconBtn) {
             servicesPagePresetBtn.addEventListener('click', function () {
                 if (slugField) slugField.value = 'services-page';
                 if (sectionField) sectionField.value = 'WHAT WE DO';
-                if (headingField) headingField.value = 'Our Services';
+                if (headingField) headingField.value = 'Areas of Work';
                 if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = 'Services';
+                if (designWordField) designWordField.value = 'Areas of Work';
                 if (typeField) typeField.value = 'Hero';
-                setDescriptionValue('TRACE provides consultancy, research, and advocacy services that help government agencies and businesses reform policies, advance trade facilitation, and strengthen market systems.');
+                setDescriptionValue('GIET works across thematic areas spanning governance reform, economic transformation, digital development, social inclusion, and sustainable development — always grounded in evidence, always oriented toward measurable impact.');
             });
         }
 
