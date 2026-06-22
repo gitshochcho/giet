@@ -137,7 +137,7 @@ class HomeController extends Controller
         $selectedService = $request->integer('service');
 
         $projects = Project::query()
-            ->with(['services', 'media'])
+            ->with(['services', 'locations', 'media'])
             ->withCount('services')
             ->when($selectedService, function ($query, $serviceId) {
                 $query->whereHas('services', function ($serviceQuery) use ($serviceId) {
@@ -154,12 +154,12 @@ class HomeController extends Controller
     public function projectdetails(Request $request, ?Project $project = null)
     {
         $project ??= Project::query()
-            ->with(['services', 'locations', 'phaseDetails', 'outcomes', 'media'])
+            ->with(['services', 'locations', 'phaseDetails', 'outcomes', 'media', 'teams.media'])
             ->orderBy('sort_order')
             ->latest('id')
             ->firstOrFail();
 
-        $project->load(['services', 'locations', 'phaseDetails', 'outcomes', 'media']);
+        $project->load(['services', 'locations', 'phaseDetails', 'outcomes', 'media', 'teams.media']);
 
         $relatedProjects = Project::query()
             ->with(['services', 'media'])
@@ -328,18 +328,16 @@ class HomeController extends Controller
 
     public function about(Request $request)
     {
-        $aboutPageContent           = contentBlock('about-page') ?? contentBlock('about');
-        $aboutCommitmentContent     = contentBlock('about_us_section_3');
-        $aboutFrameworkContent      = contentBlock('about_us_how_we_work');
-        $aboutUniqueFeaturesContent = contentBlock('about_us_we_make_trace_different');
         $aboutHeader                = contentBlock('about_us_header');
+        $whoWeAre                   = contentBlock('about_us_who_we_are');
+        $ourMission                 = contentBlock('about_us_our_mission');
+        $missionContent             = contentBlock('about_us_mission');
+        $visionContent              = contentBlock('about_us_vision');
+        $goalsContent               = contentBlock('about_us_goals');
         $aboutTrace                 = contentBlock('about_trace');
-        // Who We Are এবং Mission সেকশন
-        $whoWeAre               = contentBlock('about_us_who_we_are');
-        $ourMission             = contentBlock('about_us_our_mission');
-        $aboutCommitmentContent = contentBlock('about_us_section_3');
-        $aboutFrameworkContent  = contentBlock('about_us_how_we_work');
-        $partnersContent        = contentBlock('about_us_partners');
+        $aboutUniqueFeaturesContent = contentBlock('about_us_we_make_trace_different');
+        $aboutFrameworkContent      = contentBlock('about_us_how_we_work');
+        $partnersContent            = contentBlock('about_us_partners');
 
         $frameworkItems = collect([
             contentBlock('about_us_insight'),
@@ -354,38 +352,30 @@ class HomeController extends Controller
             contentBlock('about_us_end_to_end_integrated_solutions'),
         ])->filter();
 
-        $aboutProjects = Project::query()
-            ->with(['services', 'media'])
-            ->orderBy('sort_order')
-            ->latest('id')
-            ->take(3)
-            ->get();
+        $storyItems = collect();
+        for ($i = 1; $i <= 10; $i++) {
+            $item = contentBlock("about_story_{$i}");
+            if ($item) {
+                $storyItems->push($item);
+            }
+        }
 
         $partners = Partner::with('media')->get();
 
-        $aboutInsights = Insight::query()
-            ->with(['articles.author.media', 'articles.media', 'media'])
-            ->where('active', true)
-            ->orderBy('sort_order')
-            ->latest('id')
-            ->take(4)
-            ->get();
-
         return view('frontend.pages.about', compact(
-            'aboutPageContent',
-            'aboutCommitmentContent',
-            'aboutFrameworkContent',
-            'frameworkItems',
-            'aboutUniqueFeaturesContent',
-            'uniqueFeatureCards',
-            'aboutProjects',
-            'aboutInsights',
             'aboutHeader',
-            'aboutTrace',
             'whoWeAre',
             'ourMission',
+            'missionContent',
+            'visionContent',
+            'goalsContent',
+            'aboutTrace',
+            'storyItems',
+            'aboutUniqueFeaturesContent',
+            'frameworkItems',
+            'aboutFrameworkContent',
+            'uniqueFeatureCards',
             'partnersContent',
-            'aboutProjects',
             'partners'
         ));
     }

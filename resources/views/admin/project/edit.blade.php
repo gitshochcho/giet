@@ -86,6 +86,11 @@
                                         @error('client')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-6">
+                                        <label class="form-label">Partner</label>
+                                        <input type="text" name="partner" value="{{ old('partner', $project->partner) }}" class="form-control @error('partner') is-invalid @enderror">
+                                        @error('partner')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
                                         <label class="form-label">Project Standard</label>
                                         <input type="text" name="project_standard" value="{{ old('project_standard', $project->project_standard) }}" class="form-control @error('project_standard') is-invalid @enderror">
                                         @error('project_standard')<div class="invalid-feedback">{{ $message }}</div>@enderror
