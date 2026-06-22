@@ -10,6 +10,7 @@ use App\Models\Insight;
 use App\Models\InsightArticle;
 use App\Models\JobApplication;
 use App\Models\JobPosting;
+use App\Models\Event;
 use App\Models\Partner;
 use App\Models\Project;
 use App\Models\Service;
@@ -311,6 +312,46 @@ class HomeController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'An error occurred while submitting your application. Please try again later.');
         }
+    }
+
+    public function events(Request $request)
+    {
+        $eventsHero = contentBlock('events_page_header');
+
+        $upcomingEvents = Event::with(['speakers', 'media'])
+            ->where('is_past', false)
+            ->orderBy('sort_order')
+            ->orderBy('event_date')
+            ->get();
+
+        $pastEvents = Event::with(['media'])
+            ->where('is_past', true)
+            ->orderBy('sort_order')
+            ->orderByDesc('event_date')
+            ->get();
+
+        return view('frontend.pages.events', compact('eventsHero', 'upcomingEvents', 'pastEvents'));
+    }
+
+    public function eventdetails(Request $request, ?Event $event = null)
+    {
+        $event ??= Event::query()
+            ->with(['speakers', 'eventPartners', 'media'])
+            ->orderBy('sort_order')
+            ->orderByDesc('event_date')
+            ->firstOrFail();
+
+        $event->load(['speakers', 'eventPartners', 'media']);
+
+        $relatedEvents = Event::query()
+            ->with(['media'])
+            ->whereKeyNot($event->id)
+            ->orderBy('sort_order')
+            ->orderByDesc('event_date')
+            ->take(3)
+            ->get();
+
+        return view('frontend.pages.eventdetails', compact('event', 'relatedEvents'));
     }
 
     public function contact(Request $request)

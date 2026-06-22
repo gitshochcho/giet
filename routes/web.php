@@ -25,6 +25,8 @@ Route::get('/article-details/{article?}', [App\Http\Controllers\HomeController::
 Route::get('/career', [App\Http\Controllers\HomeController::class, 'career'])->name('career');
 Route::get('/careerdetails/{id}', [App\Http\Controllers\HomeController::class, 'careerdetails'])->name('careerdetails');
 Route::post('/job/apply/{id}', [App\Http\Controllers\HomeController::class, 'applyForJob'])->name('job.apply');
+Route::get('/events', [App\Http\Controllers\HomeController::class, 'events'])->name('events');
+Route::get('/eventdetails/{event?}', [App\Http\Controllers\HomeController::class, 'eventdetails'])->name('eventdetails');
 Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactMessageController::class, 'store'])->name('contact.store');
 Route::post('/career/cv-submit', [\App\Http\Controllers\CvSubmissionController::class, 'store'])->name('cv.submit');

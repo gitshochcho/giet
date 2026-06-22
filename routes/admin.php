@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\CvSubmissionController;
 use App\Http\Controllers\Admin\InsightTypeController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\EventController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -176,6 +177,15 @@ Route::prefix('admin')->group(function () {
             Route::put('faqs/{faq}', 'update')->name('admin.faq.update');
             Route::delete('faqs/{faq}', 'destroy')->name('admin.faq.destroy');
             Route::post('faqs/update-order', 'updateOrder')->name('admin.faq.update-order');
+        });
+
+        Route::controller(EventController::class)->group(function () {
+            Route::get('events-manager', 'index')->name('admin.events.index');
+            Route::get('events-manager/create', 'create')->name('admin.events.create');
+            Route::post('events-manager', 'store')->name('admin.events.store');
+            Route::get('events-manager/{event}/edit', 'edit')->name('admin.events.edit');
+            Route::put('events-manager/{event}', 'update')->name('admin.events.update');
+            Route::delete('events-manager/{event}', 'destroy')->name('admin.events.destroy');
         });
 
     });

@@ -88,6 +88,13 @@
                         <p>Insights Manager</p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.events.index') }}" class="nav-link {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-calendar-event"></i>
+                        <p>Events Manager</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.contact-messages.index') }}" class="nav-link {{ request()->routeIs('admin.contact-messages.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-envelope"></i>

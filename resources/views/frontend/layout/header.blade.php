@@ -43,7 +43,7 @@
 
             <a href="{{ route('team') }}" class="nav-link h-[34.27px] px-[6px] flex items-center justify-center whitespace-nowrap">Our Experts</a>
 
-            <a href="{{ route('insights') }}" class="nav-link h-[34.27px] px-[6px] flex items-center justify-center">Events</a>
+            <a href="{{ route('events') }}" class="nav-link h-[34.27px] px-[6px] flex items-center justify-center">Events</a>
         </div>
 
         <script>
@@ -101,7 +101,7 @@
             <a href="{{ route('projects') }}" class="mob-nav-link flex items-center px-4 py-3 rounded-[8px] hover:bg-[#F7F9FB] transition-colors">Projects</a>
             <a href="{{ route('insights') }}" class="mob-nav-link flex items-center px-4 py-3 rounded-[8px] hover:bg-[#F7F9FB] transition-colors">Resources</a>
             <a href="{{ route('team') }}"     class="mob-nav-link flex items-center px-4 py-3 rounded-[8px] hover:bg-[#F7F9FB] transition-colors">Our Experts</a>
-            <a href="{{ route('insights') }}" class="mob-nav-link flex items-center px-4 py-3 rounded-[8px] hover:bg-[#F7F9FB] transition-colors">Events</a>
+            <a href="{{ route('events') }}" class="mob-nav-link flex items-center px-4 py-3 rounded-[8px] hover:bg-[#F7F9FB] transition-colors">Events</a>
         </nav>
         <!-- Bottom CTA -->
         <div class="mt-auto px-5 pb-8 pt-4 border-t border-gray-100">
