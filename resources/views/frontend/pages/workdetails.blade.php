@@ -188,15 +188,15 @@
             <h4 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:15px;line-height:21px;color:#0F172A;margin:0 0 8px 0;">
               {{ $project->project_title }}
             </h4>
-            @if($project->short_description ?? $project->description ?? false)
+            @if($project->overview)
             <p style="font-family:'Newsreader',Georgia,serif;font-size:13px;line-height:21px;color:#1A1A1A;margin:0;">
-              {{ Str::limit($project->short_description ?? $project->description, 140) }}
+              {{ Str::limit(strip_tags($project->overview), 140) }}
             </p>
             @endif
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid #F1F5F9;margin-top:12px;">
-            @if($project->status ?? false)
-            <span style="font-family:'Newsreader',Georgia,serif;font-size:11.5px;color:#6B7280;">{{ $project->status }}</span>
+            @if($project->project_status)
+            <span style="font-family:'Newsreader',Georgia,serif;font-size:11.5px;color:#6B7280;">{{ $project->project_status }}</span>
             @else
             <span></span>
             @endif

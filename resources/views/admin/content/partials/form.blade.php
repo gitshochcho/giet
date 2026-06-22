@@ -120,6 +120,15 @@
                             <button type="button" id="applyHomeAboutTraceTwoPreset" class="btn btn-sm btn-outline-secondary preset-btn">Home About Item 2</button>
                             <button type="button" id="applyHomeAboutTraceThreePreset" class="btn btn-sm btn-outline-secondary preset-btn">Home About Item 3</button>
                             <button type="button" id="applyHomeYearsPreset" class="btn btn-sm btn-outline-secondary preset-btn">Home Years Expertise</button>
+                            <button type="button" id="applyHomeMissionPreset" class="btn btn-sm btn-outline-secondary preset-btn">Home Mission</button>
+                        </div>
+                        <div class="mt-2 p-2 bg-light rounded small text-muted">
+                            <strong>Home Mission fields:</strong><br>
+                            • <strong>Section</strong> = label (e.g. "Our Mission")<br>
+                            • <strong>Heading</strong> = the quote text (without quotes)<br>
+                            • <strong>Sub Heading</strong> = author attribution (e.g. "Dr. X, Founding Director")<br>
+                            • <strong>Description</strong> = mission paragraph text<br>
+                            • <strong>Design Word</strong> = pillar items separated by <code>|</code> (e.g. "Transparent Governance|Economic Competitiveness|Institutional Reform")
                         </div>
                     </div>
                 </div>
@@ -777,6 +786,19 @@ if (homeYearsPresetBtn) {
         if (designWordField) designWordField.value = '';
         if (typeField) typeField.value = 'Badge';
         setDescriptionValue('Years of Expertise');
+    });
+}
+
+const homeMissionPresetBtn = document.getElementById('applyHomeMissionPreset');
+if (homeMissionPresetBtn) {
+    homeMissionPresetBtn.addEventListener('click', function () {
+        if (slugField) slugField.value = 'home_mission';
+        if (sectionField) sectionField.value = 'Our Mission';
+        if (headingField) headingField.value = 'Evidence-based reform is not optional — it is the only path to governance that truly serves citizens.';
+        if (subHeadingField) subHeadingField.value = 'Dr. Rafiqul Islam, Founding Director, GIET';
+        if (designWordField) designWordField.value = 'Transparent Governance|Economic Competitiveness|Institutional Reform|Digital Transformation|Social Inclusion|Evidence-Based Policy';
+        if (typeField) typeField.value = 'Mission Section';
+        setDescriptionValue('GIET is a non-political, non-profit organization dedicated to promoting transparent, accountable governance and sustainable economic transformation in Bangladesh. We perform in-depth research, encourage multi-stakeholder dialogue, and convert evidence into practical policy recommendations.');
     });
 }
 

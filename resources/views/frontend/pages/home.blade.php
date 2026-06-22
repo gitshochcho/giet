@@ -2,82 +2,75 @@
 
 @section('content')
 
-
+{{-- ===== 1. HERO SLIDER ===== --}}
 <header id="hero-slider" class="w-full h-auto md:h-[682.85px] min-h-[400px] md:min-h-[600px] relative flex flex-col justify-between items-center text-center text-white overflow-hidden bg-[#00223D] select-none">
 
-  <!-- SLIDES -->
   <div id="hero-slides" class="absolute inset-0 w-full h-full">
 
-    <!-- Slide 1 -->
-    <div class="hero-slide absolute inset-0 w-full h-full transition-opacity duration-700 opacity-100">
-      <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(rgba(0,24,43,0.55),rgba(0,24,43,0.55)), url('images/Image.png');"></div>
+    @forelse($sliderItems as $i => $slide)
+    @php
+      $bgImg = $slide->imageUrl();
+      $bgStyle = $bgImg
+        ? "background-image:linear-gradient(rgba(0,24,43,0.58),rgba(0,24,43,0.58)),url('{$bgImg}');background-size:cover;background-position:center;"
+        : "background-color:#00223D;";
+
+      $title = $slide->title ?? '';
+      $dw    = $slide->design_word ?? '';
+      $titleHtml = $dw
+        ? str_replace($dw, '<span style="color:#18909C;">'.$dw.'</span>', e($title))
+        : e($title);
+    @endphp
+    <div class="hero-slide absolute inset-0 w-full h-full transition-opacity duration-700 {{ $i === 0 ? 'opacity-100' : 'opacity-0' }}" style="{{ $i !== 0 ? 'pointer-events:none;' : '' }}">
+      <div class="absolute inset-0" style="{{ $bgStyle }}"></div>
       <div class="relative z-10 flex flex-col items-center justify-center h-full max-w-[1204px] mx-auto px-4 pt-[45px]">
-        <span class="text-[10px] font-bold uppercase tracking-[2.5px] text-gray-300 mb-5">— GOVERNANCE INNOVATION —</span>
+        @if($slide->tagline)
+        <span class="text-[10px] font-bold uppercase tracking-[2.5px] text-gray-300 mb-5">— {{ $slide->tagline }} —</span>
+        @endif
         <h1 style="font-family:'Merriweather',serif;font-weight:700;font-size:clamp(28px,5vw,56px);line-height:1.2;letter-spacing:-0.5px;" class="text-white text-center mb-5 drop-shadow-md">
-          Shaping Policy for a <br><span class="text-[#18909C]">Transformed</span> Bangladesh
+          {!! $titleHtml !!}
         </h1>
+        @if($slide->description)
         <p class="font-['Newsreader'] text-[15px] leading-[26px] text-white/85 max-w-[640px] text-center mb-8">
-          A non-partisan think tank advancing transparent, accountable governance and economic competitiveness through rigorous research, policy advocacy, and institutional reform.
+          {{ strip_tags($slide->description) }}
         </p>
-        <a href="work.html" class="font-['Inter'] font-semibold text-[13px] bg-[#BA0C1B] text-white px-[26px] py-[11px] rounded-[4px] flex items-center gap-2 hover:bg-[#960A14] transition-all duration-150 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
+        @endif
+        <a href="{{ route('services') }}" class="font-['Inter'] font-semibold text-[13px] bg-[#BA0C1B] text-white px-[26px] py-[11px] rounded-[4px] flex items-center gap-2 hover:bg-[#960A14] transition-all duration-150 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
           Explore ➔
         </a>
       </div>
     </div>
-
-    <!-- Slide 2 -->
-    <div class="hero-slide absolute inset-0 w-full h-full transition-opacity duration-700 opacity-0">
-      <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(rgba(0,24,43,0.60),rgba(0,24,43,0.60)), url('images/Governance Innovation.png');"></div>
+    @empty
+    {{-- Fallback slide if no slides added --}}
+    <div class="hero-slide absolute inset-0 w-full h-full opacity-100">
+      <div class="absolute inset-0" style="background-color:#00223D;"></div>
       <div class="relative z-10 flex flex-col items-center justify-center h-full max-w-[1204px] mx-auto px-4 pt-[45px]">
-        <span class="text-[10px] font-bold uppercase tracking-[2.5px] text-gray-300 mb-5">— INSTITUTIONAL REFORM —</span>
-        <h1 style="font-family:'Merriweather',serif;font-weight:700;font-size:clamp(28px,5vw,56px);line-height:1.2;letter-spacing:-0.5px;" class="text-white text-center mb-5 drop-shadow-md">
-          Building Stronger <br><span class="text-[#18909C]">Institutions</span> for Tomorrow
+        <h1 style="font-family:'Merriweather',serif;font-weight:700;font-size:clamp(28px,5vw,56px);line-height:1.2;" class="text-white text-center mb-5">
+          Welcome to <span style="color:#18909C;">GIET</span>
         </h1>
-        <p class="font-['Newsreader'] text-[15px] leading-[26px] text-white/85 max-w-[640px] text-center mb-8">
-          Strengthening public institutions through evidence-based policy design, regulatory reform, and multi-stakeholder dialogue across Bangladesh.
-        </p>
-        <a href="work.html" class="font-['Inter'] font-semibold text-[13px] bg-[#BA0C1B] text-white px-[26px] py-[11px] rounded-[4px] flex items-center gap-2 hover:bg-[#960A14] transition-all duration-150 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
-           Explore ➔
+        <a href="{{ route('services') }}" class="font-['Inter'] font-semibold text-[13px] bg-[#BA0C1B] text-white px-[26px] py-[11px] rounded-[4px] flex items-center gap-2 hover:bg-[#960A14] transition-all duration-150">
+          Explore ➔
         </a>
       </div>
     </div>
-
-    <!-- Slide 3 -->
-    <div class="hero-slide absolute inset-0 w-full h-full transition-opacity duration-700 opacity-0">
-      <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(rgba(0,24,43,0.60),rgba(0,24,43,0.60)), url('images/Economic Transformation.png');"></div>
-      <div class="relative z-10 flex flex-col items-center justify-center h-full max-w-[1204px] mx-auto px-4 pt-[45px]">
-        <span class="text-[10px] font-bold uppercase tracking-[2.5px] text-gray-300 mb-5">— ECONOMIC TRANSFORMATION —</span>
-        <h1 style="font-family:'Merriweather',serif;font-weight:700;font-size:clamp(28px,5vw,56px);line-height:1.2;letter-spacing:-0.5px;" class="text-white text-center mb-5 drop-shadow-md">
-          Driving <span class="text-[#18909C]">Inclusive</span> <br>Economic Growth
-        </h1>
-        <p class="font-['Newsreader'] text-[15px] leading-[26px] text-white/85 max-w-[640px] text-center mb-8">
-          Delivering data-driven economic diagnostics that enable governments and development partners to design structural reforms for sustainable, inclusive growth.
-        </p>
-        <a href="work.html" class="font-['Inter'] font-semibold text-[13px] bg-[#BA0C1B] text-white px-[26px] py-[11px] rounded-[4px] flex items-center gap-2 hover:bg-[#960A14] transition-all duration-150 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
-           Explore ➔
-        </a>
-      </div>
-    </div>
+    @endforelse
 
   </div>
 
   <!-- CONTROLS BAR -->
   <div style="background-color:#001F36;" class="w-full h-[82px] relative z-20 flex items-center justify-center gap-[24px] border-t border-white/5 mt-auto">
-
     <button id="hero-prev" class="w-[32px] h-[32px] rounded-full border border-white/15 bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all cursor-pointer">
       <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8L10 3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-
     <div id="hero-dots" class="flex items-center gap-[8px]">
-      <button class="hero-dot h-[3px] w-[32px] bg-[#18909C] rounded-full transition-all duration-300" data-index="0"></button>
-      <button class="hero-dot h-[2px] w-[20px] bg-white/20 rounded-full transition-all duration-300" data-index="1"></button>
-      <button class="hero-dot h-[2px] w-[20px] bg-white/20 rounded-full transition-all duration-300" data-index="2"></button>
+      @forelse($sliderItems as $i => $slide)
+      <button class="hero-dot transition-all duration-300 rounded-full {{ $i === 0 ? 'h-[3px] w-[32px] bg-[#18909C]' : 'h-[2px] w-[20px] bg-white/20' }}" data-index="{{ $i }}"></button>
+      @empty
+      <button class="hero-dot h-[3px] w-[32px] bg-[#18909C] rounded-full" data-index="0"></button>
+      @endforelse
     </div>
-
     <button id="hero-next" class="w-[32px] h-[32px] rounded-full border border-white/15 bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all cursor-pointer">
       <svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-
   </div>
 
 </header>
@@ -86,7 +79,8 @@
 (function () {
   const slides = document.querySelectorAll('.hero-slide');
   const dots   = document.querySelectorAll('.hero-dot');
-  let current  = 0;
+  if (!slides.length) return;
+  let current = 0;
   let timer;
 
   function goTo(index) {
@@ -105,496 +99,297 @@
     dots[current].style.backgroundColor = '#18909C';
   }
 
-  function startAuto() {
-    timer = setInterval(function () { goTo(current + 1); }, 5000);
-  }
-
-  function resetAuto() {
-    clearInterval(timer);
-    startAuto();
-  }
+  function startAuto() { timer = setInterval(function () { goTo(current + 1); }, 5000); }
+  function resetAuto()  { clearInterval(timer); startAuto(); }
 
   document.getElementById('hero-next').addEventListener('click', function () { goTo(current + 1); resetAuto(); });
   document.getElementById('hero-prev').addEventListener('click', function () { goTo(current - 1); resetAuto(); });
   dots.forEach(function (dot) {
     dot.addEventListener('click', function () { goTo(+dot.dataset.index); resetAuto(); });
   });
-
   startAuto();
 })();
 </script>
 
+
+{{-- ===== 2. ABOUT GIET SECTION ===== --}}
 <section class="w-full bg-white pt-[48px] pb-[48px] md:pt-[88px] md:pb-[88px] px-4 md:px-8 flex items-start justify-center select-none">
-    
-    <div class="w-full max-w-[1204px] mx-auto flex flex-col md:flex-row gap-[40px] md:gap-[80px] items-start">
-        
-        <div class="w-full md:w-[512px] mt-0 md:mt-[55.85px] flex flex-col gap-[12.8px] items-start text-left">
-            
-            <span class="text-[11px] font-bold uppercase tracking-[2px] text-[#0E606B] block">
-                About GIET
-            </span>
-            
-            <h2 class="font-['Newsreader'] font-bold text-[36px] leading-[43.2px] tracking-[0] text-[#0F172A]">
-                Transforming Challenges <br>Into Strategic Opportunities
-            </h2>
-            
-            <p class="font-['Newsreader'] font-normal text-[17px] leading-[28.9px] text-[#1A1A1A] mb-[3.2px]">
-                GIET is a lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque interdum non ligula non pulvinar. Proin auctor lobortis ipsum, a malesuada ante molestie eu. Maecenas auctor egestas tortor non dapibus. Praesent nulla sapien, consequat non congue nec, commodo sed enim.
-            </p>
-            
-            <button class="w-[159px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] text-[#003054] font-['Newsreader'] font-semibold text-[13px] leading-[21.45px] rounded-[6px] bg-transparent flex items-center justify-center gap-2 hover:bg-[#003054]/5 transition-all duration-150 whitespace-nowrap">
-                <span>Learn About Us</span>
-                <span class="text-[15px] font-normal">→</span>
-            </button>
-        </div>
-        
-        <div class="w-full md:w-[512px] flex flex-col">
-            
-            <div class="w-full pt-[28px] pb-[28px] flex gap-[24px] items-start border-b border-[#EEF3F8]">
-                <span style="font-family:'Merriweather',serif;font-weight:800;font-size:36px;line-height:36px;letter-spacing:0;" class="text-[#BBCDDE] shrink-0">
-                    01
-                </span>
-                <div class="flex flex-col gap-1 text-left">
-                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:17px;line-height:22.95px;letter-spacing:0;" class="text-[#0F172A]">
-                        Evidence-Based Research & Advocacy
-                    </h4>
-                    <p class="font-['Newsreader'] text-gray-500 text-xs leading-relaxed">
-                        Conducting deep econometric modeling and localized assessment to inform policy structures across macro-economic portfolios.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="w-full pt-[28px] pb-[28px] flex gap-[24px] items-start border-b border-[#EEF3F8]">
-                <span style="font-family:'Merriweather',serif;font-weight:800;font-size:36px;line-height:36px;letter-spacing:0;" class="text-[#BBCDDE] shrink-0">
-                    02
-                </span>
-                <div class="flex flex-col gap-1 text-left">
-                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:17px;line-height:22.95px;letter-spacing:0;" class="text-[#0F172A]">
-                        Multi-Stakeholder Dialogue Infrastructure
-                    </h4>
-                    <p class="font-['Newsreader'] text-gray-500 text-xs leading-relaxed">
-                        Mobilizing public sectors, civil groups, and global development entities onto interactive deliberation platforms.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="w-full pt-[28px] pb-[28px] flex gap-[24px] items-start">
-                <span style="font-family:'Merriweather',serif;font-weight:800;font-size:36px;line-height:36px;letter-spacing:0;" class="text-[#BBCDDE] shrink-0">
-                    03
-                </span>
-                <div class="flex flex-col gap-1 text-left">
-                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:17px;line-height:22.95px;letter-spacing:0;" class="text-[#0F172A]">
-                        Sustainable Institutional Impact
-                    </h4>
-                    <p class="font-['Newsreader'] text-gray-500 text-xs leading-relaxed">
-                        Structuring institutional capacities through modern operational modules aligned with standard macro regulatory guidelines.
-                    </p>
-                </div>
-            </div>
-            
-        </div>
-        
+  <div class="w-full max-w-[1204px] mx-auto flex flex-col md:flex-row gap-[40px] md:gap-[80px] items-start">
+
+    {{-- Left: Heading + Description + Button --}}
+    <div class="w-full md:w-[512px] mt-0 md:mt-[55.85px] flex flex-col gap-[12.8px] items-start text-left">
+      <span class="text-[11px] font-bold uppercase tracking-[2px] text-[#0E606B] block">
+        {{ $homeAboutTrace?->section ?? 'About GIET' }}
+      </span>
+      @php
+        $aboutHeading = $homeAboutTrace?->heading ?? 'Transforming Challenges Into Strategic Opportunities';
+        $aboutDw = $homeAboutTrace?->design_word ?? '';
+        $aboutHeadingHtml = $aboutDw
+          ? str_replace($aboutDw, '<span style="color:#18909C;">'.$aboutDw.'</span>', e($aboutHeading))
+          : e($aboutHeading);
+      @endphp
+      <h2 class="font-['Newsreader'] font-bold text-[36px] leading-[43.2px] tracking-[0] text-[#0F172A]">
+        {!! $aboutHeadingHtml !!}
+      </h2>
+      @if($homeAboutTrace?->description)
+      <p class="font-['Newsreader'] font-normal text-[17px] leading-[28.9px] text-[#1A1A1A] mb-[3.2px]">
+        {{ strip_tags($homeAboutTrace->description) }}
+      </p>
+      @endif
+      <a href="{{ route('about') }}" class="w-[159px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] text-[#003054] font-['Newsreader'] font-semibold text-[13px] leading-[21.45px] rounded-[6px] bg-transparent flex items-center justify-center gap-2 hover:bg-[#003054]/5 transition-all duration-150 whitespace-nowrap" style="text-decoration:none;">
+        <span>Learn About Us</span>
+        <span class="text-[15px] font-normal">→</span>
+      </a>
     </div>
+
+    {{-- Right: 3 numbered items --}}
+    <div class="w-full md:w-[512px] flex flex-col">
+
+      @foreach([$homeAboutTraceOne, $homeAboutTraceTwo, $homeAboutTraceThree] as $idx => $item)
+      @if($item)
+      <div class="w-full pt-[28px] pb-[28px] flex gap-[24px] items-start {{ $idx < 2 ? 'border-b border-[#EEF3F8]' : '' }}">
+        <span style="font-family:'Merriweather',serif;font-weight:800;font-size:36px;line-height:36px;" class="text-[#BBCDDE] shrink-0">
+          {{ str_pad($idx + 1, 2, '0', STR_PAD_LEFT) }}
+        </span>
+        <div class="flex flex-col gap-1 text-left">
+          <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:17px;line-height:22.95px;" class="text-[#0F172A]">
+            {{ $item->heading }}
+          </h4>
+          @if($item->description)
+          <p class="font-['Newsreader'] text-gray-500 text-xs leading-relaxed">
+            {{ strip_tags($item->description) }}
+          </p>
+          @endif
+        </div>
+      </div>
+      @endif
+      @endforeach
+
+    </div>
+  </div>
 </section>
 
-   <!-- PILLARS / FOCUS AREAS SECTION  -->
+
+{{-- ===== 3. FOCUS AREAS / OUR WORK ===== --}}
 <section class="w-full bg-[#F7F9FB] pt-[48px] pb-[48px] md:pt-[88px] md:pb-[88px] px-4 md:px-8 flex flex-col items-center select-none">
-    
-    <!-- TOP HEADER UTILITY ROW -->
-    <div class="w-full max-w-[1204px] flex justify-between items-end mb-10">
-        <div class="text-left">
-            <!-- Our Focus Areas Tag Layer -->
-            <span class="font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] uppercase text-[#0E606B] block mb-2">
-                Our Focus Areas
-            </span>
-            <h2 class="font-['Newsreader'] font-bold text-[36px] leading-[43.2px] text-[#0F172A]">
-                Where We Direct Our Work
-            </h2>
-        </div>
 
-        <button class="font-['Newsreader'] font-semibold text-[13px] w-[135px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] text-[#003054] bg-white rounded-[6px] flex items-center justify-center hover:bg-[#003054]/5 transition-all duration-150 shadow-sm whitespace-nowrap">
-            See All
-        </button>
+  <div class="w-full max-w-[1204px] flex justify-between items-end mb-10">
+    <div class="text-left">
+      <span class="font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] uppercase text-[#0E606B] block mb-2">
+        Our Focus Areas
+      </span>
+      <h2 class="font-['Newsreader'] font-bold text-[36px] leading-[43.2px] text-[#0F172A]">
+        Where We Direct Our Work
+      </h2>
     </div>
+    <a href="{{ route('services') }}" class="font-['Newsreader'] font-semibold text-[13px] w-[135px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] text-[#003054] bg-white rounded-[6px] flex items-center justify-center hover:bg-[#003054]/5 transition-all duration-150 shadow-sm whitespace-nowrap" style="text-decoration:none;">
+      See All
+    </a>
+  </div>
 
-    <!-- CORE RE-ENGINEERED COMPONENT GRID (9 Cards Matrix Configuration) -->
-    <div class="w-full max-w-[1204px] grid grid-cols-1 md:grid-cols-3 gap-[22px]">
-        
-        <!-- CARD ITEM 1 -->
-        <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
-            <img class="w-full h-48 object-cover" src="images/Governance Innovation.png" alt="Governance">
-            <div class="p-6 flex flex-col flex-grow text-left">
-                <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">Governance & Accountability</span>
-                <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 18px; line-height: 24.3px;" class="text-[#0F172A] mb-3 align-middle">Governance Frameworks & Public Sector Management</h3>
-                <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">Formulating strategic transparency metrics and public administration modernizations to foster responsive governing models.</p>
-                <a href="work.html" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto">Explore area &rarr;</a>
-            </div>
-        </div>
-
-        <!-- CARD ITEM 2 -->
-        <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
-            <img class="w-full h-48 object-cover" src="images/Institutional Reform.png" alt="Regulatory">
-            <div class="p-6 flex flex-col flex-grow text-left">
-                <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">Institutional Reforms</span>
-                <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 18px; line-height: 24.3px;" class="text-[#0F172A] mb-3 align-middle">Institutional Reforms & Regulatory Architecture</h3>
-                <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">Re-engineering legal regulatory parameters to reduce administrative friction and optimize operational compliance parameters.</p>
-                <a href="work.html" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto">Explore area &rarr;</a>
-            </div>
-        </div>
-
-        <!-- CARD ITEM 3 -->
-        <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
-            <img class="w-full h-48 object-cover" src="images/Economic Transformation.png" alt="Economic">
-            <div class="p-6 flex flex-col flex-grow text-left">
-                <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">Macroeconomic Policy</span>
-                <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 18px; line-height: 24.3px;" class="text-[#0F172A] mb-3 align-middle">Macroeconomic Innovations & Financial Structures</h3>
-                <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">Designing macroeconomic resilience options, tax architecture scaling, and balanced financial inclusion initiatives.</p>
-                <a href="work.html" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto">Explore area &rarr;</a>
-            </div>
-        </div>
-
-        <!-- CARD ITEM 4 -->
-        <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
-            <img class="w-full h-48 object-cover" src="images/Trade Facilitation.png" alt="Trade">
-            <div class="p-6 flex flex-col flex-grow text-left">
-                <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">Trade & Investment</span>
-                <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 18px; line-height: 24.3px;" class="text-[#0F172A] mb-3 align-middle">Trade Facilitation & Business Environment Reforms</h3>
-                <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">Simplifying cross-border trade pipelines, boosting export value propositions, and streamlining investment approvals.</p>
-                <a href="work.html" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto">Explore area &rarr;</a>
-            </div>
-        </div>
-
-        <!-- CARD ITEM 5 -->
-        <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
-            <img class="w-full h-48 object-cover" src="images/Background (2).png" alt="Investment">
-            <div class="p-6 flex flex-col flex-grow text-left">
-                <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">Investment Promotion</span>
-                <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 18px; line-height: 24.3px;" class="text-[#0F172A] mb-3 align-middle">Investment Promotion & Export Diversification</h3>
-                <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">Catalyzing sustainable foreign direct investments into untapped industrial ecosystems and local value-added chains.</p>
-                <a href="work.html" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto">Explore area &rarr;</a>
-            </div>
-        </div>
-
-        <!-- CARD ITEM 6 -->
-        <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
-            <img class="w-full h-48 object-cover" src="images/Digital Transformation.png" alt="Digital">
-            <div class="p-6 flex flex-col flex-grow text-left">
-                <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">Digital Economy</span>
-                <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 18px; line-height: 24.3px;" class="text-[#0F172A] mb-3 align-middle">Digital Transformation & E-Governance</h3>
-                <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">Assisting tech-driven modernizations of national public systems to upgrade data transparency and user delivery.</p>
-                <a href="work.html" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto">Explore area &rarr;</a>
-            </div>
-        </div>
-
-        <!-- CARD ITEM 7 -->
-        <!-- <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
-            <img class="w-full h-48 object-cover" src="images/Research and Publications.png" alt="Research">
-            <div class="p-6 flex flex-col flex-grow text-left">
-                <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">Research & Publications</span>
-                <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 18px; line-height: 24.3px;" class="text-[#0F172A] mb-3 align-middle">Research, Publications & Knowledge Platforms</h3>
-                <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">Publishing rigorous academic papers, analytical white books, and real-time open database metrics for civic research access.</p>
-                <a href="work.html" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto">Explore area &rarr;</a>
-            </div>
-        </div> -->
-
-        <!-- CARD ITEM 8 -->
-        <!-- <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
-            <img class="w-full h-48 object-cover" src="images/Capacity Building.png" alt="Capacity">
-            <div class="p-6 flex flex-col flex-grow text-left">
-                <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">Capacity Building</span>
-                <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 18px; line-height: 24.3px;" class="text-[#0F172A] mb-3 align-middle">Capacity Building & Professional Development</h3>
-                <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">Conducting training seminars for public officers and emerging leaders on programmatic policy execution.</p>
-                <a href="work.html" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto">Explore area &rarr;</a>
-            </div>
-        </div> -->
-
-        <!-- CARD ITEM 9 -->
-        <!-- <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
-            <img class="w-full h-48 object-cover" src="images/Social Inclusion.png" alt="Inclusion">
-            <div class="p-6 flex flex-col flex-grow text-left">
-                <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">Social Inclusion</span>
-                <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 18px; line-height: 24.3px;" class="text-[#0F172A] mb-3 align-middle">Social Inclusion, Equity & Human Capital</h3>
-                <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">Advocating for marginalized access, sustainable livelihood infrastructure, and balanced resource access maps.</p>
-                <a href="work.html" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto">Explore area &rarr;</a>
-            </div>
-        </div> -->
-
+  <div class="w-full max-w-[1204px] grid grid-cols-1 md:grid-cols-3 gap-[22px]">
+    @forelse($homeServices as $svc)
+    <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
+      @if($svc->imageUrl())
+      <img class="w-full h-48 object-cover" src="{{ $svc->imageUrl() }}" alt="{{ $svc->service_name }}">
+      @else
+      <div class="w-full h-48 bg-[#EEF3F8] flex items-center justify-center">
+        <svg width="48" height="48" fill="none" stroke="#CBD5E1" stroke-width="1" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+      </div>
+      @endif
+      <div class="p-6 flex flex-col flex-grow text-left">
+        <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">
+          {{ $svc->section ?: $svc->service_name }}
+        </span>
+        <h3 style="font-family:'Merriweather',serif;font-weight:800;font-size:18px;line-height:24.3px;" class="text-[#0F172A] mb-3">
+          {{ $svc->service_name }}
+        </h3>
+        @if($svc->description)
+        <p class="font-['Newsreader'] font-normal text-[13.5px] leading-[23.22px] text-[#1A1A1A] mb-6 flex-grow">
+          {{ Str::limit(strip_tags($svc->description), 140) }}
+        </p>
+        @endif
+        <a href="{{ route('serviceDetails', $svc->id) }}" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] text-[#18909C] hover:text-[#0E606B] flex items-center gap-1 mt-auto" style="text-decoration:none;">
+          Explore area &rarr;
+        </a>
+      </div>
     </div>
+    @empty
+    <p class="col-span-3 text-center text-gray-400 py-12">No focus areas added yet.</p>
+    @endforelse
+  </div>
 
-    <!-- REPLACED BOTTOM PAGINATION WITH FIGMA SPEC BUTTON -->
-    <!-- Width: 204px, Height: 43.44px, Exact padding, rounded-6px, 1px solid #003054 -->
-    <div class="w-full flex justify-center mt-12">
-        <button class="w-[204px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] text-[#003054] bg-white font-['Newsreader'] font-semibold text-[13px] rounded-[6px] flex items-center justify-center gap-1 hover:bg-[#003054]/5 transition-all duration-150 shadow-sm whitespace-nowrap cursor-pointer">
-            <span>See All 15 Focus Areas</span>
-            <span class="text-[14px] font-normal font-sans">→</span>
-        </button>
-    </div>
+  <div class="w-full flex justify-center mt-12">
+    <a href="{{ route('services') }}" class="w-[204px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] text-[#003054] bg-white font-['Newsreader'] font-semibold text-[13px] rounded-[6px] flex items-center justify-center gap-1 hover:bg-[#003054]/5 transition-all duration-150 shadow-sm whitespace-nowrap cursor-pointer" style="text-decoration:none;">
+      <span>See All Focus Areas</span>
+      <span class="text-[14px] font-normal font-sans">→</span>
+    </a>
+  </div>
 
 </section>
 
- <!-- GIET MISSION STRATEGIC SECTION (Pixel-Perfect Clean Architecture) -->
+
+{{-- ===== 4. MISSION SECTION ===== --}}
+@php
+  $homeMission = contentBlock('home_mission');
+@endphp
 <section class="w-full bg-[#003054] pt-[48px] pb-[48px] md:pt-[88px] md:pb-[88px] px-4 md:px-8 flex items-center justify-center relative select-none">
-    
-    <!-- MASTER FLEX GRID CONTAINER (Width: 1120px, Structural Column Gap: 80px) -->
-    <div class="w-full max-w-[1204px] flex flex-col md:flex-row justify-between items-start gap-10 md:gap-0">
-        
-        <!-- LEFT BRAND QUOTE COLUMN (Width: 520px, Top Accent Tracking Container) -->
-        <div class="w-full md:w-[520px] flex flex-col items-start text-left relative pt-[24px]">
-            <!-- Red Brand Accent Graphic Stamp -->
-            <div class="w-[44px] h-[3.5px] bg-[#D12630] absolute top-0 left-0"></div>
-            
-            <!-- High-Impact Editorial Statement -->
-            <h2 style="font-family: 'Merriweather', serif; font-weight: 600; font-size: 32px; line-height: 46.4px; letter-spacing: -0.01em;"
-                class="text-white align-middle">
-                "Evidence-based reform is not optional — it is the only path to governance that truly serves citizens."
-            </h2>
-            <!-- Author Attribution -->
-            <div class="mt-[16px] flex items-center gap-[10px]">
-                <div class="w-[28px] h-[1px] bg-white/40"></div>
-                <p style="font-family: 'Newsreader',serif; font-weight: 400; font-size: 13px; font-style: italic; color: rgba(255,255,255,0.6);">
-                    Dr. Rafiqul Islam, Founding Director, GIET
-                </p>
-            </div>
-        </div>
-        
-        <!-- RIGHT MISSION MATRIX COLUMN (Width: 520px, Corporate Directives Blueprint) -->
-        <div class="w-full md:w-[520px] flex flex-col justify-between text-left gap-6 md:gap-0">
-            
-            <!-- Structural Info Grouping -->
-            <div class="flex flex-col gap-[16px]">
-                <!-- Context Meta Tag -->
-                <span class="font-['Newsreader'] font-semibold text-[11px] tracking-[0.15em] text-[#18909C] uppercase block mb-1">
-                    Our Mission
-                </span>
+  <div class="w-full max-w-[1204px] flex flex-col md:flex-row justify-between items-start gap-10 md:gap-0">
 
-                <!-- Core Operational Philosophy Statement -->
-                <p class="font-['Newsreader'] font-normal text-[15px] leading-[27.75px] text-white/60">
-                    GIET is a non-political, non-profit organization dedicated to promoting transparent, accountable governance and sustainable economic transformation in Bangladesh. We perform in-depth research, encourage multi-stakeholder dialogue, and convert evidence into practical policy recommendations.
-                </p>
-            </div>
-            
-            <!-- Dual Column Strategic Target Objectives Grid -->
-            <ul 
-                class="grid grid-cols-2 gap-x-[32px] gap-y-[16px] pt-[24px]">
-                
-                <!-- Pillar Item 01 -->
-                <li class="flex items-center gap-[10px] whitespace-nowrap">
-                    <img src="icons/SVG (59).png" alt="" class="w-[16px] h-[16px] shrink-0 object-contain">
-                    <span class="font-medium text-[13px] leading-none text-white/55">Transparent Governance</span>
-                </li>
-
-                <!-- Pillar Item 02 -->
-                <li class="flex items-center gap-[10px] whitespace-nowrap">
-                    <img src="icons/SVG (59).png" alt="" class="w-[16px] h-[16px] shrink-0 object-contain">
-                    <span class="font-medium text-[13px] leading-none text-white/55">Economic Competitiveness</span>
-                </li>
-
-                <!-- Pillar Item 03 -->
-                <li class="flex items-center gap-[10px] whitespace-nowrap">
-                    <img src="icons/SVG (59).png" alt="" class="w-[16px] h-[16px] shrink-0 object-contain">
-                    <span class="font-medium text-[13px] leading-none text-white/55">Institutional Reform</span>
-                </li>
-
-                <!-- Pillar Item 04 -->
-                <li class="flex items-center gap-[10px] whitespace-nowrap">
-                    <img src="icons/SVG (59).png" alt="" class="w-[16px] h-[16px] shrink-0 object-contain">
-                    <span class="font-medium text-[13px] leading-none text-white/55">Digital Transformation</span>
-                </li>
-
-                <!-- Pillar Item 05 -->
-                <li class="flex items-center gap-[10px] whitespace-nowrap">
-                    <img src="icons/SVG (59).png" alt="" class="w-[16px] h-[16px] shrink-0 object-contain">
-                    <span class="font-medium text-[13px] leading-none text-white/55">Social Inclusion</span>
-                </li>
-
-                <!-- Pillar Item 06 -->
-                <li class="flex items-center gap-[10px] whitespace-nowrap">
-                    <img src="icons/SVG (59).png" alt="" class="w-[16px] h-[16px] shrink-0 object-contain">
-                    <span class="font-medium text-[13px] leading-none text-white/55">Evidence-Based Policy</span>
-                </li>
-                
-            </ul>
-        </div>
-        
+    {{-- Left: Quote --}}
+    <div class="w-full md:w-[520px] flex flex-col items-start text-left relative pt-[24px]">
+      <div class="w-[44px] h-[3.5px] bg-[#D12630] absolute top-0 left-0"></div>
+      <h2 style="font-family:'Merriweather',serif;font-weight:600;font-size:32px;line-height:46.4px;letter-spacing:-0.01em;" class="text-white">
+        "{{ $homeMission?->heading ?? 'Evidence-based reform is not optional — it is the only path to governance that truly serves citizens.' }}"
+      </h2>
+      @if($homeMission?->sub_heading)
+      <div class="mt-[16px] flex items-center gap-[10px]">
+        <div class="w-[28px] h-[1px] bg-white/40"></div>
+        <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;font-style:italic;color:rgba(255,255,255,0.6);">
+          {{ $homeMission->sub_heading }}
+        </p>
+      </div>
+      @else
+      <div class="mt-[16px] flex items-center gap-[10px]">
+        <div class="w-[28px] h-[1px] bg-white/40"></div>
+        <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;font-style:italic;color:rgba(255,255,255,0.6);">
+          Dr. Rafiqul Islam, Founding Director, GIET
+        </p>
+      </div>
+      @endif
     </div>
+
+    {{-- Right: Mission text + pillars --}}
+    <div class="w-full md:w-[520px] flex flex-col justify-between text-left gap-6 md:gap-0">
+      <div class="flex flex-col gap-[16px]">
+        <span class="font-['Newsreader'] font-semibold text-[11px] tracking-[0.15em] text-[#18909C] uppercase block mb-1">
+          {{ $homeMission?->section ?? 'Our Mission' }}
+        </span>
+        <p class="font-['Newsreader'] font-normal text-[15px] leading-[27.75px] text-white/60">
+          {{ $homeMission?->description ? strip_tags($homeMission->description) : 'GIET is a non-political, non-profit organization dedicated to promoting transparent, accountable governance and sustainable economic transformation in Bangladesh. We perform in-depth research, encourage multi-stakeholder dialogue, and convert evidence into practical policy recommendations.' }}
+        </p>
+      </div>
+
+      @if($homeMission?->design_word)
+      {{-- If design_word has pipe-separated pillar list: "Transparent Governance|Economic Competitiveness|..." --}}
+      @php $pillars = array_filter(explode('|', $homeMission->design_word)); @endphp
+      @if(count($pillars))
+      <ul class="grid grid-cols-2 gap-x-[32px] gap-y-[16px] pt-[24px]">
+        @foreach($pillars as $pillar)
+        <li class="flex items-center gap-[10px] whitespace-nowrap">
+          <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><path d="M5 8l2 2 4-4" stroke="#18909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="font-medium text-[13px] leading-none text-white/55">{{ trim($pillar) }}</span>
+        </li>
+        @endforeach
+      </ul>
+      @endif
+      @else
+      <ul class="grid grid-cols-2 gap-x-[32px] gap-y-[16px] pt-[24px]">
+        @foreach(['Transparent Governance','Economic Competitiveness','Institutional Reform','Digital Transformation','Social Inclusion','Evidence-Based Policy'] as $pillar)
+        <li class="flex items-center gap-[10px] whitespace-nowrap">
+          <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><path d="M5 8l2 2 4-4" stroke="#18909C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="font-medium text-[13px] leading-none text-white/55">{{ $pillar }}</span>
+        </li>
+        @endforeach
+      </ul>
+      @endif
+    </div>
+
+  </div>
 </section>
 
-   <section class="w-full bg-[#FFFFFF] pt-[48px] pb-[48px] md:pt-[88px] md:pb-[88px] px-4 md:px-8 flex justify-center items-center select-none">
-    
-    <div class="w-full max-w-[1204px] md:px-0 flex flex-col justify-between items-center gap-8">
-        
-        <div class="w-full max-w-[1204px] text-left flex flex-col gap-2">
-            <span class="font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] uppercase text-[#0E606B] block">
-                Our Projects
+
+{{-- ===== 5. PROJECTS SECTION ===== --}}
+<section class="w-full bg-[#FFFFFF] pt-[48px] pb-[48px] md:pt-[88px] md:pb-[88px] px-4 md:px-8 flex justify-center items-center select-none">
+  <div class="w-full max-w-[1204px] md:px-0 flex flex-col justify-between items-center gap-8">
+
+    <div class="w-full max-w-[1204px] text-left flex flex-col gap-2">
+      <span class="font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] uppercase text-[#0E606B] block">
+        Our Projects
+      </span>
+      <h2 class="font-['Newsreader'] font-bold text-[36px] leading-[43.2px] text-[#0F172A] mt-1">
+        Work That Creates Impact
+      </h2>
+      <p class="font-['Newsreader'] font-normal text-[17px] leading-[28.9px] text-[#1A1A1A] max-w-[560px] mt-2 pb-[0.77px]">
+        GIET delivers governance reform, policy advisory, digital transformation, and research projects across Bangladesh for governments, development institutions, and regulatory bodies.
+      </p>
+    </div>
+
+    <div class="w-full max-w-[1204px] grid grid-cols-1 md:grid-cols-3 gap-[20px] mt-10">
+      @forelse($homeProjects as $project)
+      <div class="w-full bg-white border border-[#EEF3F8] rounded-[16px] overflow-hidden flex flex-col shadow-[0px_8px_36px_0px_#00305421] hover:shadow-[0px_8px_36px_0px_#00305421] transition-shadow duration-300">
+        <div class="w-full h-[160px] overflow-hidden">
+          @if($project->imageUrl())
+          <img class="w-full h-full object-cover" src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}">
+          @else
+          <div class="w-full h-full bg-[#EEF3F8] flex items-center justify-center">
+            <svg width="40" height="40" fill="none" stroke="#CBD5E1" stroke-width="1" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          @endif
+        </div>
+        <div class="p-[22px] flex flex-col flex-grow text-left gap-[10px]">
+          @if($project->services->first())
+          <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;" class="text-[#0E606B]">
+            {{ $project->services->first()->section ?: $project->services->first()->service_name }}
+          </span>
+          @endif
+          <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:22px;" class="text-[#0F172A]">
+            {{ $project->project_title }}
+          </h4>
+          @if($project->short_description)
+          <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;line-height:21px;" class="text-[#475569] line-clamp-3">
+            {{ strip_tags($project->short_description) }}
+          </p>
+          @endif
+          <div class="mt-auto pt-[14px] border-t border-[#EEF3F8] flex justify-between items-center">
+            <span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;" class="text-[#94A3B8]">
+              {{ $project->services->pluck('service_name')->implode(', ') }}
             </span>
-            <h2 class="font-['Newsreader'] font-bold text-[36px] leading-[43.2px] text-[#0F172A] mt-1">
-                Work That Creates Impact
-            </h2>
-            <p class="font-['Newsreader'] font-normal text-[17px] leading-[28.9px] text-[#1A1A1A] max-w-[560px] mt-2 pb-[0.77px]">
-                GIET delivers governance reform, policy advisory, digital transformation, and research projects across Bangladesh for governments, development institutions, and regulatory bodies.
-            </p>
+            <a href="{{ route('projectdetails', $project->id) }}" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;" class="text-[#A80C18] hover:opacity-75 flex items-center gap-1">
+              View Project →
+            </a>
+          </div>
         </div>
-
-        <div class="w-full max-w-[1204px] grid grid-cols-1 md:grid-cols-3 gap-[20px] mt-10">
-
-            <!-- Card 1 -->
-            <div class="w-full bg-white border border-[#EEF3F8] rounded-[16px] overflow-hidden flex flex-col shadow-[0px_8px_36px_0px_#00305421] hover:shadow-[0px_8px_36px_0px_#00305421] transition-shadow duration-300">
-                <div class="w-full h-[160px] overflow-hidden">
-                    <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=400" alt="Governance Reform">
-                </div>
-                <div class="p-[22px] flex flex-col flex-grow text-left gap-[10px]">
-                    <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;" class="text-[#0E606B]">Governance Reform</span>
-                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:22px;" class="text-[#0F172A]">Strengthening Citizen-Centric Public Service Delivery in Bangladesh</h4>
-                    <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;line-height:21px;" class="text-[#475569] line-clamp-3">A multi-district diagnostic of service delivery bottlenecks, resulting in actionable grievance redress and digital service recommendations for six ministries.</p>
-                    <div class="mt-auto pt-[14px] border-t border-[#EEF3F8] flex justify-between items-center">
-                        <span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;" class="text-[#94A3B8]">2024–2025 · World Bank</span>
-                        <a href="projectdetails.html" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;" class="text-[#A80C18] hover:opacity-75 flex items-center gap-1">View Project →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="w-full bg-white border border-[#EEF3F8] rounded-[16px] overflow-hidden flex flex-col shadow-[0px_8px_36px_0px_#00305421] hover:shadow-[0px_8px_36px_0px_#00305421] transition-shadow duration-300">
-                <div class="w-full h-[160px] overflow-hidden">
-                    <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&q=80&w=400" alt="Regulatory Modernization">
-                </div>
-                <div class="p-[22px] flex flex-col flex-grow text-left gap-[10px]">
-                    <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;" class="text-[#0E606B]">Regulatory Modernization</span>
-                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:22px;" class="text-[#0F172A]">National Regulatory Reform Initiative: Reducing Business Compliance Burden</h4>
-                    <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;line-height:21px;" class="text-[#475569] line-clamp-3">Mapping and streamlining 200+ business licensing procedures, delivering a Regulatory Impact Assessment framework adopted by BIDA.</p>
-                    <div class="mt-auto pt-[14px] border-t border-[#EEF3F8] flex justify-between items-center">
-                        <span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;" class="text-[#94A3B8]">2023–2024 · BIDA / IFC</span>
-                        <a href="projectdetails.html" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;" class="text-[#A80C18] hover:opacity-75 flex items-center gap-1">View Project →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="w-full bg-white border border-[#EEF3F8] rounded-[16px] overflow-hidden flex flex-col shadow-[0px_8px_36px_0px_#00305421] hover:shadow-[0px_8px_36px_0px_#00305421] transition-shadow duration-300">
-                <div class="w-full h-[160px] overflow-hidden">
-                    <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400" alt="Transparency">
-                </div>
-                <div class="p-[22px] flex flex-col flex-grow text-left gap-[10px]">
-                    <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;" class="text-[#0E606B]">Transparency & Accountability</span>
-                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:22px;" class="text-[#0F172A]">Anti-Corruption Diagnostic & Integrity Framework for Public Procurement</h4>
-                    <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;line-height:21px;" class="text-[#475569] line-clamp-3">Comprehensive review of procurement vulnerabilities in three key government agencies, with an integrity improvement roadmap endorsed by the Cabinet Division.</p>
-                    <div class="mt-auto pt-[14px] border-t border-[#EEF3F8] flex justify-between items-center">
-                        <span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;" class="text-[#94A3B8]">2024 · UNDP Bangladesh</span>
-                        <a href="projectdetails.html" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;" class="text-[#A80C18] hover:opacity-75 flex items-center gap-1">View Project →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="w-full bg-white border border-[#EEF3F8] rounded-[16px] overflow-hidden flex flex-col shadow-[0px_8px_36px_0px_#00305421] hover:shadow-[0px_8px_36px_0px_#00305421] transition-shadow duration-300">
-                <div class="w-full h-[160px] overflow-hidden">
-                    <img class="w-full h-full object-cover" src="images/Economic Transformation.png" alt="Economic Policy">
-                </div>
-                <div class="p-[22px] flex flex-col flex-grow text-left gap-[10px]">
-                    <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;" class="text-[#0E606B]">Economic Policy</span>
-                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:22px;" class="text-[#0F172A]">Trade Facilitation Reform: Single Window Implementation Roadmap</h4>
-                    <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;line-height:21px;" class="text-[#475569] line-clamp-3">Designing a phased single window system to reduce border clearance times by 40% and streamline import-export procedures for Bangladesh Customs.</p>
-                    <div class="mt-auto pt-[14px] border-t border-[#EEF3F8] flex justify-between items-center">
-                        <span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;" class="text-[#94A3B8]">2024–2025 · NBR / ADB</span>
-                        <a href="projectdetails.html" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;" class="text-[#A80C18] hover:opacity-75 flex items-center gap-1">View Project →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 5 -->
-            <div class="w-full bg-white border border-[#EEF3F8] rounded-[16px] overflow-hidden flex flex-col shadow-[0px_8px_36px_0px_#00305421] hover:shadow-[0px_8px_36px_0px_#00305421] transition-shadow duration-300">
-                <div class="w-full h-[160px] overflow-hidden">
-                    <img class="w-full h-full object-cover" src="images/Institutional Reform.png" alt="Institutional Reform">
-                </div>
-                <div class="p-[22px] flex flex-col flex-grow text-left gap-[10px]">
-                    <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;" class="text-[#0E606B]">Institutional Reform</span>
-                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:22px;" class="text-[#0F172A]">Local Government Capacity Development Programme</h4>
-                    <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;line-height:21px;" class="text-[#475569] line-clamp-3">Building financial management and planning capacity in 64 district councils through structured training, mentoring, and digital tools for budgeting and reporting.</p>
-                    <div class="mt-auto pt-[14px] border-t border-[#EEF3F8] flex justify-between items-center">
-                        <span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;" class="text-[#94A3B8]">2023–2025 · EU / MoLGRD</span>
-                        <a href="projectdetails.html" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;" class="text-[#A80C18] hover:opacity-75 flex items-center gap-1">View Project →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 6 -->
-            <div class="w-full bg-white border border-[#EEF3F8] rounded-[16px] overflow-hidden flex flex-col shadow-[0px_8px_36px_0px_#00305421] hover:shadow-[0px_8px_36px_0px_#00305421] transition-shadow duration-300">
-                <div class="w-full h-[160px] overflow-hidden">
-                    <img class="w-full h-full object-cover" src="images/Seminar.png" alt="Digital Governance">
-                </div>
-                <div class="p-[22px] flex flex-col flex-grow text-left gap-[10px]">
-                    <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;" class="text-[#0E606B]">Digital Governance</span>
-                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:22px;" class="text-[#0F172A]">e-Government Services Integration for Ministry of Finance</h4>
-                    <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;line-height:21px;" class="text-[#475569] line-clamp-3">Designing interoperability frameworks and digital service blueprints to integrate 12 financial management systems under a unified citizen-facing portal.</p>
-                    <div class="mt-auto pt-[14px] border-t border-[#EEF3F8] flex justify-between items-center">
-                        <span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;" class="text-[#94A3B8]">2024 · MoF / World Bank</span>
-                        <a href="projectdetails.html" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;" class="text-[#A80C18] hover:opacity-75 flex items-center gap-1">View Project →</a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="w-full flex justify-center mt-6">
-            <button class="w-[180px] h-[44px] border border-slate-300 text-[#0F172A] font-['Newsreader'] font-semibold text-[13px] rounded-[6px] flex items-center justify-center gap-2 hover:bg-slate-50 transition-all duration-150 shadow-sm whitespace-nowrap cursor-pointer">
-                <span>View All Projects</span>
-                <span class="text-[14px] font-sans font-normal">&rarr;</span>
-            </button>
-        </div>
-
+      </div>
+      @empty
+      <p class="col-span-3 text-center text-gray-400 py-12">No projects added yet.</p>
+      @endforelse
     </div>
+
+    <div class="w-full flex justify-center mt-6">
+      <a href="{{ route('projects') }}" class="w-[180px] h-[44px] border border-slate-300 text-[#0F172A] font-['Newsreader'] font-semibold text-[13px] rounded-[6px] flex items-center justify-center gap-2 hover:bg-slate-50 transition-all duration-150 shadow-sm whitespace-nowrap cursor-pointer" style="text-decoration:none;">
+        <span>View All Projects</span>
+        <span class="text-[14px] font-sans font-normal">&rarr;</span>
+      </a>
+    </div>
+
+  </div>
 </section>
 
+
+{{-- ===== 6. PARTNERS SECTION ===== --}}
+@if($partners->count())
 <section class="w-full bg-[#F4F6F8] border-t border-[#E4EAF0] flex items-center justify-center relative select-none py-12">
+  <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col justify-between items-center relative gap-8">
 
-    <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col justify-between items-center relative gap-8">
+    <h2 style="font-family:'Lora',serif;font-weight:700;font-size:42px;line-height:50.4px;" class="text-[#0F172A] text-center">
+      Our Partners
+    </h2>
 
-        <h2 style="font-family: 'Lora', serif; font-weight: 700; font-size: 42px; line-height: 50.4px;"
-            class="text-[#0F172A] text-center align-middle">
-            Our Partners
-        </h2>
-
-        <div class="w-full max-w-[1204px] flex items-center justify-between relative mt-6">
-
-            <button class="w-[32px] h-[32px] rounded-full bg-white hover:bg-slate-200 flex items-center justify-center absolute left-[-42px] top-1/2 -translate-y-1/2 transition-colors cursor-pointer z-10 shadow-sm">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </button>
-
-            <div class="w-full grid grid-cols-2 md:grid-cols-5 gap-[12px] items-center">
-
-                <div class="w-full h-[100px] bg-white border border-[#E4EAF0] rounded-[10px] flex items-center justify-center p-5 transition-all duration-200 hover:shadow-md">
-                    <img class="max-h-[56px] object-contain opacity-90" src="images/Container (13).png" alt="OpenAI Logo" />
-                </div>
-
-                <div class="w-full h-[100px] bg-white border border-[#E4EAF0] rounded-[10px] flex items-center justify-center p-5 transition-all duration-200 hover:shadow-md">
-                    <img class="max-h-[52px] object-contain opacity-90" src="images/Link.png" alt="Amazon Logo">
-                </div>
-
-                <div class="w-full h-[100px] bg-white border border-[#E4EAF0] rounded-[10px] flex items-center justify-center p-5 transition-all duration-200 hover:shadow-md">
-                    <img class="max-h-[52px] object-contain opacity-95" src="images/Container (12).png" alt="NVIDIA Logo">
-                </div>
-
-                <div class="w-full h-[100px] bg-white border border-[#E4EAF0] rounded-[10px] flex items-center justify-center p-5 transition-all duration-200 hover:shadow-md">
-                    <img class="max-h-[56px] object-contain opacity-95" src="images/Container (14).png" alt="Ford Logo">
-                </div>
-
-                <div class="w-full h-[100px] bg-white border border-[#E4EAF0] rounded-[10px] flex items-center justify-center p-5 transition-all duration-200 hover:shadow-md">
-                    <img class="max-h-[56px] object-contain opacity-90" src="images/Container (15).png" alt="Coinbase Logo" />
-                </div>
-
-            </div>
-
-            <button class="w-[32px] h-[32px] rounded-full bg-white hover:bg-slate-200 flex items-center justify-center absolute right-[-42px] top-1/2 -translate-y-1/2 transition-colors cursor-pointer z-10 shadow-sm">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#718096" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
-
-        </div>
-
+    <div class="w-full max-w-[1204px] grid grid-cols-2 md:grid-cols-5 gap-[12px] items-center">
+      @foreach($partners as $partner)
+      <div class="w-full h-[100px] bg-white border border-[#E4EAF0] rounded-[10px] flex items-center justify-center p-5 transition-all duration-200 hover:shadow-md">
+        @if($partner->imageUrl())
+        <img class="max-h-[56px] object-contain opacity-90" src="{{ $partner->imageUrl() }}" alt="Partner">
+        @else
+        <span class="text-[#94A3B8] text-[13px] font-semibold text-center">{{ $partner->name ?? 'Partner' }}</span>
+        @endif
+      </div>
+      @endforeach
     </div>
+
+  </div>
 </section>
+@endif
 
 @endsection

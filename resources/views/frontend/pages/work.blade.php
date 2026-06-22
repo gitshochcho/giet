@@ -84,4 +84,39 @@
 
 </section>
 
+<section style="background-color: #F1F5F9;"
+         class="w-full py-[48px] md:py-[80px] text-center select-none flex flex-col items-center justify-center relative overflow-hidden border-b border-[#CBD5E1]">
+
+    <div style="width:320px;height:320px;top:-60px;right:-60px;background-color:rgba(0,48,84,0.04);border-radius:160px;"
+         class="absolute pointer-events-none"></div>
+
+    <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col items-center justify-center text-center relative z-10">
+
+        <span class="text-[#0E606B] font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] uppercase block mb-[13px]">
+            {{ $workWithUs?->section ?? '' }}
+        </span>
+
+        <h2 class="text-[#003054] font-['Newsreader'] font-extrabold text-[38px] leading-[45.6px] max-w-[800px] mb-[13px]">
+            {{ $workWithUs?->heading ?? '?' }}
+        </h2>
+
+        @if($workWithUs?->description)
+        <p class="text-[#475569] font-['Newsreader'] text-[16px] leading-[28px] max-w-[620px] mb-[28px]">
+            {{ strip_tags($workWithUs->description) }}
+        </p>
+        @else
+        <p class="text-[#475569] font-['Newsreader'] text-[16px] leading-[28px] max-w-[620px] mb-[28px]">
+          
+        @endif
+
+        <a href="{{ route('contact') }}"
+           style="background-color: #003054;"
+           class="w-[181px] h-[51.09px] pt-[13px] pr-[32px] pb-[14.09px] pl-[32px] rounded-[6px] inline-flex items-center justify-center gap-1 text-white text-[14px] font-bold transition-all duration-200 hover:bg-[#002040] shadow-sm shrink-0" style="text-decoration:none;">
+            <span>{{ $workWithUs?->sub_heading ?? 'Contact GIET' }}</span>
+            <span class="inline-block translate-y-[-1px]">→</span>
+        </a>
+
+    </div>
+</section>
+
 @endsection
