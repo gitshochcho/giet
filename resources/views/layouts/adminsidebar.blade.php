@@ -85,7 +85,7 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.insights.index') }}" class="nav-link {{ request()->routeIs('admin.insights.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-journals"></i>
-                        <p>Insights Manager</p>
+                        <p>Resources Manager</p>
                     </a>
                 </li>
 

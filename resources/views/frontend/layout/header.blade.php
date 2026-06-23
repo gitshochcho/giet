@@ -17,7 +17,7 @@
         </style>
 
         <!-- DESKTOP NAV -->
-        <div class="hidden md:flex items-center justify-center gap-[28px] text-[14px] font-semibold">
+        <div class="hidden md:flex items-center justify-center gap-[16px] text-[14px] font-semibold">
 
             <a href="{{ route('home') }}" class="nav-link h-[34.27px] px-[6px] flex items-center justify-center">Home</a>
 

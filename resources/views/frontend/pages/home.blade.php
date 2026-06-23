@@ -368,28 +368,78 @@
 
 
 {{-- ===== 6. PARTNERS SECTION ===== --}}
-@if($partners->count())
-<section class="w-full bg-[#F4F6F8] border-t border-[#E4EAF0] flex items-center justify-center relative select-none py-12">
-  <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col justify-between items-center relative gap-8">
+@if($partners->isNotEmpty())
+<section class="w-full bg-white border-t border-[#F0F0F0] select-none py-[60px] overflow-hidden">
+  <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col items-center gap-[36px]">
 
-    <h2 style="font-family:'Lora',serif;font-weight:700;font-size:42px;line-height:50.4px;" class="text-[#0F172A] text-center">
+    <h2 style="font-family:'Lora',serif;font-weight:700;font-size:38px;line-height:46px;color:#0F172A;" class="text-center">
       Our Partners
     </h2>
 
-    <div class="w-full max-w-[1204px] grid grid-cols-2 md:grid-cols-5 gap-[12px] items-center">
-      @foreach($partners as $partner)
-      <div class="w-full h-[100px] bg-white border border-[#E4EAF0] rounded-[10px] flex items-center justify-center p-5 transition-all duration-200 hover:shadow-md">
-        @if($partner->imageUrl())
-        <img class="max-h-[56px] object-contain opacity-90" src="{{ $partner->imageUrl() }}" alt="Partner">
-        @else
-        <span class="text-[#94A3B8] text-[13px] font-semibold text-center">{{ $partner->name ?? 'Partner' }}</span>
-        @endif
+    <div class="w-full relative">
+      <button id="home-partner-prev"
+              class="w-[36px] h-[36px] rounded-full bg-[#F4F4F4] hover:bg-[#E2E8F0] flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-10 transition-colors cursor-pointer shadow-sm"
+              style="left:-18px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+
+      <div class="swiper home-partners-swiper overflow-hidden" style="padding:4px 2px;">
+        <div class="swiper-wrapper items-center">
+          @foreach($partners as $partner)
+          <div class="swiper-slide">
+            <div class="h-[80px] bg-white border border-[#EEF3F8] rounded-[10px] flex items-center justify-center p-4 hover:shadow-md transition-all duration-200 cursor-default">
+              @if($partner->imageUrl())
+              <img class="max-h-[38px] max-w-full object-contain opacity-85 hover:opacity-100 transition-opacity"
+                   src="{{ $partner->imageUrl() }}"
+                   alt="{{ $partner->name ?? 'Partner' }}">
+              @else
+              <span class="font-sans font-bold text-[14px] text-[#003054] tracking-tight text-center leading-snug">
+                {{ $partner->name ?? 'Partner' }}
+              </span>
+              @endif
+            </div>
+          </div>
+          @endforeach
+        </div>
       </div>
-      @endforeach
+
+      <button id="home-partner-next"
+              class="w-[36px] h-[36px] rounded-full bg-[#F4F4F4] hover:bg-[#E2E8F0] flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-10 transition-colors cursor-pointer shadow-sm"
+              style="right:-18px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </div>
 
   </div>
 </section>
+
+@push('custome-js')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    if (typeof Swiper !== 'undefined') {
+        new Swiper('.home-partners-swiper', {
+            slidesPerView: 5,
+            spaceBetween: 12,
+            loop: true,
+            autoplay: {
+                delay: 2800,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            navigation: {
+                prevEl: '#home-partner-prev',
+                nextEl: '#home-partner-next',
+            },
+            breakpoints: {
+                480:  { slidesPerView: 2, spaceBetween: 12 },
+                768:  { slidesPerView: 4, spaceBetween: 12 },
+                1024: { slidesPerView: 5, spaceBetween: 12 },
+            },
+        });
+    }
+});
+</script>
+@endpush
 @endif
 
 @endsection

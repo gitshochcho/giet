@@ -23,7 +23,7 @@ class SettingsController extends Controller
     {
         $validated = $request->validate([
             'logo_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
-            'logo_text' => ['required', 'string', 'max:255'],
+            'logo_text' => ['nullable', 'string', 'max:255'],
             'logo_tagline' => ['nullable', 'string', 'max:255'],
             'social_links' => ['nullable', 'array'],
             'social_links.*.title' => ['nullable', 'string', 'max:255'],

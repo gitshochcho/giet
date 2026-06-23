@@ -21,6 +21,7 @@ Route::get('/projectdetails/{project?}', [App\Http\Controllers\HomeController::c
 Route::get('/work', [App\Http\Controllers\HomeController::class, 'services'])->name('services');
 Route::get('/work-details/{id}', [App\Http\Controllers\HomeController::class, 'serviceDetails'])->name('serviceDetails');
 Route::get('/insights', [App\Http\Controllers\HomeController::class, 'insights'])->name('insights');
+Route::get('/resourcedetails/{insight?}', [App\Http\Controllers\HomeController::class, 'resourcedetails'])->name('resourcedetails');
 Route::get('/article-details/{article?}', [App\Http\Controllers\HomeController::class, 'articleDetails'])->name('articleDetails');
 Route::get('/career', [App\Http\Controllers\HomeController::class, 'career'])->name('career');
 Route::get('/careerdetails/{id}', [App\Http\Controllers\HomeController::class, 'careerdetails'])->name('careerdetails');

@@ -39,18 +39,25 @@ class InsightController extends Controller
         $validated = $this->validateInsightRequest($request);
         $authorTeamIds = array_values(array_filter(array_map('intval', $validated['author_team_ids'] ?? [])));
         $insight = Insight::create([
-            'type' => $validated['type'],
-            'video_link' => $validated['video_link'] ?? null,
-            'heading' => $validated['heading'],
-            'sub_heading' => $validated['sub_heading'] ?? null,
-            'description' => $validated['description'] ?? null,
-            'sort_order' => $validated['sort_order'] ?? 0,
-            'active' => (bool) ($validated['active'] ?? true),
-            'published_at' => $validated['published_at'] ?? null,
-            'source_name' => $validated['source_name'] ?? null,
-            'publish_links' => $validated['publish_links'] ?? [],
-            'author_team_ids' => $authorTeamIds,
-            'outside_authors' => $validated['outside_authors'] ?? [],
+            'type'           => $validated['type'],
+            'video_link'     => $validated['video_link'] ?? null,
+            'heading'        => $validated['heading'],
+            'sub_heading'    => $validated['sub_heading'] ?? null,
+            'description'    => $validated['description'] ?? null,
+            'sort_order'     => $validated['sort_order'] ?? 0,
+            'active'         => (bool) ($validated['active'] ?? true),
+            'published_at'   => $validated['published_at'] ?? null,
+            'source_name'    => $validated['source_name'] ?? null,
+            'publish_links'  => $validated['publish_links'] ?? [],
+            'author_team_ids'=> $authorTeamIds,
+            'outside_authors'=> $validated['outside_authors'] ?? [],
+            'topics'         => array_values(array_filter($validated['topics'] ?? [])),
+            'page_count'     => $validated['page_count'] ?? null,
+            'read_minutes'   => $validated['read_minutes'] ?? null,
+            'language'       => $validated['language'] ?? 'English',
+            'is_featured'    => (bool) ($validated['is_featured'] ?? false),
+            'duration'       => $validated['duration'] ?? null,
+            'attendee_count' => $validated['attendee_count'] ?? null,
         ]);
 
         $this->handleInsightMedia($insight, $request);
@@ -74,19 +81,25 @@ class InsightController extends Controller
         $validated = $this->validateInsightRequest($request, true);
         $authorTeamIds = array_values(array_filter(array_map('intval', $validated['author_team_ids'] ?? [])));
         $insight->fill([
-            'type' => $validated['type'],
-            'type_id' => $validated['type'],
-            'heading' => $validated['heading'],
-            'video_link' => $validated['video_link'] ?? $insight->video_link,
-            'sub_heading' => $validated['sub_heading'] ?? null,
-            'description' => $validated['description'] ?? null,
-            'sort_order' => $validated['sort_order'] ?? 0,
-            'active' => (bool) ($validated['active'] ?? true),
-            'published_at' => $validated['published_at'] ?? null,
-            'source_name' => $validated['source_name'] ?? null,
-            'publish_links' => $validated['publish_links'] ?? [],
-            'author_team_ids' => $authorTeamIds,
-            'outside_authors' => $validated['outside_authors'] ?? [],
+            'type'           => $validated['type'],
+            'heading'        => $validated['heading'],
+            'video_link'     => $validated['video_link'] ?? $insight->video_link,
+            'sub_heading'    => $validated['sub_heading'] ?? null,
+            'description'    => $validated['description'] ?? null,
+            'sort_order'     => $validated['sort_order'] ?? 0,
+            'active'         => (bool) ($validated['active'] ?? true),
+            'published_at'   => $validated['published_at'] ?? null,
+            'source_name'    => $validated['source_name'] ?? null,
+            'publish_links'  => $validated['publish_links'] ?? [],
+            'author_team_ids'=> $authorTeamIds,
+            'outside_authors'=> $validated['outside_authors'] ?? [],
+            'topics'         => array_values(array_filter($validated['topics'] ?? [])),
+            'page_count'     => $validated['page_count'] ?? null,
+            'read_minutes'   => $validated['read_minutes'] ?? null,
+            'language'       => $validated['language'] ?? 'English',
+            'is_featured'    => (bool) ($validated['is_featured'] ?? false),
+            'duration'       => $validated['duration'] ?? null,
+            'attendee_count' => $validated['attendee_count'] ?? null,
         ]);
         $insight->save();
 
@@ -147,6 +160,15 @@ class InsightController extends Controller
             'publish_links' => ['nullable', 'array'],
             'publish_links.*.name' => ['nullable', 'string', 'max:255'],
             'publish_links.*.link' => ['nullable', 'string', 'max:500'],
+            // Resource metadata
+            'topics'         => ['nullable', 'array'],
+            'topics.*'       => ['nullable', 'string', 'max:100'],
+            'page_count'     => ['nullable', 'integer', 'min:0'],
+            'read_minutes'   => ['nullable', 'integer', 'min:0'],
+            'language'       => ['nullable', 'string', 'max:50'],
+            'is_featured'    => ['nullable', 'boolean'],
+            'duration'       => ['nullable', 'string', 'max:20'],
+            'attendee_count' => ['nullable', 'integer', 'min:0'],
         ]);
     }
 

@@ -206,18 +206,57 @@ class HomeController extends Controller
 
     public function insights()
     {
-        $insights = Insight::with(['insightType', 'media', 'articles' => function($q) {
-            $q->where('active', true)->orderBy('sort_order');
-        }])
-        ->where('active', true)
-        ->orderBy('sort_order')
-        ->latest('id')
-        ->get();
+        $all = Insight::with(['insightType', 'media'])
+            ->where('active', true)
+            ->orderBy('sort_order')
+            ->latest('id')
+            ->get();
 
-        $insightsPageContent = contentBlock('insights-page')
-            ?? contentBlock('insights-page-header');
+        $briefs       = $all->filter(fn($i) => $this->insightTabKey($i) === 'briefs');
+        $expertSpeaks = $all->filter(fn($i) => $this->insightTabKey($i) === 'expert');
+        $publications = $all->filter(fn($i) => $this->insightTabKey($i) === 'publications');
+        $newsItems    = $all->filter(fn($i) => $this->insightTabKey($i) === 'news');
+        $videos       = $all->filter(fn($i) => $this->insightTabKey($i) === 'videos');
 
-        return view('frontend.pages.insights', compact('insights', 'insightsPageContent'));
+        return view('frontend.pages.resources', compact('all', 'briefs', 'expertSpeaks', 'publications', 'newsItems', 'videos'));
+    }
+
+    private function insightTabKey(Insight $insight): string
+    {
+        $typeName     = strtolower($insight->insightType?->type ?? '');
+        $typeCategory = strtolower($insight->insightType?->type_category ?? '');
+
+        if (in_array($typeCategory, ['watch', 'video_watch'])) return 'videos';
+        if ($typeCategory === 'download') return 'publications';
+        if (str_contains($typeName, 'expert') || str_contains($typeName, 'blog')) return 'expert';
+        if (str_contains($typeName, 'news') || str_contains($typeName, 'commentary') || str_contains($typeName, 'op-ed') || str_contains($typeName, 'op_ed')) return 'news';
+        return 'briefs';
+    }
+
+    public function resourcedetails(Request $request, ?Insight $insight = null)
+    {
+        $insight ??= Insight::with(['insightType', 'media', 'articles'])
+            ->where('active', true)
+            ->latest('id')
+            ->firstOrFail();
+
+        $insight->load(['insightType', 'media', 'articles' => function($q) {
+            $q->orderBy('sort_order')->orderBy('id');
+        }]);
+
+        $authors = collect();
+        if (!empty($insight->author_team_ids)) {
+            $authors = Team::with('media')->whereIn('id', $insight->author_team_ids)->get();
+        }
+
+        $relatedInsights = Insight::with(['insightType', 'media'])
+            ->where('active', true)
+            ->where('id', '!=', $insight->id)
+            ->latest('id')
+            ->take(3)
+            ->get();
+
+        return view('frontend.pages.resourcedetails', compact('insight', 'authors', 'relatedInsights'));
     }
     public function articleDetails(Request $request, ?InsightArticle $article = null)
     {

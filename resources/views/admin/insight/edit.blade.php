@@ -267,6 +267,54 @@ $currentInsightImageRemoveField = $insight->articleImageUrl() ? 'remove_article_
                                 <button type="button" class="btn btn-sm mt-2" id="edit-add-publish-link-btn" style="background: #01888C; color: #fff;">+ Add Publish Link</button>
                             </div>
 
+                            {{-- Resource Metadata --}}
+                            <div class="col-12 mt-2 p-3 rounded" style="background:#f0f4f8;border:1px solid #c8d8e8;">
+                                <label class="form-label fw-bold" style="color:#003054;">Resource Metadata</label>
+                                <div class="row g-3 mt-1">
+                                    <div class="col-md-4">
+                                        <label class="form-label small">Page Count</label>
+                                        <input type="number" name="page_count" value="{{ old('page_count', $insight->page_count) }}" class="form-control form-control-sm" min="0" placeholder="e.g. 12">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small">Read Minutes</label>
+                                        <input type="number" name="read_minutes" value="{{ old('read_minutes', $insight->read_minutes) }}" class="form-control form-control-sm" min="0" placeholder="e.g. 12">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small">Language</label>
+                                        <input type="text" name="language" value="{{ old('language', $insight->language ?? 'English') }}" class="form-control form-control-sm" placeholder="English">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small">Duration (Video)</label>
+                                        <input type="text" name="duration" value="{{ old('duration', $insight->duration) }}" class="form-control form-control-sm" placeholder="e.g. 28:14">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label small">Attendee Count</label>
+                                        <input type="number" name="attendee_count" value="{{ old('attendee_count', $insight->attendee_count) }}" class="form-control form-control-sm" min="0" placeholder="e.g. 150">
+                                    </div>
+                                    <div class="col-md-4 d-flex align-items-end pb-1">
+                                        <div class="form-check form-switch">
+                                            <input type="hidden" name="is_featured" value="0">
+                                            <input class="form-check-input" type="checkbox" name="is_featured" value="1" id="editFeaturedSwitch" {{ old('is_featured', $insight->is_featured) ? 'checked' : '' }}>
+                                            <label class="form-check-label small" for="editFeaturedSwitch">Featured</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label small">Topics / Tags</label>
+                                        <div id="editTopicsWrapper" class="d-flex flex-wrap gap-2 mb-2">
+                                            @foreach(old('topics', $insight->topics ?? []) as $topic)
+                                            <div class="topic-tag-row d-flex align-items-center gap-1">
+                                                <input type="text" name="topics[]" value="{{ $topic }}" class="form-control form-control-sm" style="width:150px;" placeholder="Topic">
+                                                <button type="button" class="btn btn-sm btn-outline-danger remove-topic" style="padding:2px 8px;">&times;</button>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                        <button type="button" id="editAddTopicBtn" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-plus me-1"></i> Add Topic
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
                             {{-- Social Share Links: visible only for Article / Publication --}}
                             <div class="col-12 mt-2 p-3 bg-light rounded" id="editSocialLinksWrap">
                                 <label class="form-label fw-bold">Social Share Links</label>
@@ -674,6 +722,23 @@ document.querySelectorAll('.author-chip').forEach(chip => {
 
     if (editTypeSelect) editTypeSelect.addEventListener('change', toggleVisibility);
     toggleVisibility();
+
+    // ===== Topics / Tags =====
+    const editTopicsWrapper = document.getElementById('editTopicsWrapper');
+    const editAddTopicBtn   = document.getElementById('editAddTopicBtn');
+    if (editTopicsWrapper && editAddTopicBtn) {
+        editAddTopicBtn.addEventListener('click', () => {
+            const row = document.createElement('div');
+            row.className = 'topic-tag-row d-flex align-items-center gap-1';
+            row.innerHTML = `<input type="text" name="topics[]" class="form-control form-control-sm" style="width:150px;" placeholder="Topic">
+                <button type="button" class="btn btn-sm btn-outline-danger remove-topic" style="padding:2px 8px;">&times;</button>`;
+            editTopicsWrapper.appendChild(row);
+            row.querySelector('input').focus();
+        });
+        editTopicsWrapper.addEventListener('click', e => {
+            if (e.target.closest('.remove-topic')) e.target.closest('.topic-tag-row').remove();
+        });
+    }
 });
 
 
