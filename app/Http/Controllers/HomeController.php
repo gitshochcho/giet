@@ -13,6 +13,7 @@ use App\Models\JobPosting;
 use App\Models\Event;
 use App\Models\Partner;
 use App\Models\Project;
+use App\Models\ProjectCategory;
 use App\Models\Service;
 use App\Models\Slider;
 use App\Models\SliderItem;
@@ -41,8 +42,13 @@ class HomeController extends Controller
         $homeAboutTraceTwo   = contentBlock('home_about_trace_two');
         $homeAboutTraceThree = contentBlock('home_about_trace_three');
         $homeYearsExpertise  = contentBlock('home_years_of_expertise');
-        $slider              = Slider::with('media')->first();
-        $sliderItems         = SliderItem::with('media')->where('active', true)->orderBy('sort_order')->orderBy('id')->get();
+        $homeFocusAreas      = contentBlock('home_focus_areas');
+        $homeProjectsBlock   = contentBlock('home_projects');
+        $homePartnersBlock   = contentBlock('home_partners');
+        $homeMission         = contentBlock('home_mission');
+
+        $slider      = Slider::with('media')->first();
+        $sliderItems = SliderItem::with('media')->where('active', true)->orderBy('sort_order')->orderBy('id')->get();
 
         $homeServices = Service::query()
             ->with(['content', 'media', 'solutions'])
@@ -51,7 +57,6 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
-        // Projects — latest 3টা
         $homeProjects = Project::query()
             ->with(['services', 'media'])
             ->orderBy('sort_order')
@@ -59,17 +64,22 @@ class HomeController extends Controller
             ->limit(3)
             ->get();
 
-             $partners = Partner::with('media')->latest()->get(); 
+        $partners = Partner::with('media')->latest()->get();
 
-        return view('frontend.pages.home', compact('slider', 'sliderItems', 'homeServices', 'homeProjects', 'homeAboutTrace', 'homeAboutTraceOne', 'homeAboutTraceTwo', 'homeAboutTraceThree', 'homeYearsExpertise', 'partners'));
+        return view('frontend.pages.home', compact(
+            'slider', 'sliderItems', 'homeServices', 'homeProjects', 'partners',
+            'homeAboutTrace', 'homeAboutTraceOne', 'homeAboutTraceTwo', 'homeAboutTraceThree',
+            'homeYearsExpertise', 'homeFocusAreas', 'homeProjectsBlock', 'homePartnersBlock', 'homeMission'
+        ));
     }
 
     public function services(Request $request)
     {
-        $servicesHero = contentBlock('services-page')
+        $servicesHero       = contentBlock('services-page')
             ?? contentBlock('service-hero')
             ?? contentBlock('service hero');
-        $workWithUs   = contentBlock('work-with-us');
+        $workWithUs         = contentBlock('work-with-us');
+        $workKeyFocusAreas  = contentBlock('work_key_focus_areas');
         // dd($servicesHero);
 
         $services = Service::query()
@@ -93,7 +103,7 @@ class HomeController extends Controller
             ];
         })->values();
 
-        return view('frontend.pages.work', compact('servicesHero', 'workWithUs', 'serviceCards'));
+        return view('frontend.pages.work', compact('servicesHero', 'workWithUs', 'serviceCards', 'workKeyFocusAreas'));
     }
 
     
@@ -109,6 +119,15 @@ class HomeController extends Controller
             ])
             ->findOrFail($id);
 
+        $relatedProjects = $service->projects->count()
+            ? $service->projects
+            : Project::query()
+                ->with(['media', 'services'])
+                ->orderBy('sort_order')
+                ->latest('id')
+                ->take(3)
+                ->get();
+
         $experts = Team::query()
             ->with(['media', 'experties'])
             ->whereIn('type', [1, 2])
@@ -122,34 +141,38 @@ class HomeController extends Controller
             ->orderBy('sort_order')
             ->get(['id', 'service_name', 'section']);
 
-        return view('frontend.pages.workdetails', compact('service', 'experts', 'otherServices'));
+        return view('frontend.pages.workdetails', compact('service', 'experts', 'otherServices', 'relatedProjects'));
     }
 
     public function projects(Request $request)
     {
-        $projectsHero = contentBlock('projects-page');
+        $projectsHero       = contentBlock('projects-page');
+        $projectsPortfolio  = contentBlock('projects_portfolio');
+        $projectsImpact     = contentBlock('projects_impact');
+        $projectsWorkWithUs = contentBlock('projects_work_with_us');
 
-        $services = Service::query()
-            ->whereHas('projects')
-            ->withCount('projects')
-            ->orderBy('service_name')
-            ->get();
+        $projectsStats = collect([
+            contentBlock('projects_stat_1'),
+            contentBlock('projects_stat_2'),
+            contentBlock('projects_stat_3'),
+            contentBlock('projects_stat_4'),
+        ])->filter();
 
-        $selectedService = $request->integer('service');
+        $categories      = ProjectCategory::where('active', true)->orderBy('sort_order')->orderBy('name')->get();
+        $selectedCategory = $request->integer('category');
 
         $projects = Project::query()
-            ->with(['services', 'locations', 'media'])
-            ->withCount('services')
-            ->when($selectedService, function ($query, $serviceId) {
-                $query->whereHas('services', function ($serviceQuery) use ($serviceId) {
-                    $serviceQuery->where('services.id', $serviceId);
-                });
-            })
+            ->with(['category', 'services', 'locations', 'media'])
+            ->when($selectedCategory, fn($q, $id) => $q->where('project_category_id', $id))
             ->orderBy('sort_order')
             ->latest('id')
             ->get();
 
-        return view('frontend.pages.projects', compact('projectsHero', 'services', 'projects', 'selectedService'));
+        return view('frontend.pages.projects', compact(
+            'projectsHero', 'projectsPortfolio', 'projectsImpact',
+            'projectsWorkWithUs', 'projectsStats',
+            'categories', 'selectedCategory', 'projects'
+        ));
     }
 
     public function projectdetails(Request $request, ?Project $project = null)
@@ -170,7 +193,14 @@ class HomeController extends Controller
             ->take(3)
             ->get();
 
-        return view('frontend.pages.projectdetails', compact('project', 'relatedProjects'));
+        $pdSidebar  = contentBlock('projectdetails_sidebar');
+        $pdTeam     = contentBlock('projectdetails_team');
+        $pdActions  = contentBlock('projectdetails_actions');
+
+        return view('frontend.pages.projectdetails', compact(
+            'project', 'relatedProjects',
+            'pdSidebar', 'pdTeam', 'pdActions'
+        ));
     }
 
     // public function insights(Request $request)

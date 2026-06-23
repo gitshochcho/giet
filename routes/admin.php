@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\InsightController;
 use App\Http\Controllers\Admin\JobApplicationController;
 use App\Http\Controllers\Admin\JobPostingController;
+use App\Http\Controllers\Admin\ProjectCategoryController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -79,6 +80,15 @@ Route::prefix('admin')->group(function () {
             Route::put('projects-manager/{project}', 'update')->name('admin.projects.update');
             Route::delete('projects-manager/{project}', 'destroy')->name('admin.projects.destroy');
             Route::delete('projects-manager/{project}/images/{mediaId}', 'destroyImage')->name('admin.projects.images.destroy');
+        });
+
+        Route::controller(ProjectCategoryController::class)->group(function () {
+            Route::get('project-categories', 'index')->name('admin.project-categories.index');
+            Route::get('project-categories/create', 'create')->name('admin.project-categories.create');
+            Route::post('project-categories', 'store')->name('admin.project-categories.store');
+            Route::get('project-categories/{projectCategory}/edit', 'edit')->name('admin.project-categories.edit');
+            Route::put('project-categories/{projectCategory}', 'update')->name('admin.project-categories.update');
+            Route::delete('project-categories/{projectCategory}', 'destroy')->name('admin.project-categories.destroy');
         });
 
         Route::get('teams-manager', fn() => redirect()->route('admin.experts.index'));

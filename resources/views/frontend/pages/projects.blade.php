@@ -1,4 +1,4 @@
-@extends('frontend.layout.app')
+﻿@extends('frontend.layout.app')
 
 @push('custome-css')
 <style>
@@ -96,7 +96,7 @@
 
     <!-- MAIN TITLE -->
     <h1 class="text-white font-['Newsreader'] font-extrabold leading-tight drop-shadow-sm m-0" style="font-size:clamp(28px,5vw,52px);">
-      {{ $projectsHero?->heading ?: 'Our Projects' }}
+      {{ $projectsHero?->heading }}
     </h1>
 
   </div>
@@ -109,32 +109,35 @@
 
         <!-- HEADER ROW -->
         <div class="w-full text-left">
+            @if($projectsPortfolio?->section)
             <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11px;line-height:18.15px;letter-spacing:1.54px;text-transform:uppercase;"
                   class="text-[#0E606B] uppercase block mb-2">
-                Project Portfolio
+                {{ $projectsPortfolio->section }}
             </span>
+            @endif
             <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:38px;line-height:44.84px;letter-spacing:-0.38px;"
                 class="text-[#0F172A]">
-                Work That Creates Impact
+                {{ $projectsPortfolio?->heading }}
             </h2>
         </div>
 
         <!-- FILTER NAVIGATION TABS -->
+        @if($categories->isNotEmpty())
         <div class="w-full max-w-[1204px] mx-auto h-auto flex flex-wrap items-center border-b-2 border-[#EEF3F8] gap-y-2">
-            <!-- All tab -->
             <a href="{{ route('projects') }}"
-               style="font-family: 'Inter', sans-serif; font-weight: {{ !$selectedService ? '600' : '500' }}; font-size: 13px; text-decoration:none;"
-               class="pt-[13px] pb-[14.44px] px-[28px] border-b-[3px] {{ !$selectedService ? 'border-[#A80C18] text-[#0F172A]' : 'border-transparent text-[#6B7280] hover:text-[#0F172A]' }} text-center transition-all">
+               style="font-family:'Inter',sans-serif;font-weight:{{ !$selectedCategory ? '600' : '500' }};font-size:13px;text-decoration:none;color:{{ !$selectedCategory ? '#0F172A' : '#6B7280' }};"
+               class="pt-[13px] pb-[14.44px] px-[28px] border-b-[3px] {{ !$selectedCategory ? 'border-[#A80C18]' : 'border-transparent' }} text-center transition-all">
                 All Projects
             </a>
-            @foreach($services as $service)
-            <a href="{{ route('projects', ['service' => $service->id]) }}"
-               style="font-family: 'Inter', sans-serif; font-weight: {{ $selectedService == $service->id ? '600' : '500' }}; font-size: 13px; text-decoration:none;"
-               class="pt-[13px] pb-[14.44px] px-[28px] border-b-[3px] {{ $selectedService == $service->id ? 'border-[#A80C18] text-[#0F172A]' : 'border-transparent text-[#6B7280] hover:text-[#0F172A]' }} text-center transition-all">
-                {{ $service->service_name }}
+            @foreach($categories as $category)
+            <a href="{{ route('projects', ['category' => $category->id]) }}"
+               style="font-family:'Inter',sans-serif;font-weight:{{ $selectedCategory == $category->id ? '600' : '500' }};font-size:13px;text-decoration:none;color:{{ $selectedCategory == $category->id ? '#0F172A' : '#6B7280' }};"
+               class="pt-[13px] pb-[14.44px] px-[28px] border-b-[3px] {{ $selectedCategory == $category->id ? 'border-[#A80C18]' : 'border-transparent' }} text-center transition-all">
+                {{ $category->name }}
             </a>
             @endforeach
         </div>
+        @endif
 
         @php $featuredProject = $projects->first(); $gridProjects = $projects->skip(1); @endphp
 
@@ -144,7 +147,7 @@
             <!-- Left Side Image -->
             <div class="w-full md:w-[560px] md:h-[403.81px] overflow-hidden bg-[#EEF3F8] md:shrink-0 relative">
                 @if($featuredProject->heroImageUrl())
-                <img src="{{ $featuredProject->heroImageUrl() }}" alt="{{ $featuredProject->project_title }}" class="w-full h-full object-cover">
+                <img src="{{ $featuredProject->heroImageUrl() }}" alt="{{ $featuredProject->project_title }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
                 @else
                 <div class="w-full h-full bg-[#EEF3F8] flex items-center justify-center">
                     <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#CBD5E1"/><path d="M20 44L28 32L34 40L40 28L50 44H20Z" fill="#94A3B8"/></svg>
@@ -158,14 +161,21 @@
             <div class="w-full pt-[28px] pr-[24px] pb-[28px] pl-[24px] md:pt-[44px] md:pr-[40px] md:pb-[44px] md:pl-[40px] flex flex-col justify-between">
                 <div class="flex flex-col gap-2.5">
                     <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 18.15px; letter-spacing: 1.1px;" class="text-[#0E606B] uppercase">
-                        {{ $featuredProject->client ?: '' }}{{ $featuredProject->client && $featuredProject->durationLabel() ? ' · ' : '' }}{{ $featuredProject->durationLabel() ?: '' }}
+                        @php
+                            $fMeta = array_filter([
+                                cleanText($featuredProject->client),
+                                $featuredProject->durationLabel(),
+                                
+                            ]);
+                        @endphp
+                        {{ implode(' · ', $fMeta) }}
                     </span>
                     <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 24px; line-height: 31.2px;" class="text-[#0F172A]">
                         {{ $featuredProject->project_title }}
                     </h3>
                     @if($featuredProject->overview)
                     <p class="font-['Newsreader'] text-[#1A1A1A] mt-[20px]" style="font-family: 'Newsreader',serif; font-weight: 400; font-size: 14.5px; line-height: 25.38px;">
-                        {{ Str::limit($featuredProject->overview, 300) }}
+                        {{ Str::limit(cleanText($featuredProject->overview), 300) }}
                     </p>
                     @endif
                 </div>
@@ -176,7 +186,7 @@
                         @endforeach
                         @if($featuredProject->locations->isNotEmpty())
                             <span>·</span>
-                            <span>{{ $featuredProject->locations->pluck('location')->implode(', ') }}</span>
+                            <span>{{ cleanText($featuredProject->locations->pluck('location')->implode(', ')) }}</span>
                         @endif
                     </div>
                     <a href="{{ route('projectdetails', $featuredProject->id) }}" style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12.5px; line-height: 20.63px;" class="text-[#A80C18] hover:text-[#8e0a14] transition-colors flex items-center gap-1">
@@ -194,7 +204,7 @@
             <div class="w-full border border-[#EEF3F8] rounded-[14px] overflow-hidden bg-white hover:shadow-md transition-all flex flex-col text-left pb-[21.68px]">
                 <div class="w-full h-[180px] bg-[#EEF3F8] relative overflow-hidden shrink-0">
                     @if($project->imageUrl())
-                    <img src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}" class="w-full h-full object-cover">
+                    <img src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
                     @else
                     <div class="w-full h-full bg-[#EEF3F8] flex items-center justify-center">
                         <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="6" fill="#CBD5E1"/><path d="M12 36L20 24L26 32L32 20L40 36H12Z" fill="#94A3B8"/></svg>
@@ -211,14 +221,21 @@
                 <div class="p-[20px] flex flex-col justify-between flex-grow">
                     <div class="flex flex-col gap-2">
                         <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 10.5px; line-height: 17.33px; letter-spacing: 1.05px;" class="text-[#0E606B] uppercase">
-                            {{ $project->client ?: '' }}{{ $project->client && $project->durationLabel() ? ' · ' : '' }}{{ $project->durationLabel() ?: '' }}
+                            @php
+                                $gMeta = array_filter([
+                                    cleanText($project->client),
+                                    $project->durationLabel(),
+                                    $project->locations->isNotEmpty() ? $project->locations->first()->location : null,
+                                ]);
+                            @endphp
+                            {{ implode(' · ', $gMeta) }}
                         </span>
                         <h4 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 15.5px; line-height: 21.7px;" class="text-[#0F172A] line-clamp-2">
                             {{ $project->project_title }}
                         </h4>
                         @if($project->overview)
                         <p class="font-['Newsreader'] text-[#1A1A1A] line-clamp-3 mt-0.5" style="font-family: 'Newsreader',serif; font-weight: 400; font-size: 13px; line-height: 21.45px;">
-                            {{ $project->overview }}
+                            {{ cleanText($project->overview) }}
                         </p>
                         @endif
                     </div>
@@ -250,69 +267,34 @@
 
         <!-- HEADER -->
         <div class="w-full text-left">
+            @if($projectsImpact?->section)
             <span class="font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] uppercase text-[#0E606B] block mb-2">
-                Our Impact
+                {{ $projectsImpact->section }}
             </span>
+            @endif
             <h2 class="font-['Newsreader'] font-extrabold text-[38px] leading-[44.84px] tracking-[-0.38px] text-[#0F172A]">
-                Measurable Outcomes Across Our Portfolio
+                {{ $projectsImpact?->heading }}
             </h2>
         </div>
 
         <!-- 4-COLUMN STATS GRID -->
+        @if($projectsStats->isNotEmpty())
         <div class="w-full max-w-[1204px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-[1px] border border-[#EEF3F8] overflow-hidden rounded-[4px] bg-[#EEF3F8]">
-
+            @foreach($projectsStats as $stat)
             <div class="bg-white pt-[36px] pr-[28px] pb-[36px] pl-[28px] flex flex-col gap-[16px] text-left">
                 <div class="flex flex-col gap-[10px]">
                     <div class="font-['Newsreader'] font-extrabold text-[44px] leading-none flex items-baseline">
-                        <span class="text-[#A80C18]">24</span>
-                        <span class="text-[#A80C18] ml-1">+</span>
+                        <span class="text-[#A80C18]">{{ $stat->heading }}</span>
                     </div>
                     <div class="w-[36px] h-[3px] rounded-sm bg-[#18909C]"></div>
                 </div>
                 <span class="font-['Newsreader'] font-medium text-[13px] leading-[21.45px] tracking-[0.78px] uppercase text-[#6B7280]">
-                    Projects Delivered
+                    {{ $stat->section }}
                 </span>
             </div>
-
-            <div class="bg-white pt-[36px] pr-[28px] pb-[36px] pl-[28px] flex flex-col gap-[16px] text-left">
-                <div class="flex flex-col gap-[10px]">
-                    <div class="font-['Newsreader'] font-extrabold text-[44px] leading-none flex items-baseline">
-                        <span class="text-[#A80C18]">6</span>
-                        <span class="text-[#A80C18]">K+</span>
-                    </div>
-                    <div class="w-[36px] h-[3px] rounded-sm bg-[#18909C]"></div>
-                </div>
-                <span class="font-['Newsreader'] font-medium text-[13px] leading-[21.45px] tracking-[0.78px] uppercase text-[#6B7280]">
-                    Officials Trained
-                </span>
-            </div>
-
-            <div class="bg-white pt-[36px] pr-[28px] pb-[36px] pl-[28px] flex flex-col gap-[16px] text-left">
-                <div class="flex flex-col gap-[10px]">
-                    <div class="font-['Newsreader'] font-extrabold text-[44px] leading-none flex items-baseline">
-                        <span class="text-[#A80C18]">38</span>
-                    </div>
-                    <div class="w-[36px] h-[3px] rounded-sm bg-[#18909C]"></div>
-                </div>
-                <span class="font-['Newsreader'] font-medium text-[13px] leading-[21.45px] tracking-[0.78px] uppercase text-[#6B7280]">
-                    Policy Recommendations Adopted
-                </span>
-            </div>
-
-            <div class="bg-white pt-[36px] pr-[28px] pb-[36px] pl-[28px] flex flex-col gap-[16px] text-left">
-                <div class="flex flex-col gap-[10px]">
-                    <div class="font-['Newsreader'] font-extrabold text-[44px] leading-none flex items-baseline">
-                        <span class="text-[#003054]">12</span>
-                        <span class="text-[#A80C18] ml-1">+</span>
-                    </div>
-                    <div class="w-[36px] h-[3px] rounded-sm bg-[#18909C]"></div>
-                </div>
-                <span class="font-['Newsreader'] font-medium text-[13px] leading-[21.45px] tracking-[0.78px] uppercase text-[#6B7280]">
-                    Partner Organizations
-                </span>
-            </div>
-
+            @endforeach
         </div>
+        @endif
     </div>
 </section>
 
@@ -322,31 +304,39 @@
 
     <div class="hidden md:block absolute pointer-events-none" style="width:320px;height:320px;top:-60px;right:-60px;border-radius:160px;background:rgba(0,48,84,0.05);"></div>
 
-    <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col items-center justify-center text-center relative z-10 gap-[13px]">
+    <div class="w-full max-w-[1204px] mx-auto px-4 mt-10 md:px-0 flex flex-col items-center justify-center text-center relative z-10 gap-[13px]">
 
+        @if($projectsWorkWithUs?->section)
         <span class="text-[#0E606B] font-['Newsreader'] font-semibold text-[11px] uppercase tracking-[1.54px]">
-            Collaborate
+            {{ $projectsWorkWithUs->section }}
         </span>
+        @endif
 
         <h2 class="text-[#003054] font-['Newsreader'] font-extrabold text-[38px] leading-[45.6px] max-w-[800px] m-0">
-            Ready to Commission a Project?
+            {{ $projectsWorkWithUs?->heading }}
         </h2>
 
+        @if($projectsWorkWithUs?->description)
         <p class="text-[#475569] font-['Newsreader'] text-[16px] leading-[28px] max-w-[620px] m-0">
-            GIET works with governments, international development organisations, NGOs, and private sector partners. We welcome project proposals and co-design partnerships.
+            {{ cleanText($projectsWorkWithUs->description) }}
         </p>
+        @endif
 
-        <div class="flex items-center gap-4 mt-[15px]">
+        <div class="flex items-center gap-4 mt-[15px] mb-10">
+            @if($projectsWorkWithUs?->sub_heading)
             <a href="{{ route('contact') }}"
                class="btn-primary-wwu bg-[#003054] px-[32px] py-[14px] rounded-[6px] inline-flex items-center justify-center gap-1 text-white text-[14px] font-bold transition-all duration-200 hover:bg-[#002040] shadow-sm">
-                <span>Get In Touch</span>
+                <span>{{ $projectsWorkWithUs->sub_heading }}</span>
                 <span class="inline-block translate-y-[-1px]">→</span>
             </a>
+            @endif
 
+            @if($projectsWorkWithUs?->design_word)
             <a href="{{ route('about') }}"
                class="btn-outline-wwu border-[2px] border-[#003054]/30 px-[32px] py-[14px] rounded-[6px] inline-flex items-center justify-center text-[#003054] text-[14px] font-bold transition-all duration-200 hover:bg-[#003054]/10">
-                <span>About GIET</span>
+                <span>{{ $projectsWorkWithUs->design_word }}</span>
             </a>
+            @endif
         </div>
     </div>
 </section>

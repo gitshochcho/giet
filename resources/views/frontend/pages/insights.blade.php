@@ -1,4 +1,4 @@
-@extends('frontend.layout.app')
+﻿@extends('frontend.layout.app')
 
 
 @section('content')
@@ -160,7 +160,7 @@ $isExternal = false;
             <div class="col-12 col-md-6 col-lg-4 insight-item" data-tag="{{ $tag }}">
                 <div class="insight-card h-100 border-0 shadow-sm rounded-5 overflow-hidden bg-white">
                     <div class="card-img-position" style="height: 220px; overflow: hidden; position: relative; flex-shrink: 0;">
-                        <img src="{{ $cardImage }}" class="w-100 h-100 object-fit-cover" alt="{{ $title }}">
+                        <img src="{{ $cardImage }}" class="w-100 h-100 object-fit-cover" alt="{{ $title }}" loading="lazy" decoding="async">
                         <span class="badge position-absolute top-0 start-0 m-3 px-3 py-1" style="background: {{ $badgeColor }}; font-size: 10px; border-radius: 4px;">{{ $tag }}</span>
                     </div>
                     <div class="card-body p-4">
@@ -168,7 +168,7 @@ $isExternal = false;
                         <h5 class="card-title fw-bold text-dark mb-2" style="font-size: 16px; line-height: 1.4;">{{ $title }}</h5>
                         @if(!empty($insight?->description))
                        
-                        <p class="card-text text-muted small mb-0">{{$insight?->description}}</p>
+                        <p class="card-text text-muted small mb-0">{{ cleanText($insight?->description) }}</p>
                         @else
                       
                         <p class="card-text text-muted small mb-0">

@@ -24,12 +24,18 @@ class Project extends Model implements HasMedia
         'end_date',
         'project_status',
         'sort_order',
+        'project_category_id',
     ];
 
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(ProjectCategory::class, 'project_category_id');
+    }
 
     public function services()
     {

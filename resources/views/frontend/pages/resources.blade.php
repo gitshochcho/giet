@@ -53,7 +53,7 @@
                 @if($featuredBrief->page_count)<span class="text-[#CBD5E1]">•</span><span>{{ $featuredBrief->page_count }} pages</span>@endif
               </div>
               <h2 style="font-family:'Merriweather',serif;" class="text-[#003054] text-[22px] font-extrabold leading-[30px] tracking-tight">{{ $featuredBrief->heading }}</h2>
-              @if($featuredBrief->description)<p class="font-['Newsreader'] text-[#475569] text-[13px] leading-[22px] max-w-[650px] mt-[4px]">{{ Str::limit($featuredBrief->description, 220) }}</p>@endif
+              @if($featuredBrief->description)<p class="font-['Newsreader'] text-[#475569] text-[13px] leading-[22px] max-w-[650px] mt-[4px]">{{ Str::limit(cleanText($featuredBrief->description), 220) }}</p>@endif
             </div>
             <span class="text-[#A80C18] hover:text-[#003054] text-[12px] font-bold flex items-center gap-[4px] transition-colors mt-[12px]">Read Full Brief <span class="text-[14px]">→</span></span>
           </div>
@@ -66,7 +66,7 @@
             <div class="flex flex-col">
               <div class="h-[160px] w-full relative overflow-hidden rounded-[8px] bg-[#EEF3F8]">
                 <span class="absolute top-0 left-0 bg-[#003054] text-white text-[9px] font-bold tracking-wider uppercase py-[3px] px-[6px] rounded-[3px] z-10">{{ $brief->insightType?->type ?? 'Issue Brief' }}</span>
-                @if($brief->imageUrl())<img src="{{ $brief->imageUrl() }}" alt="{{ $brief->heading }}" class="w-full h-full object-cover">@endif
+                @if($brief->imageUrl())<img src="{{ $brief->imageUrl() }}" alt="{{ $brief->heading }}" class="w-full h-full object-cover" loading="lazy" decoding="async">@endif
               </div>
               <div class="pt-[14px] flex flex-col gap-[6px]">
                 <div class="text-[#64748B] text-[11px] font-medium flex items-center gap-[4px]">
@@ -75,7 +75,7 @@
                   @if($brief->page_count)<span class="text-[#CBD5E1]">•</span><span>{{ $brief->page_count }} pages</span>@endif
                 </div>
                 <h3 style="font-family:'Merriweather',serif;" class="text-[#003054] text-[15px] font-bold leading-[22px] tracking-tight hover:text-[#8B1D2F] transition-colors line-clamp-2">{{ $brief->heading }}</h3>
-                @if($brief->description)<p class="font-['Newsreader'] text-[#475569] text-[13px] leading-[18px] mt-[2px] pb-[16px]">{{ Str::limit($brief->description, 120) }}</p>@endif
+                @if($brief->description)<p class="font-['Newsreader'] text-[#475569] text-[13px] leading-[18px] mt-[2px] pb-[16px]">{{ Str::limit(cleanText($brief->description), 120) }}</p>@endif
               </div>
             </div>
             <div class="w-full pt-[10px] flex justify-between items-center border-t border-[#E4EAF0]">
@@ -101,7 +101,7 @@
           <div class="h-[170px] w-full relative overflow-hidden shrink-0 bg-[#F7F9FB]">
             <div class="absolute inset-0 z-[5] pointer-events-none" style="background:linear-gradient(0deg,rgba(0,30,54,0.8) 0%,rgba(0,30,54,0) 60%);"></div>
             <span class="absolute top-0 left-0 bg-[#003054] text-white text-[9px] font-bold tracking-wider uppercase py-[3px] px-[6px] rounded-[3px] z-10">{{ $item->insightType?->type ?? 'Expert Speak' }}</span>
-            @if($item->imageUrl())<img src="{{ $item->imageUrl() }}" alt="{{ $item->heading }}" class="w-full h-full object-cover object-top">@endif
+            @if($item->imageUrl())<img src="{{ $item->imageUrl() }}" alt="{{ $item->heading }}" class="w-full h-full object-cover object-top" loading="lazy" decoding="async">@endif
           </div>
           <div class="flex flex-col gap-[7px] p-[18px] pt-[14px]">
             @php $expOa = $item->outside_authors[0] ?? null; @endphp
@@ -110,7 +110,7 @@
               @if($expOa)<span class="text-[#CBD5E1]">•</span><span>{{ $expOa['name'] }}</span>@endif
             </div>
             <h3 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;line-height:21px;color:#003054;" class="hover:text-[#8B1D2F] transition-colors line-clamp-2">{{ $item->heading }}</h3>
-            @if($item->description)<p class="font-['Newsreader'] mt-[2px] pb-[5px]" style="font-size:13px;line-height:20.8px;color:#1A1A1A;">{{ Str::limit($item->description, 140) }}</p>@endif
+            @if($item->description)<p class="font-['Newsreader'] mt-[2px] pb-[5px]" style="font-size:13px;line-height:20.8px;color:#1A1A1A;">{{ Str::limit(cleanText($item->description), 140) }}</p>@endif
           </div>
           <div class="flex justify-between items-center border-t border-[#E4EAF0] mt-auto px-[18px] pt-[10px] pb-[16px]">
             <span class="text-[#64748B] text-[11px] font-medium">{{ $expOa['description'] ?? 'GIET Foundation' }}</span>
@@ -167,12 +167,12 @@
         <a href="{{ route('resourcedetails', $news->id) }}" class="w-full border border-[#E4EAF0] rounded-[14px] bg-white flex flex-col relative overflow-hidden" style="min-height:380px;text-decoration:none;">
           <span class="absolute top-0 left-0 bg-[#003054] text-white" style="font-family:'Outfit',sans-serif;font-weight:700;font-size:9.5px;letter-spacing:0.95px;text-transform:uppercase;padding:6px 14px;z-index:30;">{{ $news->insightType?->type ?? 'Commentary' }}</span>
           <div class="h-[170px] w-full shrink-0 overflow-hidden rounded-t-[14px] bg-[#EEF3F8]">
-            @if($news->imageUrl())<img src="{{ $news->imageUrl() }}" alt="{{ $news->heading }}" class="w-full h-full object-cover">@endif
+            @if($news->imageUrl())<img src="{{ $news->imageUrl() }}" alt="{{ $news->heading }}" class="w-full h-full object-cover" loading="lazy" decoding="async">@endif
           </div>
           <div class="flex flex-col flex-grow p-[18px] gap-[8px]">
             @if($news->published_at)<p class="font-['Newsreader']" style="font-size:11px;color:#64748B;">{{ $news->published_at->format('d M Y') }}</p>@endif
             <h3 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:14.5px;line-height:20.3px;color:#0F172A;" class="hover:text-[#8B1D2F] transition-colors line-clamp-2">{{ $news->heading }}</h3>
-            @if($news->description)<p class="font-['Newsreader'] line-clamp-3" style="font-size:13px;line-height:20.8px;color:#1A1A1A;">{{ Str::limit($news->description, 150) }}</p>@endif
+            @if($news->description)<p class="font-['Newsreader'] line-clamp-3" style="font-size:13px;line-height:20.8px;color:#1A1A1A;">{{ Str::limit(cleanText($news->description), 150) }}</p>@endif
           </div>
           <div class="border-t border-[#E4EAF0] flex justify-between items-center px-[18px] pt-[10px] pb-[10px] mt-auto mb-[5px]">
             @php $na = $news->outside_authors[0] ?? null; @endphp
@@ -194,7 +194,7 @@
         @foreach($videos as $vid)
         <a href="{{ $vid->videoUrl() ?: route('resourcedetails', $vid->id) }}" {{ $vid->videoUrl() ? 'target=_blank' : '' }} class="w-full border border-[#E4EAF0] rounded-[14px] bg-white overflow-hidden flex flex-col" style="height:270px;text-decoration:none;">
           <div class="relative overflow-hidden bg-[#1a1a2e] shrink-0" style="height:170px;">
-            @if($vid->imageUrl())<img src="{{ $vid->imageUrl() }}" alt="{{ $vid->heading }}" class="w-full h-full object-cover">@endif
+            @if($vid->imageUrl())<img src="{{ $vid->imageUrl() }}" alt="{{ $vid->heading }}" class="w-full h-full object-cover" loading="lazy" decoding="async">@endif
             <div class="absolute inset-0 flex items-center justify-center">
               <div class="w-[52px] h-[52px] bg-white rounded-full flex items-center justify-center" style="box-shadow:0 4px 16px rgba(0,0,0,0.25);">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="#A80C18" style="margin-left:3px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>

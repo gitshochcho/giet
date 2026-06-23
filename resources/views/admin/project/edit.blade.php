@@ -120,6 +120,16 @@
                                         @error('project_status')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-6">
+                                        <label class="form-label">Category</label>
+                                        <select name="project_category_id" class="form-select @error('project_category_id') is-invalid @enderror">
+                                            <option value="">— No Category —</option>
+                                            @foreach($categories as $cat)
+                                                <option value="{{ $cat->id }}" @selected(old('project_category_id', $project->project_category_id) == $cat->id)>{{ $cat->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('project_category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
                                         <label class="form-label">Sort Order</label>
                                         <input type="number" name="sort_order" value="{{ old('sort_order', $project->sort_order) }}" class="form-control @error('sort_order') is-invalid @enderror">
                                         @error('sort_order')<div class="invalid-feedback">{{ $message }}</div>@enderror

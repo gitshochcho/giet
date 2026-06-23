@@ -63,7 +63,7 @@
       <div class="group w-full border border-[#EEF3F8] rounded-[20px] flex flex-col bg-white">
         <div class="relative w-full h-[300px] overflow-hidden rounded-t-[20px]">
           @if($member->imageUrl())
-            <img src="{{ $member->imageUrl() }}" alt="{{ $member->fullName() }}" class="w-full h-full object-cover" />
+            <img src="{{ $member->imageUrl() }}" alt="{{ $member->fullName() }}" class="w-full h-full object-cover" loading="lazy" decoding="async" />
           @else
             <div class="w-full h-full bg-[#EEF3F8] flex items-center justify-center">
               <span class="text-[#6B7280] text-[14px]">No Image</span>
@@ -83,7 +83,7 @@
           <p class="font-['Newsreader'] text-[12px] text-[#64748B] mb-4">{{ $member->designation }}</p>
           @if($member->short_description)
           <p class="font-['Newsreader'] text-[14px] leading-[22px] text-[#475569] mb-[16px] flex-grow">
-            {{ $member->short_description }}
+            {{ cleanText($member->short_description) }}
           </p>
           @endif
 
@@ -135,7 +135,7 @@
       @foreach($coreTeams as $member)
       <a href="{{ route('teamdetails', $member->id) }}" class="group w-full border border-[#EEF3F8] rounded-[14px] bg-white overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-200 cursor-pointer">
         @if($member->imageUrl())
-          <img src="{{ $member->imageUrl() }}" alt="{{ $member->fullName() }}" class="w-full h-[200px] object-cover" />
+          <img src="{{ $member->imageUrl() }}" alt="{{ $member->fullName() }}" class="w-full h-[200px] object-cover" loading="lazy" decoding="async" />
         @else
           <div class="w-full h-[200px] bg-[#EEF3F8] flex items-center justify-center">
             <span class="text-[#6B7280] text-[13px]">No Image</span>
@@ -203,7 +203,7 @@
         @foreach($groupMembers as $advisor)
         <a href="{{ route('teamdetails', $advisor->id) }}" style="background:#fff;border:1px solid #EEF3F8;border-radius:14px;padding:24px;display:flex;gap:18px;align-items:center;text-decoration:none;cursor:pointer;transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
           @if($advisor->imageUrl())
-            <img src="{{ $advisor->imageUrl() }}" alt="{{ $advisor->fullName() }}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
+            <img src="{{ $advisor->imageUrl() }}" alt="{{ $advisor->fullName() }}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;flex-shrink:0;" loading="lazy" decoding="async" />
           @else
             <div style="width:60px;height:60px;border-radius:50%;background:#EEF3F8;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
               <span style="color:#6B7280;font-size:10px;text-align:center;">No<br>Photo</span>

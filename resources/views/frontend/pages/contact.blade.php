@@ -33,7 +33,7 @@
     <!-- SUMMARY PARAGRAPH SPECIFICATION -->
     @if($heroContent?->description)
     <p style="font-family:'Newsreader',serif;font-weight:400;font-size:17px;line-height:29.75px;color:rgba(255,255,255,0.6);max-width:601px;" class="drop-shadow-sm">
-      {{ $heroContent->description }}
+      {{ cleanText($heroContent->description) }}
     </p>
     @endif
 
@@ -251,13 +251,13 @@
     <!-- Left: Title -->
     <div class="flex flex-col gap-[11.2px]">
       <p style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#0E606B;text-transform:uppercase;letter-spacing:0.08em;">
-        {{ $faqSection?->section ?? 'FAQs' }}
+        {{ $faqSection?->section ?? '' }}
       </p>
       <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:40px;line-height:48px;letter-spacing:-0.4px;color:#0F172A;">
-        {{ $faqSection?->heading ?? 'Frequently Asked Questions' }}
+        {{ $faqSection?->heading ?? '' }}
       </h2>
       <p style="font-family:'Inter',sans-serif;font-size:16px;color:#475569;line-height:28px;">
-        {{ $faqSection?->description ?? "Can't find the answer you're looking for? Send us a message using the form above." }}
+        {{ cleanText($faqSection?->description ?? "") }}
       </p>
     </div>
 

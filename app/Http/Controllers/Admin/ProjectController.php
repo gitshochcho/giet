@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectCategory;
 use App\Models\ProjectLocation;
 use App\Models\ProjectOutcome;
 use App\Models\ProjectPhaseDetail;
@@ -31,11 +32,10 @@ class ProjectController extends Controller
 
     public function create()
     {
-        $services = Service::withCount('projects')
-            ->orderBy('service_name')
-            ->get();
+        $services   = Service::withCount('projects')->orderBy('service_name')->get();
+        $categories = ProjectCategory::orderBy('sort_order')->orderBy('name')->get();
 
-        return view('admin.project.create', compact('services'));
+        return view('admin.project.create', compact('services', 'categories'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -50,6 +50,7 @@ class ProjectController extends Controller
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'project_status' => ['required', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
+            'project_category_id' => ['nullable', 'integer', 'exists:project_categories,id'],
             'services' => ['nullable', 'array'],
             'services.*' => ['nullable', 'integer', 'exists:services,id'],
             'hero_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'],
@@ -69,15 +70,16 @@ class ProjectController extends Controller
         ]);
 
         $project = Project::create([
-            'project_title' => $validated['project_title'],
-            'client' => $validated['client'] ?? null,
-            'partner' => $validated['partner'] ?? null,
-            'project_standard' => $validated['project_standard'] ?? null,
-            'overview' => $validated['overview'] ?? null,
-            'start_date' => $validated['start_date'] ?? null,
-            'end_date' => $validated['end_date'] ?? null,
-            'project_status' => $validated['project_status'],
-            'sort_order' => $validated['sort_order'] ?? 0,
+            'project_title'       => $validated['project_title'],
+            'client'              => $validated['client'] ?? null,
+            'partner'             => $validated['partner'] ?? null,
+            'project_standard'    => $validated['project_standard'] ?? null,
+            'overview'            => $validated['overview'] ?? null,
+            'start_date'          => $validated['start_date'] ?? null,
+            'end_date'            => $validated['end_date'] ?? null,
+            'project_status'      => $validated['project_status'],
+            'sort_order'          => $validated['sort_order'] ?? 0,
+            'project_category_id' => $validated['project_category_id'] ?? null,
         ]);
 
         $this->syncServices($project, $validated['services'] ?? []);
@@ -98,10 +100,11 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $project->load(['services', 'locations', 'phaseDetails', 'outcomes', 'media']);
-        $projects = Project::with(['services', 'media'])->orderBy('sort_order')->latest('id')->get();
-        $services = Service::withCount('projects')->orderBy('service_name')->get();
+        $projects   = Project::with(['services', 'media'])->orderBy('sort_order')->latest('id')->get();
+        $services   = Service::withCount('projects')->orderBy('service_name')->get();
+        $categories = ProjectCategory::orderBy('sort_order')->orderBy('name')->get();
 
-        return view('admin.project.edit', compact('project', 'projects', 'services'));
+        return view('admin.project.edit', compact('project', 'projects', 'services', 'categories'));
     }
 
     public function update(Request $request, Project $project): RedirectResponse
@@ -116,6 +119,7 @@ class ProjectController extends Controller
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'project_status' => ['required', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
+            'project_category_id' => ['nullable', 'integer', 'exists:project_categories,id'],
             'services' => ['nullable', 'array'],
             'services.*' => ['nullable', 'integer', 'exists:services,id'],
             'hero_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'],
@@ -135,15 +139,16 @@ class ProjectController extends Controller
         ]);
 
         $project->fill([
-            'project_title' => $validated['project_title'],
-            'client' => $validated['client'] ?? null,
-            'partner' => $validated['partner'] ?? null,
-            'project_standard' => $validated['project_standard'] ?? null,
-            'overview' => $validated['overview'] ?? null,
-            'start_date' => $validated['start_date'] ?? null,
-            'end_date' => $validated['end_date'] ?? null,
-            'project_status' => $validated['project_status'],
-            'sort_order' => $validated['sort_order'] ?? 0,
+            'project_title'       => $validated['project_title'],
+            'client'              => $validated['client'] ?? null,
+            'partner'             => $validated['partner'] ?? null,
+            'project_standard'    => $validated['project_standard'] ?? null,
+            'overview'            => $validated['overview'] ?? null,
+            'start_date'          => $validated['start_date'] ?? null,
+            'end_date'            => $validated['end_date'] ?? null,
+            'project_status'      => $validated['project_status'],
+            'sort_order'          => $validated['sort_order'] ?? 0,
+            'project_category_id' => $validated['project_category_id'] ?? null,
         ]);
         $project->save();
 

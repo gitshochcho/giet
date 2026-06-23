@@ -82,7 +82,7 @@
 @if($heroImg)
 <section class="w-full h-[200px] md:h-[400px] relative overflow-hidden select-none">
   <div class="w-full h-full relative">
-    <img src="{{ $heroImg }}" alt="{{ $insight->heading }}" class="w-full h-full object-cover object-center pointer-events-none" />
+    <img src="{{ $heroImg }}" alt="{{ $insight->heading }}" class="w-full h-full object-cover object-center pointer-events-none" loading="eager" decoding="async" />
     <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none"></div>
   </div>
 </section>
@@ -114,7 +114,7 @@
         @endphp
         @if($articleImgUrl)
         <div class="w-full rounded-[12px] overflow-hidden mt-[20px] mb-[8px]">
-          <img src="{{ $articleImgUrl }}" alt="{{ $article->image_description ?: $article->heading }}" class="w-full h-auto object-cover" />
+          <img src="{{ $articleImgUrl }}" alt="{{ $article->image_description ?: $article->heading }}" class="w-full h-auto object-cover" loading="lazy" decoding="async" />
         </div>
         @if($article->image_description)
         <p class="font-['Newsreader'] text-[#64748B] text-center italic" style="font-size:12px;">{{ $article->image_description }}</p>
@@ -158,7 +158,7 @@
       @foreach($authors as $author)
       <div class="flex items-center gap-[12px]">
         @if($author->imageUrl())
-          <img src="{{ $author->imageUrl() }}" alt="{{ $author->first_name }} {{ $author->last_name }}" class="w-[48px] h-[48px] rounded-full object-cover shrink-0" />
+          <img src="{{ $author->imageUrl() }}" alt="{{ $author->first_name }} {{ $author->last_name }}" class="w-[48px] h-[48px] rounded-full object-cover shrink-0" loading="lazy" decoding="async" />
         @else
           <div class="w-[48px] h-[48px] rounded-full bg-[#E8F6F7] flex items-center justify-center shrink-0 text-[#0E606B] font-bold text-[16px]">
             {{ strtoupper(substr($author->first_name, 0, 1)) }}
@@ -240,7 +240,7 @@
         @foreach($relatedInsights as $rel)
         <a href="{{ route('resourcedetails', $rel->id) }}" class="flex gap-[10px] items-start" style="text-decoration:none;">
           @if($rel->imageUrl())
-            <img src="{{ $rel->imageUrl() }}" alt="{{ $rel->heading }}" class="w-[40px] h-[40px] rounded-[6px] object-cover shrink-0" />
+            <img src="{{ $rel->imageUrl() }}" alt="{{ $rel->heading }}" class="w-[40px] h-[40px] rounded-[6px] object-cover shrink-0" loading="lazy" decoding="async" />
           @else
             <div class="w-[40px] h-[40px] rounded-[6px] bg-[#EEF3F8] shrink-0 flex items-center justify-center">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E606B" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>

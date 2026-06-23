@@ -39,7 +39,7 @@
 
     <p class="font-['Newsreader'] text-white/60 max-w-[580px] font-normal tracking-normal drop-shadow-sm"
        style="font-family:'Newsreader',serif;font-size:17px;line-height:29.75px;">
-      {{ $eventsHero?->description ?: 'GIET convenes governments, practitioners, and researchers through national dialogues, policy forums, seminars, and webinars to advance governance reform and economic transformation.' }}
+      {{ cleanText($eventsHero?->description) ?: 'GIET convenes governments, practitioners, and researchers through national dialogues, policy forums, seminars, and webinars to advance governance reform and economic transformation.' }}
     </p>
 
   </div>
@@ -134,7 +134,7 @@
         </div>
         @if($pe->heroImageUrl())
         <div class="w-full md:w-[352px] h-[180px] md:h-[160px] bg-[#EEF3F8] rounded-[8px] overflow-hidden md:flex-shrink-0">
-          <img src="{{ $pe->heroImageUrl() }}" class="w-full h-full object-cover" alt="{{ $pe->title }}">
+          <img src="{{ $pe->heroImageUrl() }}" class="w-full h-full object-cover" alt="{{ $pe->title }}" loading="lazy" decoding="async">
         </div>
         @else
         <div class="w-full md:w-[352px] h-[180px] md:h-[160px] bg-[#EEF3F8] rounded-[8px] overflow-hidden md:flex-shrink-0"></div>

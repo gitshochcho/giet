@@ -354,7 +354,7 @@
                     </div>
                     <h3 class="job-title">{{ $job->title }}</h3>
                     <div class="job-dept">{{ $job->department }}</div>
-                    <p class="job-desc">{{ Str::limit($job->description, 150) }}</p>
+                    <p class="job-desc">{{ Str::limit(cleanText($job->description), 150) }}</p>
                     <div class="job-meta">
                         <div class="meta-item"><i class="fas fa-map-marker-alt"></i> {{ $job->location }}</div>
                         <div class="meta-item"><i class="far fa-calendar"></i> Posted {{ $job->posted_date ? $job->posted_date->format('d M Y') : 'Null' }}</div>

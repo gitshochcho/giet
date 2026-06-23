@@ -69,6 +69,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('admin.project-categories.index') }}" class="nav-link {{ request()->routeIs('admin.project-categories.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-tags"></i>
+                        <p>Project Categories</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ route('admin.experts.index') }}" class="nav-link {{ request()->routeIs('admin.experts.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-people"></i>
                         <p>Expert Manager</p>

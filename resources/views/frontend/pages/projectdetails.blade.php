@@ -1,4 +1,4 @@
-@extends('frontend.layout.app')
+﻿@extends('frontend.layout.app')
 
 @push('custome-css')
 <style>
@@ -98,13 +98,13 @@
     <div style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 13px; line-height: 22px;"
          class="text-[#FFFFFF]/[0.60] flex flex-wrap items-center gap-1.5">
         @if($project->client)
-        <span>Client: <strong class="text-white font-semibold">{{ $project->client }}</strong></span>
+        <span>Client: <strong class="text-white font-semibold">{{ cleanText($project->client) }}</strong></span>
         @endif
         @if($project->client && $project->partner)
         <span class="text-white/30 mx-1">·</span>
         @endif
         @if($project->partner)
-        <span>Partner: <strong class="text-white font-semibold">{{ $project->partner }}</strong></span>
+        <span>Partner: <strong class="text-white font-semibold">{{ cleanText($project->partner) }}</strong></span>
         @endif
     </div>
     @endif
@@ -113,14 +113,14 @@
 </section>
 
 <!-- PROJECT META BAR SECTION -->
-<section class="w-full bg-[#003054] border-b border-[#FFFFFF14] py-4 md:h-[115px] md:py-0 flex items-center justify-center px-4 md:px-8 select-none">
+<section class="w-full bg-[#003054] border-b border-[#FFFFFF14] py-8 md:h-[115px] md:py-0 flex items-center justify-center px-4 md:px-8 select-none">
 
     <div class="w-full max-w-[1204px] mx-auto grid grid-cols-2 md:grid-cols-5 h-full items-center gap-y-4 md:gap-y-0">
 
         <!-- ITEM 1: CLIENT -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (50).png') }}" alt="Client Icon" class="w-[20px] h-[20px] object-contain">
+                <img src="{{ asset('icons/SVG (50).png') }}" alt="Client Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -128,7 +128,7 @@
                 </span>
                 <div class="flex flex-wrap gap-[5px]">
                     @if($project->client)
-                    <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11.5px;" class="bg-white/10 text-white px-[8px] py-[3px] rounded-[4px]">{{ $project->client }}</span>
+                    <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11.5px;" class="bg-white/10 text-white px-[8px] py-[3px] rounded-[4px]">{{ cleanText($project->client) }}</span>
                     @else
                     <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11.5px;" class="text-white/40">—</span>
                     @endif
@@ -139,7 +139,7 @@
         <!-- ITEM 2: DURATION -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (51).png') }}" alt="Duration Icon" class="w-[20px] h-[20px] object-contain">
+                <img src="{{ asset('icons/SVG (51).png') }}" alt="Duration Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -158,7 +158,7 @@
         <!-- ITEM 3: LOCATION -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (52).png') }}" alt="Location Icon" class="w-[20px] h-[20px] object-contain">
+                <img src="{{ asset('icons/SVG (52).png') }}" alt="Location Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -166,7 +166,7 @@
                 </span>
                 <span style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; line-height: 130%;" class="text-white">
                     @if($project->locations->isNotEmpty())
-                        {{ $project->locations->first()->location }}
+                        {{ cleanText($project->locations->first()->location) }}
                         @if($project->locations->count() > 1)
                         <br><span style="font-weight: 500;" class="text-white/70 text-[13px]">+ {{ $project->locations->count() - 1 }} more</span>
                         @endif
@@ -180,7 +180,7 @@
         <!-- ITEM 4: SECTOR -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (53).png') }}" alt="Sector Icon" class="w-[20px] h-[20px] object-contain">
+                <img src="{{ asset('icons/SVG (53).png') }}" alt="Sector Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -199,7 +199,7 @@
         <!-- ITEM 5: STATUS -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (54).png') }}" alt="Status Icon" class="w-[20px] h-[20px] object-contain">
+                <img src="{{ asset('icons/SVG (54).png') }}" alt="Status Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -232,9 +232,7 @@
             </h2>
             <div class="font-['Newsreader'] font-normal text-[14.5px] leading-[24px] text-[#334155] space-y-[16px] mb-[32px]">
                 @if($project->overview)
-                    @foreach(array_filter(explode("\n", $project->overview)) as $para)
-                    <p class="font-['Newsreader']">{{ trim($para) }}</p>
-                    @endforeach
+                    {!! $project->overview !!}
                 @else
                 <p class="font-['Newsreader'] text-[#94A3B8]">No overview available.</p>
                 @endif
@@ -242,7 +240,7 @@
 
             <!-- OUTCOMES & IMPACT -->
             @if($project->outcomes->isNotEmpty())
-            <h2 class="font-['Newsreader'] font-extrabold text-[26px] leading-[36px] text-[#0F172A] mb-[16px]">
+            <h2 class="font-['Newsreader'] font-extrabold text-[26px] leading-[36px] text-[#0F172A] mb-[20px]">
                 Outcomes & Impact
             </h2>
             <ul class="space-y-[14px] mb-[44px]">
@@ -250,7 +248,7 @@
                 <li class="flex items-start gap-[10px]">
                     <span class="w-[6px] h-[6px] rounded-full bg-[#0E606B] mt-[9px] shrink-0"></span>
                     <p class="font-['Newsreader'] font-normal text-[14px] leading-[22px] text-[#334155]">
-                        {{ $outcome->text }}
+                        {{ cleanText($outcome->text) }}
                     </p>
                 </li>
                 @endforeach
@@ -259,17 +257,17 @@
 
             <!-- DELIVERABLES -->
             @if($project->phaseDetails->isNotEmpty())
-            <h2 class="font-['Newsreader'] font-extrabold text-[26px] leading-[36px] text-[#0F172A] mb-[20px]">
+            <h2 class="font-['Newsreader'] font-extrabold text-[26px] leading-[36px] text-[#0F172A] mt-20px mb-[20px]">
                 Deliverables
             </h2>
             <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-[12px] mb-[48px]">
                 @foreach($project->phaseDetails as $phase)
                 <div class="w-full bg-[#F7F9FB] border border-[#E4EAF0] rounded-[10px] p-[14px] flex items-center gap-[10px] hover:bg-slate-50 transition-colors text-left">
                     <div class="w-[32px] h-[32px] bg-[#E8F6F7] rounded-[6px] flex items-center justify-center shrink-0 overflow-hidden">
-                        <img src="{{ asset('icons/SVG (55).png') }}" alt="Icon" class="w-[16px] h-[16px] object-contain">
+                        <img src="{{ asset('icons/SVG (55).png') }}" alt="Icon" class="w-[16px] h-[16px] object-contain" loading="lazy" decoding="async">
                     </div>
                     <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 12.5px; line-height: 16px;" class="text-[#1E293B] line-clamp-2">
-                        {{ $phase->phase_description }}
+                        {{ cleanText($phase->phase_description) }}
                     </span>
                 </div>
                 @endforeach
@@ -280,12 +278,12 @@
             <div class="flex flex-col md:flex-row items-stretch md:items-center gap-[12px] pt-[10px] border-t border-gray-100">
                 <a href="{{ route('contact') }}" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;"
                         class="bg-[#A80C18] text-white pt-[13px] pr-[24px] pb-[16px] pl-[24px] rounded-[6px] hover:bg-[#8e0a13] transition-colors flex items-center justify-center gap-1.5">
-                    Commission a Similar Project <span class="text-[14px]">→</span>
+                    {{ $pdActions?->heading }} <span class="text-[14px]">→</span>
                 </a>
 
                 <a href="{{ route('projects') }}" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;"
                         class="bg-white text-[#003054] border-2 border-[#003054] pt-[11px] pr-[24px] pb-[14px] pl-[24px] rounded-[6px] hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5">
-                    <span class="text-[14px]">←</span> All Projects
+                    <span class="text-[14px]">←</span> {{ $pdActions?->sub_heading }}
                 </a>
             </div>
 
@@ -297,15 +295,15 @@
             <div class="w-full bg-[#00203F] text-white p-[24px] text-left flex flex-col gap-[14px]">
                 <div class="flex flex-col gap-[6px]">
                     <span class="font-['Newsreader'] font-bold text-[10px] tracking-[1px] uppercase text-[#02D9EF]">
-                        Work With Us
+                        {{ $pdSidebar?->section }}
                     </span>
                     <p class="font-['Newsreader'] text-white/85" style="font-family: 'Newsreader',serif; font-weight: 400; font-size: 13px; line-height: 19px;">
-                        Get in touch and our team will walk you through our solutions.
+                        {{ cleanText($pdSidebar?->description) }}
                     </p>
                 </div>
                 <a href="{{ route('contact') }}" style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; text-decoration:none;"
                    class="w-full bg-[#A80C18] text-white py-[11px] rounded-[4px] hover:bg-[#8e0a13] transition-colors flex items-center justify-center gap-1.5">
-                    Commission a Similar Project <span class="text-[12px]">→</span>
+                    {{ $pdSidebar?->sub_heading }} <span class="text-[12px]">→</span>
                 </a>
             </div>
 
@@ -322,11 +320,11 @@
 
         <div class="w-full flex justify-between items-end">
             <div class="text-left">
-                <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.76px;" class="text-[#0E606B] uppercase block mb-[6px]">Project Team</span>
-                <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:32px;line-height:38px;" class="text-[#0F172A]">Team Members</h2>
+                <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.76px;" class="text-[#0E606B] uppercase block mb-[6px]">{{ $pdTeam?->section }}</span>
+                <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:32px;line-height:38px;" class="text-[#0F172A]">{{ $pdTeam?->heading }}</h2>
             </div>
             <a href="{{ route('team') }}" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;" class="pd-experts-link text-[#003054] border-b-2 border-[#003054] pb-[3px] hover:opacity-70 transition-opacity">
-                All Experts →
+                {{ $pdTeam?->design_word }} →
             </a>
         </div>
 
@@ -335,7 +333,7 @@
             <a href="{{ route('teamdetails', $member->id) }}" class="pd-team-card group w-full bg-white border border-[#E8EEF4] rounded-[14px] overflow-hidden flex flex-col hover:shadow-[0px_8px_28px_0px_rgba(0,48,84,0.10)] transition-shadow duration-300">
                 <div class="w-full h-[180px] bg-[#E8F0F6] overflow-hidden">
                     @if($member->imageUrl())
-                    <img src="{{ $member->imageUrl() }}" alt="{{ $member->fullName() }}" class="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-300" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+                    <img src="{{ $member->imageUrl() }}" alt="{{ $member->fullName() }}" class="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-300" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy" decoding="async" />
                     @endif
                     <div class="{{ $member->imageUrl() ? 'hidden' : '' }} w-full h-full bg-[#E8F0F6] items-center justify-center" style="{{ $member->imageUrl() ? '' : 'display:flex;' }}">
                         <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="18" r="10" fill="#CBD5E1"/><ellipse cx="24" cy="38" rx="16" ry="9" fill="#CBD5E1"/></svg>

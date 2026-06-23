@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div class="app-content-header">
@@ -89,7 +89,7 @@
                                     <tr>
                                         <td>
                                             @if($partner->imageUrl())
-                                                <img src="{{ $partner->imageUrl() }}" alt="{{ $partner->name }}" style="height:40px;max-width:80px;object-fit:contain;">
+                                                <img src="{{ $partner- loading="lazy" decoding="async">imageUrl() }}" alt="{{ $partner->name }}" style="height:40px;max-width:80px;object-fit:contain;">
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
@@ -160,7 +160,7 @@
                                                                 <label class="form-label">Logo Image</label>
                                                                 @if($partner->imageUrl())
                                                                     <div class="mb-2 d-flex align-items-center gap-3">
-                                                                        <img src="{{ $partner->imageUrl() }}" alt="{{ $partner->name }}" style="height:50px;max-width:120px;object-fit:contain;">
+                                                                        <img src="{{ $partner- loading="lazy" decoding="async">imageUrl() }}" alt="{{ $partner->name }}" style="height:50px;max-width:120px;object-fit:contain;">
                                                                         <div class="form-check">
                                                                             <input class="form-check-input" type="checkbox" name="remove_image" value="1" id="removeImg{{ $partner->id }}">
                                                                             <label class="form-check-label" for="removeImg{{ $partner->id }}">Remove</label>

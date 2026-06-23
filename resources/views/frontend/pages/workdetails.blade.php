@@ -1,4 +1,4 @@
-@extends('frontend.layout.app')
+﻿@extends('frontend.layout.app')
 
 @section('content')
 
@@ -95,7 +95,7 @@
         <div style="width:100%;display:flex;align-items:center;gap:14px;padding:{{ $index === 0 ? '0 0 13px' : '13px 0' }};border-bottom:1px solid #E4EAF0;">
           <div style="background:#003054;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
             @if($detail->iconUrl())
-              <img src="{{ $detail->iconUrl() }}" alt="" style="width:16px;height:16px;object-fit:contain;filter:brightness(0) invert(1);">
+              <img src="{{ $detail->iconUrl() }}" alt="" style="width:16px;height:16px;object-fit:contain;filter:brightness(0) invert(1);" loading="lazy" decoding="async">
             @else
               <svg width="16" height="16" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
             @endif
@@ -115,32 +115,44 @@
 
 {{-- ===== 3. PRODUCTS & SOLUTIONS ===== --}}
 @if($service->solutions->count())
-<section style="border-top:1px solid #E4EAF0;"
-  class="w-full py-[48px] md:py-[72px] bg-[#F7F9FB] text-center select-none flex flex-col items-center justify-center px-4 md:px-8">
-  <div class="w-full max-w-[1204px] mx-auto flex flex-col gap-[52px] items-center">
+<section style="border-top:1px solid #E4EAF0;background:#F7F9FB;"
+  class="w-full py-[48px] md:py-[72px] select-none flex flex-col items-center justify-center px-4 md:px-8">
+  <div class="w-full max-w-[1204px] mx-auto flex flex-col gap-[44px] items-center">
 
-    <div style="display:flex;align-items:center;justify-content:center;gap:16px;width:100%;">
-      <div style="background:#18909C;flex:1;height:2px;"></div>
-      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:22px;letter-spacing:0.88px;color:#003054;text-transform:uppercase;white-space:nowrap;margin:0;">
+    {{-- Title with lines --}}
+    <div style="display:flex;align-items:center;justify-content:center;gap:18px;width:100%;">
+      <div style="background:#18909C;flex:1;height:2px;border-radius:2px;"></div>
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:13px;letter-spacing:2px;color:#003054;text-transform:uppercase;white-space:nowrap;margin:0;">
         Products &amp; Solutions
       </h2>
-      <div style="background:#18909C;flex:1;height:2px;"></div>
+      <div style="background:#18909C;flex:1;height:2px;border-radius:2px;"></div>
     </div>
 
-    <div class="w-full max-w-[1204px] mx-auto grid grid-cols-3 md:grid-cols-{{ min($service->solutions->count(), 7) }} gap-[16px] md:gap-[20px]">
+    {{-- Cards grid — inline style so count is truly dynamic --}}
+    @php $solCount = $service->solutions->count(); @endphp
+    <div style="display:grid;grid-template-columns:repeat({{ min($solCount, 7) }},1fr);gap:8px 16px;width:100%;">
       @foreach($service->solutions as $solution)
-      <div style="padding:0 8px 15px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:11px;">
+      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:4px 8px 8px;">
+
+        {{-- Icon box --}}
         <div style="width:72px;height:72px;border-radius:14px;background:#003054;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <svg width="28" height="28" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <svg width="28" height="28" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
         </div>
-        <h4 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:11.5px;letter-spacing:0.46px;color:#003054;text-transform:uppercase;margin:0;padding:0 10px;">
+
+        {{-- Title --}}
+        <h4 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:10.5px;letter-spacing:0.84px;color:#003054;text-transform:uppercase;margin:0;line-height:1.4;">
           {{ $solution->heading }}
         </h4>
+
+        {{-- Description --}}
         @if($solution->sub_heading)
-        <p style="font-family:'Newsreader',Georgia,serif;font-size:12px;line-height:18.6px;color:#6B7280;margin:0;">
+        <p style="font-family:'Newsreader',Georgia,serif;font-size:11.5px;line-height:17px;color:#6B7280;margin:0;">
           {{ $solution->sub_heading }}
         </p>
         @endif
+
       </div>
       @endforeach
     </div>
@@ -150,9 +162,9 @@
 @endif
 
 {{-- ===== 4. RELATED PROJECTS ===== --}}
-@if($service->projects->count())
+@if($relatedProjects->count())
 <section class="w-full py-[48px] md:py-[80px] px-4 md:px-8 bg-white select-none flex items-center justify-center">
-  <div class="w-full max-w-[1204px] mx-auto flex flex-col gap-[44px]">
+  <div class="w-full max-w-[1204px] mx-auto flex flex-col gap-11">
 
     <div style="width:100%;display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:16px;">
       <div style="text-align:left;">
@@ -169,15 +181,15 @@
     </div>
 
     <div class="w-full max-w-[1204px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-[20px]">
-      @foreach($service->projects as $project)
+      @foreach($relatedProjects as $project)
       <div style="width:100%;border:1px solid #E4EAF0;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;background:#fff;">
         <div style="position:relative;height:180px;background:#0F172A;overflow:hidden;">
           @if($project->imageUrl())
-            <img src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}" style="width:100%;height:100%;object-fit:cover;opacity:0.8;">
+            <img src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}" style="width:100%;height:100%;object-fit:cover;opacity:0.8;" loading="lazy" decoding="async">
           @else
             <div style="width:100%;height:100%;background:#1E3A5F;"></div>
           @endif
-          @if($project->services->first())
+          @if($project->services?->first())
           <span style="background:#003054;position:absolute;bottom:0;left:0;color:#fff;font-size:9px;font-weight:700;text-transform:uppercase;padding:5px 12px;border-radius:0 4px 0 0;">
             {{ $project->services->first()->service_name }}
           </span>
@@ -190,13 +202,15 @@
             </h4>
             @if($project->overview)
             <p style="font-family:'Newsreader',Georgia,serif;font-size:13px;line-height:21px;color:#1A1A1A;margin:0;">
-              {{ Str::limit(strip_tags($project->overview), 140) }}
+              {{ Str::limit(cleanText($project->overview), 140) }}
             </p>
             @endif
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid #F1F5F9;margin-top:12px;">
             @if($project->project_status)
-            <span style="font-family:'Newsreader',Georgia,serif;font-size:11.5px;color:#6B7280;">{{ $project->project_status }}</span>
+            <span style="font-family:'Newsreader',Georgia,serif;font-size:11.5px;color:#6B7280;">
+              Completed · {{ $project->project_status }}
+            </span>
             @else
             <span></span>
             @endif
@@ -237,7 +251,7 @@
       <a href="{{ route('teamdetails', $expert->id) }}" class="group w-full border border-[#E4EAF0] rounded-[14px] overflow-hidden bg-white hover:shadow-md transition-all flex flex-col text-left" style="text-decoration:none;">
         <div class="w-full h-[200px] bg-[#EEF3F8] overflow-hidden">
           @if($expert->imageUrl())
-            <img src="{{ $expert->imageUrl() }}" alt="{{ $expert->fullName() }}" class="w-full h-full object-cover object-top">
+            <img src="{{ $expert->imageUrl() }}" alt="{{ $expert->fullName() }}" class="w-full h-full object-cover object-top" loading="lazy" decoding="async">
           @else
             <div class="w-full h-full bg-[#EEF3F8] flex items-center justify-center">
               <svg width="48" height="48" fill="none" stroke="#CBD5E1" stroke-width="1" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -274,7 +288,7 @@
 </section>
 @endif
 
-{{-- ===== 6. OTHER AREAS OF WORK ===== --}}
+<!-- {{-- ===== 6. OTHER AREAS OF WORK ===== --}}
 @if($otherServices->count())
 <section style="width:100%;padding:48px 32px;background:#F7F9FB;display:flex;align-items:center;justify-content:center;">
   <div style="width:100%;max-width:1204px;margin:0 auto;">
@@ -307,6 +321,6 @@
     </div>
   </div>
 </section>
-@endif
+@endif -->
 
 @endsection
