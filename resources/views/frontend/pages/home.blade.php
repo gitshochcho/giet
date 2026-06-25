@@ -135,7 +135,7 @@
         {{ cleanText($homeAboutTrace->description) }}
       </p>
       @endif
-      <a href="{{ route('about') }}" class="w-[159px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] font-['Newsreader'] font-semibold text-[13px] leading-[21.45px] rounded-[6px] bg-transparent flex items-center justify-center gap-2 hover:bg-[#003054]/5 transition-all duration-150 whitespace-nowrap" style="text-decoration:none;color:#003054;">
+      <a href="{{ route('about') }}" class="w-[159px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] font-['Newsreader'] font-semibold text-[13px] leading-[21.45px] rounded-[6px] bg-transparent flex items-center justify-center gap-2 hover:bg-[#003054]/5 transition-all duration-150 whitespace-nowrap" style="text-decoration:none;color:#A80C18;">
         <span>{{ $homeAboutTrace?->sub_heading }}</span>
         <span class="text-[15px] font-normal">→</span>
       </a>
@@ -181,7 +181,7 @@
         {{ $homeFocusAreas?->heading }}
       </h2>
     </div>
-    <a href="{{ route('services') }}" class="font-['Newsreader'] font-semibold text-[13px] w-[135px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] bg-white rounded-[6px] flex items-center justify-center hover:bg-[#003054]/5 transition-all duration-150 shadow-sm whitespace-nowrap" style="text-decoration:none;color:#003054;">
+    <a href="{{ route('services') }}" class="font-['Newsreader'] font-semibold text-[13px] w-[135px] h-[43.44px] pt-[9px] pr-[22px] pb-[10.44px] pl-[22px] border border-[#003054] bg-white rounded-[6px] flex items-center justify-center hover:bg-[#003054]/5 transition-all duration-150 shadow-sm whitespace-nowrap" style="text-decoration:none;color:#A80C18;">
       {{ $homeFocusAreas?->sub_heading }}
     </a>
   </div>
@@ -208,7 +208,7 @@
           {{ Str::limit(cleanText($svc->description), 140) }}
         </p>
         @endif
-        <a href="{{ route('serviceDetails', $svc->id) }}" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] flex items-center gap-1 mt-auto" style="text-decoration:none;color:#18909C;">
+        <a href="{{ route('serviceDetails', $svc->id) }}" class="font-['Newsreader'] font-semibold text-[12px] leading-[19.8px] tracking-[0.48px] flex items-center gap-1 mt-[10px]" style="text-decoration:none;color:#A80C18;">
           Explore area &rarr;
         </a>
       </div>
@@ -338,7 +338,7 @@
     </div>
 
     <div class="w-full flex justify-center mt-6">
-      <a href="{{ route('projects') }}" class="w-[180px] h-[44px] border border-slate-300 font-['Newsreader'] font-semibold text-[13px] rounded-[6px] flex items-center justify-center gap-2 hover:bg-slate-50 transition-all duration-150 shadow-sm whitespace-nowrap cursor-pointer" style="text-decoration:none;color:#0F172A;">
+      <a href="{{ route('projects') }}" class="w-[180px] h-[44px] border border-slate-300 font-['Newsreader'] font-semibold text-[13px] rounded-[6px] flex items-center justify-center gap-2 hover:bg-slate-50 transition-all duration-150 shadow-sm whitespace-nowrap cursor-pointer" style="text-decoration:none;color:#A80C18;">
         <span>{{ $homeProjectsBlock?->sub_heading }}</span>
         <span class="text-[14px] font-sans font-normal">&rarr;</span>
       </a>

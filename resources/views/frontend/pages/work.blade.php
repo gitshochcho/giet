@@ -74,7 +74,7 @@
         <p style="font-family:'Newsreader',Georgia,serif;font-size:13.5px;line-height:23.22px;color:#1A1A1A;margin:0 0 24px 0;flex-grow:1;">
           {{ cleanText($card['desc']) }}
         </p>
-        <a href="{{ route('serviceDetails', $card['id']) }}" style="font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:12px;line-height:19.8px;letter-spacing:0.48px;color:#18909C;text-decoration:none;display:flex;align-items:center;gap:4px;margin-top:auto;">
+        <a href="{{ route('serviceDetails', $card['id']) }}" style="font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:12px;line-height:19.8px;letter-spacing:0.48px;color:#A80C18;text-decoration:none;display:flex;align-items:center;gap:4px;margin-top:auto;">
           Explore &rarr;
         </a>
       </div>
@@ -112,7 +112,7 @@
         @endif
 
         <a href="{{ route('contact') }}"
-           style="background-color:#003054;text-decoration:none;"
+           style="background-color:#A80C18;text-decoration:none;"
            class="w-[181px] h-[51.09px] pt-[13px] pr-[32px] mt-[10px] pb-[14.09px] pl-[32px] rounded-[6px] inline-flex items-center justify-center gap-1 text-white text-[14px] font-bold transition-all duration-200 hover:bg-[#002040] shadow-sm shrink-0">
             <span>{{ $workWithUs?->sub_heading }}</span>
             <span class="inline-block translate-y-[-1px]">→</span>

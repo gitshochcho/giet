@@ -46,14 +46,14 @@
 
     <div class="flex flex-col gap-[12px]">
       <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:38px;line-height:1.18;color:#0F172A;margin:0;">
-        {{ $leadershipContent?->heading ?? 'Leadership Team' }}
+        {{ $leadershipContent?->heading ?? '' }}
         @if($leadershipContent?->design_word)
           <span style="color:#18909C;">{{ $leadershipContent->design_word }}</span>
         @endif
       </h2>
-      @if($leadershipContent?->sub_heading)
+      @if($leadershipContent?->description)
       <p style="font-family:'Newsreader',Georgia,serif;font-size:16px;line-height:28px;color:#1A1A1A;max-width:540px;margin:0;">
-        {{ $leadershipContent->sub_heading }}
+        {{ cleanText($leadershipContent->description) }}
       </p>
       @endif
     </div>
@@ -80,7 +80,7 @@
         </div>
         <div class="p-[26px] flex flex-col flex-grow">
           <h3 class="font-serif text-[20px] font-extrabold text-[#0F172A] mb-1">{{ $member->fullName() }}</h3>
-          <p class="font-['Newsreader'] text-[12px] text-[#64748B] mb-4">{{ $member->designation }}</p>
+          <p class="font-['Newsreader'] text-[12px] text-[#64748B] mb-4">{{ $member->education }}</p>
           @if($member->short_description)
           <p class="font-['Newsreader'] text-[14px] leading-[22px] text-[#475569] mb-[16px] flex-grow">
             {{ cleanText($member->short_description) }}
@@ -88,7 +88,7 @@
           @endif
 
           @if($member->experties->count())
-          <div class="flex flex-wrap gap-2 pb-[18px]">
+          <div class="flex flex-wrap mt-[12px] gap-2 pb-[18px]">
             @foreach($member->experties as $exp)
               <span class="px-3 py-1 bg-[#F0F7F7] text-[#0E606B] text-[11px] font-semibold rounded-full border border-[#D1E5E5]">{{ $exp->heading }}</span>
             @endforeach
@@ -122,9 +122,9 @@
   <div class="max-w-[1204px] mx-auto flex flex-col gap-[32px] px-0">
 
     <div style="display:flex;flex-direction:column;gap:12px;">
-      <span style="font-family:'Newsreader',Georgia,serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#18909C;">{{ $coreTeamContent?->heading ?? 'Research Team' }}</span>
+      <span style="font-family:'Newsreader',Georgia,serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#18909C;">{{ $coreTeamContent?->section ?? '' }}</span>
       <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:38px;line-height:1.18;color:#0F172A;margin:0;">
-        {{ $coreTeamContent?->sub_heading ?? 'Fellows & Analysts' }}
+        {{ $coreTeamContent?->heading ?? '' }}
         @if($coreTeamContent?->design_word)
           <span style="color:#18909C;">{{ $coreTeamContent->design_word }}</span>
         @endif
@@ -179,7 +179,7 @@
         @endif
       </h2>
       <p style="font-family:'Newsreader',Georgia,serif;font-size:16px;line-height:28px;color:#1A1A1A;max-width:600px;margin:0;">
-        {{ $expertsContent?->sub_heading ?? '' }}
+        {{ cleanText($expertsContent?->description ?? '') }}
       </p>
     </div>
 

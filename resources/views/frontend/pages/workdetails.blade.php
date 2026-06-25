@@ -61,11 +61,11 @@
   <div class="w-full max-w-[1204px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[72px]">
 
     {{-- Overview --}}
-    <div class="w-full flex flex-col text-left">
+    <div class="w-full flex flex-col text-left md:border-r md:border-[#E4EAF0] md:pr-9">
       <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:22px;letter-spacing:0.88px;color:#003054;text-transform:uppercase;margin:0 0 12px 0;">
-        Overview
+        {{ $wdOverview?->heading ?? '' }}
       </h3>
-      <div style="background:#18909C;width:100%;height:2px;margin-bottom:24px;"></div>
+      <div style="background:#18909C;width:10%;height:3px;margin-bottom:24px;"></div>
 
       @if($service->overview)
       <div class="overview-content" style="font-family:'Newsreader',Georgia,serif;font-size:15px;line-height:27.3px;color:#4B5563;">
@@ -86,9 +86,9 @@
     {{-- Details (Our Services Include) --}}
     <div class="w-full flex flex-col text-left">
       <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:22px;letter-spacing:0.88px;color:#003054;text-transform:uppercase;margin:0 0 12px 0;">
-        Our Services Include
+        {{ $wdServicesInclude?->heading ?? '' }}
       </h3>
-      <div style="background:#18909C;width:100%;height:2px;margin-bottom:24px;"></div>
+      <div style="background:#18909C;width:10%;height:3px;margin-bottom:24px;"></div>
 
       <div class="flex flex-col">
         @forelse($service->details as $index => $detail)
@@ -122,8 +122,8 @@
     {{-- Title with lines --}}
     <div style="display:flex;align-items:center;justify-content:center;gap:18px;width:100%;">
       <div style="background:#18909C;flex:1;height:2px;border-radius:2px;"></div>
-      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:13px;letter-spacing:2px;color:#003054;text-transform:uppercase;white-space:nowrap;margin:0;">
-        Products &amp; Solutions
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:18px;letter-spacing:2px;color:#003054;text-transform:uppercase;white-space:nowrap;margin:0;">
+        {{ $wdSolutions?->heading ?? '' }}
       </h2>
       <div style="background:#18909C;flex:1;height:2px;border-radius:2px;"></div>
     </div>
@@ -135,10 +135,14 @@
       <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:4px 8px 8px;">
 
         {{-- Icon box --}}
-        <div style="width:72px;height:72px;border-radius:14px;background:#003054;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-          <svg width="28" height="28" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-          </svg>
+        <div style="width:72px;height:72px;border-radius:14px;background:#003054;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
+          @if($solution->iconUrl())
+            <img src="{{ $solution->iconUrl() }}" alt="{{ $solution->heading }}" style="width:24px;height:24px;object-fit:contain;filter:brightness(0) invert(1);" loading="lazy" decoding="async">
+          @else
+            <svg width="28" height="28" fill="none" stroke="white" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+          @endif
         </div>
 
         {{-- Title --}}
@@ -169,14 +173,14 @@
     <div style="width:100%;display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:16px;">
       <div style="text-align:left;">
         <span style="font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:11px;letter-spacing:1.76px;color:#0E606B;text-transform:uppercase;display:inline-block;margin-bottom:8px;">
-          Related Projects
+          {{ $wdRelatedProjects?->section ?? '' }}
         </span>
         <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:36px;line-height:42.48px;letter-spacing:-0.36px;color:#003054;margin:0;">
-          Work We Have Delivered
+          {{ $wdRelatedProjects?->heading ?? '' }}
         </h2>
       </div>
       <a href="{{ route('projects') }}" style="font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:13px;color:#003054;text-decoration:none;border-bottom:2px solid #003054;padding-bottom:5px;">
-        All Projects →
+        {{ $wdRelatedProjects?->sub_heading ?? '' }} →
       </a>
     </div>
 
@@ -235,14 +239,14 @@
     <div style="width:100%;display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:16px;">
       <div style="text-align:left;">
         <span style="font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:11px;letter-spacing:1.76px;color:#0E606B;text-transform:uppercase;display:block;margin-bottom:4px;">
-          Our People
+          {{ $wdExperts?->section ?? '' }}
         </span>
         <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:36px;line-height:42.48px;letter-spacing:-0.36px;color:#003054;margin:0;">
-          Experts in This Area
+          {{ $wdExperts?->heading ?? '' }}
         </h2>
       </div>
       <a href="{{ route('team') }}" style="font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:13px;color:#003054;text-decoration:none;border-bottom:2px solid #003054;padding-bottom:5px;">
-        All Experts →
+        {{ $wdExperts?->sub_heading ?? '' }} →
       </a>
     </div>
 

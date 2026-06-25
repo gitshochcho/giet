@@ -61,17 +61,17 @@
       <form action="{{ route('contact.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
         @csrf
         <div class="flex flex-col gap-1">
-          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">First Name *</label>
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">First Name <span class="text-[red]">*</span></label>
           <input type="text" name="first_name" value="{{ old('first_name') }}" placeholder="e.g. Aminur" class="p-3 rounded-[8px] w-full text-[14px] border {{ $errors->has('first_name') ? 'border-red-400' : 'border-[#E4EAF0]' }}">
           @error('first_name')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
         </div>
         <div class="flex flex-col gap-1">
-          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Last Name *</label>
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Last Name <span class="text-[red]">*</span></label>
           <input type="text" name="last_name" value="{{ old('last_name') }}" placeholder="e.g. Rahman" class="p-3 rounded-[8px] w-full text-[14px] border {{ $errors->has('last_name') ? 'border-red-400' : 'border-[#E4EAF0]' }}">
           @error('last_name')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
         </div>
         <div class="flex flex-col gap-1 col-span-2">
-          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Email Address *</label>
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Email Address <span class="text-[red]">*</span></label>
           <input type="email" name="email" value="{{ old('email') }}" placeholder="you@organisation.org" class="p-3 rounded-[8px] w-full text-[14px] border {{ $errors->has('email') ? 'border-red-400' : 'border-[#E4EAF0]' }}">
           @error('email')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
         </div>
@@ -85,7 +85,7 @@
           @error('mobile_number')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
         </div>
         <div class="flex flex-col gap-1 col-span-2">
-          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Reason for Contact *</label>
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Reason for Contact <span class="text-[red]">*</span></label>
           <select name="subject" class="p-3 rounded-[8px] w-full text-[14px] text-[#475569] border {{ $errors->has('subject') ? 'border-red-400' : 'border-[#E4EAF0]' }}">
             <option value="">— Select a topic —</option>
             <option value="Governance Frameworks & Public Sector Management" {{ old('subject') == 'Governance Frameworks & Public Sector Management' ? 'selected' : '' }}>Governance Frameworks & Public Sector Management</option>
@@ -102,7 +102,7 @@
           @error('subject')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
         </div>
         <div class="flex flex-col gap-1 col-span-2">
-          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Message *</label>
+          <label class="font-['Newsreader'] font-semibold text-[12.5px] leading-none tracking-[0.25px] text-[#0F172A]">Message <span class="text-[red]">*</span></label>
           <textarea name="message" placeholder="Tell us about your enquiry, project idea, or collaboration proposal..." class="p-3 rounded-[8px] w-full h-[150px] text-[14px] border {{ $errors->has('message') ? 'border-red-400' : 'border-[#E4EAF0]' }}">{{ old('message') }}</textarea>
           @error('message')<span class="text-red-500 text-[12px]">{{ $message }}</span>@enderror
         </div>

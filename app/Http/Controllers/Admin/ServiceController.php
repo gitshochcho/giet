@@ -43,10 +43,12 @@ class ServiceController extends Controller
             'details.*.text'      => ['nullable', 'string'],
             'details_icons'       => ['nullable', 'array'],
             'details_icons.*'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
-            'solutions'           => ['nullable', 'array'],
-            'solutions.*.id'      => ['nullable', 'integer'],
-            'solutions.*.heading'     => ['nullable', 'string', 'max:255'],
+            'solutions'             => ['nullable', 'array'],
+            'solutions.*.id'        => ['nullable', 'integer'],
+            'solutions.*.heading'   => ['nullable', 'string', 'max:255'],
             'solutions.*.sub_heading' => ['nullable', 'string', 'max:255'],
+            'solutions_icons'       => ['nullable', 'array'],
+            'solutions_icons.*'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
         ]);
 
         $service = Service::create([
@@ -70,7 +72,7 @@ class ServiceController extends Controller
         }
 
         $this->syncDetails($service, $request->input('details', []), $request->file('details_icons', []));
-        $this->syncSolutions($service, $request->input('solutions', []));
+        $this->syncSolutions($service, $request->input('solutions', []), $request->file('solutions_icons', []));
 
         return redirect()
             ->route('admin.services.index')
@@ -109,10 +111,12 @@ class ServiceController extends Controller
             'details.*.media_key' => ['nullable', 'string', 'max:50'],
             'details_icons'       => ['nullable', 'array'],
             'details_icons.*'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
-            'solutions'           => ['nullable', 'array'],
-            'solutions.*.id'      => ['nullable', 'integer'],
-            'solutions.*.heading'     => ['nullable', 'string', 'max:255'],
+            'solutions'             => ['nullable', 'array'],
+            'solutions.*.id'        => ['nullable', 'integer'],
+            'solutions.*.heading'   => ['nullable', 'string', 'max:255'],
             'solutions.*.sub_heading' => ['nullable', 'string', 'max:255'],
+            'solutions_icons'       => ['nullable', 'array'],
+            'solutions_icons.*'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
         ]);
 
         $service->fill([
@@ -143,7 +147,7 @@ class ServiceController extends Controller
         }
 
         $this->syncDetails($service, $request->input('details', []), $request->file('details_icons', []));
-        $this->syncSolutions($service, $request->input('solutions', []));
+        $this->syncSolutions($service, $request->input('solutions', []), $request->file('solutions_icons', []));
 
         return redirect()
             ->route('admin.services.index')
@@ -209,7 +213,7 @@ class ServiceController extends Controller
             });
     }
 
-    private function syncSolutions(Service $service, array $solutions): void
+    private function syncSolutions(Service $service, array $solutions, array $icons = []): void
     {
         $keptIds = [];
 
@@ -231,6 +235,11 @@ class ServiceController extends Controller
             $solution->sub_heading = $subHeading;
             $solution->sort_order = $index;
             $solution->save();
+
+            if (isset($icons[$index]) && $icons[$index]->isValid()) {
+                $solution->clearMediaCollection('icon');
+                $solution->addMedia($icons[$index])->toMediaCollection('icon');
+            }
 
             $keptIds[] = $solution->id;
         }

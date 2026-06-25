@@ -69,7 +69,7 @@
             </button>
 
             <!-- Contact Button -->
-            <a href="{{ route('contact') }}" class="w-[92px] h-[37.44px] bg-[#18909C] text-white text-[13px] font-bold rounded-[6px] flex items-center justify-center hover:bg-[#0e7480] transition-colors duration-150 shadow-sm">
+            <a href="{{ route('contact') }}" class="w-[92px] h-[37.44px] bg-[#A80C18] text-white text-[13px] font-bold rounded-[6px] flex items-center justify-center hover:bg-[#0e7480] transition-colors duration-150 shadow-sm">
                 Contact
             </a>
         </div>

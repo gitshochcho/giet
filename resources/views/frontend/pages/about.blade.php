@@ -79,7 +79,7 @@
             @endif
 
             @if($whoWeAre?->sub_heading)
-            <a href="{{ route('services') }}" class="mt-6 w-[197px] h-[49.09px] pt-[12px] pr-[28px] pb-[13.09px] pl-[28px] rounded-[6px] bg-[#A80C18] hover:bg-[#8F0A14] text-white font-['Newsreader'] font-semibold text-[13px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer" style="text-decoration:none;color:#ffffff;">
+            <a href="{{ route('team') }}" class="mt-6 w-[197px] h-[49.09px] pt-[12px] pr-[28px] pb-[13.09px] pl-[28px] rounded-[6px] bg-[#A80C18] hover:bg-[#8F0A14] text-white font-['Newsreader'] font-semibold text-[13px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer" style="text-decoration:none;color:#ffffff;">
                 <span>{{ $whoWeAre->sub_heading }}</span>
                 <span class="text-[13px] font-normal pt-[0.5px]">↗</span>
             </a>
@@ -111,11 +111,15 @@
         <div class="w-full max-w-[1204px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-[20px] text-left">
 
             {{-- MISSION CARD --}}
-            <div class="group bg-white rounded-[20px] pt-[40px] pr-[32px] pb-[42px] pl-[32px] min-h-[298px] flex flex-col justify-start items-start gap-[14px] border border-gray-100 shadow-sm hover:bg-[#F1F5F9] transition-colors duration-300 cursor-default">
-                <div class="w-[42px] h-[42px] bg-[#EEF9FA] group-hover:bg-white rounded-[8px] flex items-center justify-center transition-colors duration-300">
-                    <svg class="w-5 h-5 text-[#18909C]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+            <div class="group bg-white rounded-[20px] pt-[40px] pr-[32px] pb-[42px] pl-[32px] min-h-[298px] flex flex-col justify-start items-start gap-[14px] border border-gray-100 shadow-sm hover:bg-[#F1F5F9] hover:shadow-md hover:scale-[1.050] transition-all duration-300 cursor-default">
+                <div class="w-[42px] h-[42px] bg-[#EEF9FA] group-hover:bg-white rounded-[8px] flex items-center justify-center transition-colors duration-300 overflow-hidden">
+                    @if($missionContent?->iconUrl())
+                        <img src="{{ $missionContent->iconUrl() }}" alt="Mission" class="w-5 h-5 object-contain" loading="lazy" decoding="async">
+                    @else
+                        <svg class="w-5 h-5 text-[#18909C]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    @endif
                 </div>
                 <span class="text-[#18909C] font-['Newsreader'] font-bold text-[10px] leading-[14px] tracking-[1.54px] uppercase block">
                     {{ $missionContent?->section }}
@@ -128,14 +132,18 @@
             </div>
 
             {{-- VISION CARD --}}
-            <div class="group bg-white rounded-[20px] pt-[40px] pr-[32px] pb-[42px] pl-[32px] min-h-[298px] flex flex-col justify-start items-start gap-[14px] border border-gray-100 shadow-sm hover:bg-[#F1F5F9] transition-colors duration-300 cursor-default">
-                <div class="w-[42px] h-[42px] bg-[#EEF9FA] group-hover:bg-white rounded-[8px] flex items-center justify-center transition-colors duration-300">
-                    <svg class="w-5 h-5 text-[#0E606B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                    </svg>
+            <div class="group bg-white rounded-[20px] pt-[40px] pr-[32px] pb-[42px] pl-[32px] min-h-[298px] flex flex-col justify-start items-start gap-[14px] border border-gray-100 shadow-sm hover:bg-[#F1F5F9] hover:shadow-md hover:scale-[1.050] transition-all duration-300 cursor-default">
+                <div class="w-[42px] h-[42px] bg-[#EEF9FA] group-hover:bg-white rounded-[8px] flex items-center justify-center transition-colors duration-300 overflow-hidden">
+                    @if($visionContent?->iconUrl())
+                        <img src="{{ $visionContent->iconUrl() }}" alt="Vision" class="w-5 h-5 object-contain" loading="lazy" decoding="async">
+                    @else
+                        <svg class="w-5 h-5 text-[#0E606B]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    @endif
                 </div>
-                <span class="text-[#0E606B] font-['Newsreader'] font-bold text-[10px] leading-[14px] tracking-[1.54px] uppercase block">
+                <span class="text-[#31f50a] font-['Newsreader'] font-bold text-[10px] leading-[14px] tracking-[1.54px] uppercase block">
                     {{ $visionContent?->section }}
                 </span>
                 @if($visionContent?->description)
@@ -146,11 +154,15 @@
             </div>
 
             {{-- GOALS CARD --}}
-            <div class="group bg-white rounded-[20px] pt-[40px] pr-[32px] pb-[42px] pl-[32px] min-h-[298px] flex flex-col justify-start items-start gap-[14px] border border-gray-100 shadow-sm hover:bg-[#F1F5F9] transition-colors duration-300 cursor-default">
-                <div class="w-[42px] h-[42px] bg-[#FFF5F5] group-hover:bg-white rounded-[8px] flex items-center justify-center transition-colors duration-300">
-                    <svg class="w-5 h-5 text-[#A80C18]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                    </svg>
+            <div class="group bg-white rounded-[20px] pt-[40px] pr-[32px] pb-[42px] pl-[32px] min-h-[298px] flex flex-col justify-start items-start gap-[14px] border border-gray-100 shadow-sm hover:bg-[#F1F5F9] hover:shadow-md hover:scale-[1.050] transition-all duration-300 cursor-default">
+                <div class="w-[42px] h-[42px] bg-[#FFF5F5] group-hover:bg-white rounded-[8px] flex items-center justify-center transition-colors duration-300 overflow-hidden">
+                    @if($goalsContent?->iconUrl())
+                        <img src="{{ $goalsContent->iconUrl() }}" alt="Goals" class="w-5 h-5 object-contain" loading="lazy" decoding="async">
+                    @else
+                        <svg class="w-5 h-5 text-[#A80C18]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                    @endif
                 </div>
                 <span class="text-[#A80C18] font-['Newsreader'] font-bold text-[10px] leading-[14px] tracking-[1.54px] uppercase block">
                     {{ $goalsContent?->section }}
@@ -173,6 +185,7 @@
      slug: about_story_1 … about_story_10 (timeline rows)
            section = year, heading = event title, description = event body
      ===================================================================== --}}
+@if($siteSettings?->show_about_story ?? true)
 <section class="ab-story" style="background-color: #FFFFFF;">
 <div class="w-full pt-[48px] pb-[48px] md:pt-[100px] md:pb-[100px] px-4 md:px-8 select-none flex flex-col items-center">
 
@@ -224,6 +237,7 @@
     </div>
 </div>
 </section>
+@endif
 
 {{-- =====================================================================
      5. WHAT SETS GIET APART (OUR APPROACH) — cards

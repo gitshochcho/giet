@@ -9,6 +9,8 @@
             ];
         })->values()->all());
 
+        $solutionModels = $service->solutions->keyBy('id');
+
         $solutions = old('solutions', $service->solutions->map(function ($solution) {
             return [
                 'id' => $solution->id,
@@ -189,16 +191,27 @@
                             <div class="card-body">
                                 <div id="solutionsWrapper" class="d-grid gap-3">
                                     @foreach($solutions as $index => $solution)
+                                    @php $solModel = isset($solution['id']) ? ($solutionModels[$solution['id']] ?? null) : null; @endphp
                                         <div class="border rounded p-3 solution-row">
                                             <div class="row g-3 align-items-start">
-                                                <div class="col-12 col-md-6">
+                                                <div class="col-12 col-md-5">
                                                     <input type="hidden" name="solutions[{{ $index }}][id]" value="{{ $solution['id'] ?? '' }}">
                                                     <label class="form-label">Heading</label>
                                                     <input type="text" name="solutions[{{ $index }}][heading]" value="{{ $solution['heading'] ?? '' }}" class="form-control">
                                                 </div>
-                                                <div class="col-12 col-md-6">
+                                                <div class="col-12 col-md-5">
                                                     <label class="form-label">Sub Heading</label>
                                                     <input type="text" name="solutions[{{ $index }}][sub_heading]" value="{{ $solution['sub_heading'] ?? '' }}" class="form-control">
+                                                </div>
+                                                <div class="col-12 col-md-2">
+                                                    <label class="form-label">Icon</label>
+                                                    <input type="file" name="solutions_icons[{{ $index }}]" class="form-control form-control-sm" accept="image/*">
+                                                    <small class="text-muted">64×64px (max 2MB)</small>
+                                                    @if($solModel?->iconUrl())
+                                                    <div class="mt-1">
+                                                        <img src="{{ $solModel->iconUrl() }}" alt="icon" style="width:36px;height:36px;object-fit:contain;border:1px solid #dee2e6;border-radius:4px;padding:2px;">
+                                                    </div>
+                                                    @endif
                                                 </div>
                                                 <div class="col-12 d-grid d-md-flex justify-content-md-end">
                                                     <button type="button" class="btn btn-outline-danger remove-solution-row">Remove</button>
@@ -243,14 +256,19 @@
     <template id="solutionRowTemplate">
         <div class="border rounded p-3 solution-row">
             <div class="row g-3 align-items-start">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <input type="hidden" name="__SOLUTION_NAME__[id]" value="">
                     <label class="form-label">Heading</label>
                     <input type="text" name="__SOLUTION_NAME__[heading]" class="form-control">
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-5">
                     <label class="form-label">Sub Heading</label>
                     <input type="text" name="__SOLUTION_NAME__[sub_heading]" class="form-control">
+                </div>
+                <div class="col-12 col-md-2">
+                    <label class="form-label">Icon</label>
+                    <input type="file" name="__SOLUTION_ICON_NAME__" class="form-control form-control-sm" accept="image/*">
+                    <small class="text-muted">64×64px (max 2MB)</small>
                 </div>
                 <div class="col-12 d-grid d-md-flex justify-content-md-end">
                     <button type="button" class="btn btn-outline-danger remove-solution-row">Remove</button>
@@ -352,7 +370,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.getElementById('addSolutionRow').addEventListener('click', function () {
             const index = solutionWrapper.querySelectorAll('.solution-row').length;
-            const html = solutionTemplate.innerHTML.replaceAll('__SOLUTION_NAME__', `solutions[${index}]`);
+            const html = solutionTemplate.innerHTML
+                .replaceAll('__SOLUTION_NAME__', `solutions[${index}]`)
+                .replaceAll('__SOLUTION_ICON_NAME__', `solutions_icons[${index}]`);
             solutionWrapper.insertAdjacentHTML('beforeend', html);
         });
 

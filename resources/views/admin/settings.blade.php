@@ -144,6 +144,51 @@
                                         </div>
                                         <div class="form-text">FontAwesome class দিলে icon দেখাবে। Image upload করলে image priority পাবে। দুটোই না দিলে title এর প্রথম ২ অক্ষর দেখাবে।</div>
                                     </div>
+
+                                    {{-- Project Detail Page Icons --}}
+                                    <div class="col-12">
+                                        <hr class="my-2">
+                                        <label class="form-label fw-bold">Project Detail Page Icons</label>
+                                        <p class="text-muted small mb-3">These icons appear in the project meta bar (Client / Duration / Location / Sector / Status) — same icon used for all projects.</p>
+                                        <div class="row g-3">
+                                            @foreach([
+                                                ['name' => 'project_client_icon',   'label' => 'Client Icon',   'method' => 'projectClientIconUrl'],
+                                                ['name' => 'project_duration_icon', 'label' => 'Duration Icon', 'method' => 'projectDurationIconUrl'],
+                                                ['name' => 'project_location_icon', 'label' => 'Location Icon', 'method' => 'projectLocationIconUrl'],
+                                                ['name' => 'project_sector_icon',   'label' => 'Sector Icon',   'method' => 'projectSectorIconUrl'],
+                                                ['name' => 'project_status_icon',   'label' => 'Status Icon',   'method' => 'projectStatusIconUrl'],
+                                            ] as $icon)
+                                            <div class="col-md-4 col-lg-2">
+                                                <label class="form-label">{{ $icon['label'] }}</label>
+                                                <input type="file" name="{{ $icon['name'] }}" class="form-control form-control-sm @error($icon['name']) is-invalid @enderror" accept="image/*">
+                                                @error($icon['name'])<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                                @if($setting && method_exists($setting, $icon['method']) && $setting->{$icon['method']}())
+                                                <div class="mt-2 d-flex align-items-center gap-2">
+                                                    <img src="{{ $setting->{$icon['method']}() }}" alt="{{ $icon['label'] }}" style="width:36px;height:36px;object-fit:contain;border:1px solid #dee2e6;border-radius:6px;padding:4px;background:#f8f9fa;">
+                                                    <small class="text-muted">Current</small>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    {{-- Page Visibility Toggles --}}
+                                    <div class="col-12">
+                                        <hr class="my-2">
+                                        <label class="form-label fw-bold">Page Section Visibility</label>
+                                        <div class="d-flex align-items-center gap-3 mt-2 p-3 border rounded-3 bg-light">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                       id="show_about_story" name="show_about_story" value="1"
+                                                       {{ old('show_about_story', $setting->show_about_story ?? true) ? 'checked' : '' }}>
+                                                <label class="form-check-label fw-semibold" for="show_about_story">
+                                                    About Page — Our Story Section
+                                                </label>
+                                            </div>
+                                            <small class="text-muted">Switch off করলে About page এ "Our Story" section টি লুকিয়ে যাবে।</small>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-end">

@@ -19,10 +19,12 @@ class Setting extends Model implements HasMedia
         'footer_contact_email',
         'footer_contact_location',
         'footer_description',
+        'show_about_story',
     ];
 
     protected $casts = [
-        'social_links' => 'array',
+        'social_links'     => 'array',
+        'show_about_story' => 'boolean',
     ];
 
     public function logoImageUrl(): ?string
@@ -40,6 +42,36 @@ class Setting extends Model implements HasMedia
     public function footerIconUrl(): ?string
     {
         $url = $this->getFirstMediaUrl('footer_icon');
+        return $url !== '' ? $url : null;
+    }
+
+    public function projectClientIconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('project_client_icon');
+        return $url !== '' ? $url : null;
+    }
+
+    public function projectDurationIconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('project_duration_icon');
+        return $url !== '' ? $url : null;
+    }
+
+    public function projectLocationIconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('project_location_icon');
+        return $url !== '' ? $url : null;
+    }
+
+    public function projectSectorIconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('project_sector_icon');
+        return $url !== '' ? $url : null;
+    }
+
+    public function projectStatusIconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('project_status_icon');
         return $url !== '' ? $url : null;
     }
 

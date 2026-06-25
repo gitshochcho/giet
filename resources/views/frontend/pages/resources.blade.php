@@ -16,12 +16,21 @@
       <p class="text-white/60 font-['Newsreader'] font-normal text-[14px] leading-[24.5px] max-w-[654px] pb-[20px]">
         Policy briefs, issue analyses, expert commentaries, research reports, videos, and podcasts from GIET's research team and contributing practitioners.
       </p>
-      <div class="w-full max-w-[560px] mt-[10px] relative">
-        <svg class="absolute left-[14px] top-1/2 -translate-y-1/2 pointer-events-none" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input id="resourceSearch" type="text" placeholder="Search resources by title, topic, or keyword…"
-               style="font-family:'Inter',sans-serif;font-size:13px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#fff;"
-               class="w-full h-[48px] rounded-[8px] pl-[44px] pr-[16px] placeholder-white/35 focus:outline-none focus:border-white/40 transition-all">
-        <button id="searchClear" type="button" class="hidden absolute right-[12px] top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors" style="font-size:18px;line-height:1;">✕</button>
+      <div class="w-full max-w-[580px] mt-[10px]">
+        <div class="flex items-center bg-white rounded-[8px] overflow-hidden h-[52px]" style="box-shadow:0 2px 12px rgba(0,0,0,0.15);">
+          <div class="relative flex-1">
+            <svg class="absolute left-[14px] top-1/2 -translate-y-1/2 pointer-events-none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="resourceSearch" type="text" placeholder="Search publications, topics, experts..."
+                   style="font-family:'Inter',sans-serif;font-size:13px;color:#0F172A;"
+                   class="w-full h-[52px] bg-transparent pl-[42px] pr-[36px] placeholder-[#94A3B8] focus:outline-none">
+            <button id="searchClear" type="button" class="hidden absolute right-[10px] top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#64748B] transition-colors" style="font-size:16px;line-height:1;">✕</button>
+          </div>
+          <button id="searchBtn" type="button"
+                  style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;background:#003054;white-space:nowrap;border-left:1px solid rgba(0,48,84,0.15);"
+                  class=" h-full px-[24px] text-white hover:bg-[#002040] transition-colors shrink-0">
+            Search
+          </button>
+        </div>
       </div>
     </div>
   </div>

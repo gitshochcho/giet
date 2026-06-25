@@ -114,7 +114,7 @@ class HomeController extends Controller
         $service = Service::query()
             ->with([
                 'details'   => fn($q) => $q->orderBy('sort_order'),
-                'solutions' => fn($q) => $q->orderBy('sort_order'),
+                'solutions' => fn($q) => $q->with('media')->orderBy('sort_order'),
                 'projects'  => fn($q) => $q->with(['media', 'services'])->orderBy('sort_order')->take(3),
                 'media',
             ])
@@ -142,7 +142,16 @@ class HomeController extends Controller
             ->orderBy('sort_order')
             ->get(['id', 'service_name', 'section']);
 
-        return view('frontend.pages.workdetails', compact('service', 'experts', 'otherServices', 'relatedProjects'));
+        $wdOverview        = contentBlock('workdetails_overview');
+        $wdServicesInclude = contentBlock('workdetails_services_include');
+        $wdSolutions       = contentBlock('workdetails_solutions');
+        $wdRelatedProjects = contentBlock('workdetails_related_projects');
+        $wdExperts         = contentBlock('workdetails_experts');
+
+        return view('frontend.pages.workdetails', compact(
+            'service', 'experts', 'otherServices', 'relatedProjects',
+            'wdOverview', 'wdServicesInclude', 'wdSolutions', 'wdRelatedProjects', 'wdExperts'
+        ));
     }
 
     public function projects(Request $request)

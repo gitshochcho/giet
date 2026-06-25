@@ -120,7 +120,7 @@
         <!-- ITEM 1: CLIENT -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (50).png') }}" alt="Client Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
+                <img src="{{ $siteSettings?->projectClientIconUrl() ?? asset('icons/SVG (50).png') }}" alt="Client Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -139,7 +139,7 @@
         <!-- ITEM 2: DURATION -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (51).png') }}" alt="Duration Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
+                <img src="{{ $siteSettings?->projectDurationIconUrl() ?? asset('icons/SVG (51).png') }}" alt="Duration Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -158,7 +158,7 @@
         <!-- ITEM 3: LOCATION -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (52).png') }}" alt="Location Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
+                <img src="{{ $siteSettings?->projectLocationIconUrl() ?? asset('icons/SVG (52).png') }}" alt="Location Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -180,7 +180,7 @@
         <!-- ITEM 4: SECTOR -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (53).png') }}" alt="Sector Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
+                <img src="{{ $siteSettings?->projectSectorIconUrl() ?? asset('icons/SVG (53).png') }}" alt="Sector Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -199,7 +199,7 @@
         <!-- ITEM 5: STATUS -->
         <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px]">
             <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
-                <img src="{{ asset('icons/SVG (54).png') }}" alt="Status Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
+                <img src="{{ $siteSettings?->projectStatusIconUrl() ?? asset('icons/SVG (54).png') }}" alt="Status Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
             <div class="text-left flex flex-col gap-[4px]">
                 <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
@@ -264,7 +264,7 @@
                 @foreach($project->phaseDetails as $phase)
                 <div class="w-full bg-[#F7F9FB] border border-[#E4EAF0] rounded-[10px] p-[14px] flex items-center gap-[10px] hover:bg-slate-50 transition-colors text-left">
                     <div class="w-[32px] h-[32px] bg-[#E8F6F7] rounded-[6px] flex items-center justify-center shrink-0 overflow-hidden">
-                        <img src="{{ asset('icons/SVG (55).png') }}" alt="Icon" class="w-[16px] h-[16px] object-contain" loading="lazy" decoding="async">
+                        <img src="{{ asset('icons/deliverable-icon.svg') }}" alt="Icon" class="w-[16px] h-[16px] object-contain" loading="lazy" decoding="async">
                     </div>
                     <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 12.5px; line-height: 16px;" class="text-[#1E293B] line-clamp-2">
                         {{ cleanText($phase->phase_description) }}
@@ -324,7 +324,7 @@
                 <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:32px;line-height:38px;" class="text-[#0F172A]">{{ $pdTeam?->heading }}</h2>
             </div>
             <a href="{{ route('team') }}" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;" class="pd-experts-link text-[#003054] border-b-2 border-[#003054] pb-[3px] hover:opacity-70 transition-opacity">
-                {{ $pdTeam?->design_word }} →
+                {{ $pdTeam?->sub_heading }} →
             </a>
         </div>
 

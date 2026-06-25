@@ -142,6 +142,25 @@
                     </div>
                 </div>
 
+                {{-- WORK DETAILS PAGE --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupWorkDetails" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-briefcase me-1"></i> Work Details Page
+                    </small>
+                    <div class="collapse" id="presetGroupWorkDetails">
+                        <div class="d-flex flex-wrap gap-2 pb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_overview">Work Details — Overview Label</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_services_include">Work Details — Services Include Label</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_solutions">Work Details — Products & Solutions Label</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_related_projects">Work Details — Related Projects Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_experts">Work Details — Experts Section</button>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- PAGE HEROES --}}
                 <div class="mb-3">
                     <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
@@ -813,6 +832,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 ['Main Heading',  'Section heading (e.g. "Past Events")'],
             ]
         },
+        'workdetails_overview': {
+            title: '💼 Work Details Page — Overview Section Label',
+            rows: [
+                ['Main Heading', 'Section heading shown above the overview text (e.g. "Overview")'],
+            ]
+        },
+        'workdetails_services_include': {
+            title: '💼 Work Details Page — Services Include Label',
+            rows: [
+                ['Main Heading', 'Section heading for the services list (e.g. "Our Services Include")'],
+            ]
+        },
+        'workdetails_solutions': {
+            title: '💼 Work Details Page — Products & Solutions Label',
+            rows: [
+                ['Main Heading', 'Title shown in the Products & Solutions strip (e.g. "Products & Solutions")'],
+            ]
+        },
+        'workdetails_related_projects': {
+            title: '💼 Work Details Page — Related Projects Section',
+            rows: [
+                ['Section Label', 'Small teal tag above heading (e.g. "Related Projects")'],
+                ['Main Heading',  'Section heading (e.g. "Work We Have Delivered")'],
+                ['Sub Heading',   'Link text for "All Projects" button (e.g. "All Projects")'],
+            ]
+        },
+        'workdetails_experts': {
+            title: '💼 Work Details Page — Experts Section',
+            rows: [
+                ['Section Label', 'Small teal tag above heading (e.g. "Our People")'],
+                ['Main Heading',  'Section heading (e.g. "Experts in This Area")'],
+                ['Sub Heading',   'Link text for "All Experts" button (e.g. "All Experts")'],
+            ]
+        },
         'events_cta': {
             title: '📅 Events Page — Co-host CTA Section',
             rows: [
@@ -1182,6 +1235,26 @@ document.addEventListener('DOMContentLoaded', function () {
             heading: 'Interested in Co-hosting an Event?',
             sub_heading: 'Submit an Event Proposal', design_word: '', type: 'CTA',
             description: 'GIET welcomes co-hosting proposals from government agencies, development partners, universities, and civil society organizations. We manage logistics, speakers, and documentation.',
+        },
+        'workdetails_overview': {
+            slug: 'workdetails_overview', section: '', type: 'Label',
+            heading: 'Overview', sub_heading: '', design_word: '', description: '',
+        },
+        'workdetails_services_include': {
+            slug: 'workdetails_services_include', section: '', type: 'Label',
+            heading: 'Our Services Include', sub_heading: '', design_word: '', description: '',
+        },
+        'workdetails_solutions': {
+            slug: 'workdetails_solutions', section: '', type: 'Label',
+            heading: 'Products & Solutions', sub_heading: '', design_word: '', description: '',
+        },
+        'workdetails_related_projects': {
+            slug: 'workdetails_related_projects', section: 'Related Projects', type: 'Section Header',
+            heading: 'Work We Have Delivered', sub_heading: 'All Projects', design_word: '', description: '',
+        },
+        'workdetails_experts': {
+            slug: 'workdetails_experts', section: 'Our People', type: 'Section Header',
+            heading: 'Experts in This Area', sub_heading: 'All Experts', design_word: '', description: '',
         },
     };
 
