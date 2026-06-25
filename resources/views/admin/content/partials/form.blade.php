@@ -124,6 +124,24 @@
                     </div>
                 </div>
 
+                {{-- EVENTS PAGE --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupEvents" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-calendar-alt me-1"></i> Events Page
+                    </small>
+                    <div class="collapse" id="presetGroupEvents">
+                        <div class="d-flex flex-wrap gap-2 pb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="events_page_header">Events — Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="events_upcoming">Events — Upcoming Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="events_past">Events — Past Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="events_cta">Events — Co-host CTA</button>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- PAGE HEROES --}}
                 <div class="mb-3">
                     <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
@@ -773,6 +791,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 ['Sub Heading / Button', 'Secondary button label (e.g. "All Projects") — links back to Projects list'],
             ]
         },
+        'events_page_header': {
+            title: '📅 Events Page — Page Hero',
+            rows: [
+                ['Section Label', 'Small tag above heading (e.g. "EVENTS")'],
+                ['Main Heading',  'Hero heading (e.g. "Events & Dialogues")'],
+                ['Body Text',     'Hero paragraph text'],
+            ]
+        },
+        'events_upcoming': {
+            title: '📅 Events Page — Upcoming Events Section',
+            rows: [
+                ['Section Label', 'Small teal tag (e.g. "Upcoming Events")'],
+                ['Main Heading',  'Section heading (e.g. "Open Events")'],
+            ]
+        },
+        'events_past': {
+            title: '📅 Events Page — Past Events Section',
+            rows: [
+                ['Section Label', 'Small teal tag (e.g. "Archive")'],
+                ['Main Heading',  'Section heading (e.g. "Past Events")'],
+            ]
+        },
+        'events_cta': {
+            title: '📅 Events Page — Co-host CTA Section',
+            rows: [
+                ['Section Label',        'Small tag on the left panel (e.g. "Partner With Us")'],
+                ['Main Heading',         'Left panel heading (e.g. "Interested in Co-hosting an Event?")'],
+                ['Body Text',            'Left panel paragraph text'],
+                ['Sub Heading / Button', 'Form title shown above the proposal form (e.g. "Submit an Event Proposal")'],
+            ]
+        },
         'about_us_who_we_are': {
             title: 'ℹ️ About Page — Who We Are',
             rows: [
@@ -1109,6 +1158,30 @@ document.addEventListener('DOMContentLoaded', function () {
             slug: 'projectdetails_actions', section: '',
             heading: 'Commission a Similar Project', sub_heading: 'All Projects', design_word: '', type: 'CTA',
             description: '',
+        },
+        'events_page_header': {
+            slug: 'events_page_header', section: 'EVENTS',
+            heading: 'Events & Dialogues',
+            sub_heading: '', design_word: '', type: 'Hero',
+            description: 'GIET convenes policymakers, development professionals, and civil society through roundtables, policy dialogues, training workshops, and public conferences.',
+        },
+        'events_upcoming': {
+            slug: 'events_upcoming', section: 'Upcoming Events',
+            heading: 'Open Events',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'events_past': {
+            slug: 'events_past', section: 'Archive',
+            heading: 'Past Events',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'events_cta': {
+            slug: 'events_cta', section: 'Partner With Us',
+            heading: 'Interested in Co-hosting an Event?',
+            sub_heading: 'Submit an Event Proposal', design_word: '', type: 'CTA',
+            description: 'GIET welcomes co-hosting proposals from government agencies, development partners, universities, and civil society organizations. We manage logistics, speakers, and documentation.',
         },
     };
 

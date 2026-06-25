@@ -37,7 +37,7 @@
   {{-- Hero Image --}}
   <div class="relative w-full h-[520px] flex items-end">
     @if($event->heroImageUrl())
-    <img src="{{ $event- loading="lazy" decoding="async">heroImageUrl() }}" alt="{{ $event->title }}" class="absolute inset-0 w-full h-full object-cover">
+    <img src="{{ $event->heroImageUrl() }}" alt="{{ $event->title }}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async">
     @else
     <div class="absolute inset-0 bg-[#003054]"></div>
     @endif
@@ -188,8 +188,8 @@
           <div class="bg-[#F7F9FB] border border-[#E4EAF0] rounded-[14px] p-[18px] flex flex-col gap-[12px]">
             <div class="flex items-center gap-[12px]">
               @if($speaker->imageUrl())
-              <img src="{{ $speaker- loading="lazy" decoding="async">imageUrl() }}" class="w-[52px] h-[52px] rounded-full object-cover shrink-0 border-2 border-white shadow-sm"
-                   alt="{{ $speaker->name }}"
+              <img src="{{ $speaker->imageUrl() }}" class="w-[52px] h-[52px] rounded-full object-cover shrink-0 border-2 border-white shadow-sm"
+                   alt="{{ $speaker->name }}" loading="lazy" decoding="async"
                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
               @endif
               <div class="{{ $speaker->imageUrl() ? 'hidden' : 'flex' }} w-[52px] h-[52px] rounded-full bg-[#E8F0F6] shrink-0 items-center justify-center border-2 border-white shadow-sm">
@@ -223,7 +223,7 @@
           <div class="flex flex-col items-center gap-[8px]">
             <div class="w-[100px] h-[60px] bg-white border border-[#E4EAF0] rounded-[10px] flex items-center justify-center overflow-hidden">
               @if($ep->imageUrl())
-              <img src="{{ $ep- loading="lazy" decoding="async">imageUrl() }}" alt="{{ $ep->name }}" class="max-w-[80px] max-h-[44px] object-contain">
+              <img src="{{ $ep->imageUrl() }}" alt="{{ $ep->name }}" class="max-w-[80px] max-h-[44px] object-contain" loading="lazy" decoding="async">
               @else
               <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11px;color:#64748B;text-align:center;padding:4px;">{{ $ep->name }}</span>
               @endif

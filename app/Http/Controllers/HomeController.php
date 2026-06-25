@@ -8,6 +8,7 @@ use App\Models\Country;
 use App\Models\Gender;
 use App\Models\Insight;
 use App\Models\InsightArticle;
+use App\Models\InsightType;
 use App\Models\JobApplication;
 use App\Models\JobPosting;
 use App\Models\Event;
@@ -61,7 +62,7 @@ class HomeController extends Controller
             ->with(['services', 'media'])
             ->orderBy('sort_order')
             ->latest('id')
-            ->limit(3)
+            ->limit(6)
             ->get();
 
         $partners = Partner::with('media')->latest()->get();
@@ -236,31 +237,15 @@ class HomeController extends Controller
 
     public function insights()
     {
+        $resourceTypes = InsightType::where('status', 1)->orderBy('id')->get();
+
         $all = Insight::with(['insightType', 'media'])
             ->where('active', true)
             ->orderBy('sort_order')
             ->latest('id')
             ->get();
 
-        $briefs       = $all->filter(fn($i) => $this->insightTabKey($i) === 'briefs');
-        $expertSpeaks = $all->filter(fn($i) => $this->insightTabKey($i) === 'expert');
-        $publications = $all->filter(fn($i) => $this->insightTabKey($i) === 'publications');
-        $newsItems    = $all->filter(fn($i) => $this->insightTabKey($i) === 'news');
-        $videos       = $all->filter(fn($i) => $this->insightTabKey($i) === 'videos');
-
-        return view('frontend.pages.resources', compact('all', 'briefs', 'expertSpeaks', 'publications', 'newsItems', 'videos'));
-    }
-
-    private function insightTabKey(Insight $insight): string
-    {
-        $typeName     = strtolower($insight->insightType?->type ?? '');
-        $typeCategory = strtolower($insight->insightType?->type_category ?? '');
-
-        if (in_array($typeCategory, ['watch', 'video_watch'])) return 'videos';
-        if ($typeCategory === 'download') return 'publications';
-        if (str_contains($typeName, 'expert') || str_contains($typeName, 'blog')) return 'expert';
-        if (str_contains($typeName, 'news') || str_contains($typeName, 'commentary') || str_contains($typeName, 'op-ed') || str_contains($typeName, 'op_ed')) return 'news';
-        return 'briefs';
+        return view('frontend.pages.resources', compact('all', 'resourceTypes'));
     }
 
     public function resourcedetails(Request $request, ?Insight $insight = null)
@@ -385,7 +370,10 @@ class HomeController extends Controller
 
     public function events(Request $request)
     {
-        $eventsHero = contentBlock('events_page_header');
+        $eventsHero      = contentBlock('events_page_header');
+        $eventsUpcoming  = contentBlock('events_upcoming');
+        $eventsPast      = contentBlock('events_past');
+        $eventsCta       = contentBlock('events_cta');
 
         $upcomingEvents = Event::with(['speakers', 'media'])
             ->where('is_past', false)
@@ -399,7 +387,10 @@ class HomeController extends Controller
             ->orderByDesc('event_date')
             ->get();
 
-        return view('frontend.pages.events', compact('eventsHero', 'upcomingEvents', 'pastEvents'));
+        return view('frontend.pages.events', compact(
+            'eventsHero', 'eventsUpcoming', 'eventsPast', 'eventsCta',
+            'upcomingEvents', 'pastEvents'
+        ));
     }
 
     public function eventdetails(Request $request, ?Event $event = null)

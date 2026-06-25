@@ -63,11 +63,11 @@
     <div class="w-full bg-white border border-[#E4EAF0] rounded-[10px] overflow-hidden flex flex-col transition-all duration-200 hover:shadow-md">
       <img class="w-full h-48 object-cover" src="{{ $card['img'] }}" alt="{{ $card['title'] }}">
       <div class="p-6 flex flex-col flex-grow text-left">
-        @if($card['tag'])
+        <!-- @if($card['tag'])
         <span style="font-family:'Newsreader',Georgia,serif;font-weight:600;font-size:10.5px;line-height:1;letter-spacing:1.47px;text-transform:uppercase;color:#0E606B;margin-bottom:8px;display:block;">
           {{ $card['tag'] }}
         </span>
-        @endif
+        @endif -->
         <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:18px;line-height:24.3px;color:#0F172A;margin:0 0 12px 0;">
           {{ $card['title'] }}
         </h3>
@@ -113,7 +113,7 @@
 
         <a href="{{ route('contact') }}"
            style="background-color:#003054;text-decoration:none;"
-           class="w-[181px] h-[51.09px] pt-[13px] pr-[32px] pb-[14.09px] pl-[32px] rounded-[6px] inline-flex items-center justify-center gap-1 text-white text-[14px] font-bold transition-all duration-200 hover:bg-[#002040] shadow-sm shrink-0">
+           class="w-[181px] h-[51.09px] pt-[13px] pr-[32px] mt-[10px] pb-[14.09px] pl-[32px] rounded-[6px] inline-flex items-center justify-center gap-1 text-white text-[14px] font-bold transition-all duration-200 hover:bg-[#002040] shadow-sm shrink-0">
             <span>{{ $workWithUs?->sub_heading }}</span>
             <span class="inline-block translate-y-[-1px]">→</span>
         </a>

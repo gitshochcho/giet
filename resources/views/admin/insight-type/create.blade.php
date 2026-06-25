@@ -5,12 +5,12 @@
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-sm-6">
-                <h3 class="mb-0">Add Insight Type</h3>
+                <h3 class="mb-0">Add Resource Type</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.insight-types.index') }}">Insight Types</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.insight-types.index') }}">Resource Types</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Add Type</li>
                 </ol>
             </div>

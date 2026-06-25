@@ -184,8 +184,8 @@
       @foreach($relatedProjects as $project)
       <div style="width:100%;border:1px solid #E4EAF0;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;background:#fff;">
         <div style="position:relative;height:180px;background:#0F172A;overflow:hidden;">
-          @if($project->imageUrl())
-            <img src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}" style="width:100%;height:100%;object-fit:cover;opacity:0.8;" loading="lazy" decoding="async">
+          @if($project->heroImageUrl())
+            <img src="{{ $project->heroImageUrl() }}" alt="{{ $project->project_title }}" style="width:100%;height:100%;object-fit:cover;opacity:0.8;" loading="lazy" decoding="async">
           @else
             <div style="width:100%;height:100%;background:#1E3A5F;"></div>
           @endif

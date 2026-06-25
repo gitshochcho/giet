@@ -16,6 +16,7 @@ class SliderItem extends Model implements HasMedia
         'tagline',
         'description',
         'design_word',
+        'url',
         'sort_order',
         'active',
     ];

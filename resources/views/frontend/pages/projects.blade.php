@@ -203,8 +203,8 @@
             @foreach($gridProjects as $project)
             <div class="w-full border border-[#EEF3F8] rounded-[14px] overflow-hidden bg-white hover:shadow-md transition-all flex flex-col text-left pb-[21.68px]">
                 <div class="w-full h-[180px] bg-[#EEF3F8] relative overflow-hidden shrink-0">
-                    @if($project->imageUrl())
-                    <img src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
+                    @if($project->heroImageUrl())
+                    <img src="{{ $project->heroImageUrl() }}" alt="{{ $project->project_title }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
                     @else
                     <div class="w-full h-full bg-[#EEF3F8] flex items-center justify-center">
                         <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="6" fill="#CBD5E1"/><path d="M12 36L20 24L26 32L32 20L40 36H12Z" fill="#94A3B8"/></svg>
@@ -225,7 +225,7 @@
                                 $gMeta = array_filter([
                                     cleanText($project->client),
                                     $project->durationLabel(),
-                                    $project->locations->isNotEmpty() ? $project->locations->first()->location : null,
+                                    
                                 ]);
                             @endphp
                             {{ implode(' · ', $gMeta) }}

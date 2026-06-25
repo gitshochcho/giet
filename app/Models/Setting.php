@@ -28,7 +28,18 @@ class Setting extends Model implements HasMedia
     public function logoImageUrl(): ?string
     {
         $url = $this->getFirstMediaUrl('logo_image');
+        return $url !== '' ? $url : null;
+    }
 
+    public function faviconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('favicon');
+        return $url !== '' ? $url : null;
+    }
+
+    public function footerIconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('footer_icon');
         return $url !== '' ? $url : null;
     }
 

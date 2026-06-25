@@ -22,7 +22,9 @@ class SettingsController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'logo_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'logo_image'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'favicon'      => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg,ico', 'max:512'],
+            'footer_icon'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
             'logo_text' => ['nullable', 'string', 'max:255'],
             'logo_tagline' => ['nullable', 'string', 'max:255'],
             'social_links' => ['nullable', 'array'],
@@ -94,6 +96,16 @@ class SettingsController extends Controller
         if ($request->hasFile('logo_image')) {
             $setting->clearMediaCollection('logo_image');
             $setting->addMedia($request->file('logo_image'))->toMediaCollection('logo_image');
+        }
+
+        if ($request->hasFile('favicon')) {
+            $setting->clearMediaCollection('favicon');
+            $setting->addMedia($request->file('favicon'))->toMediaCollection('favicon');
+        }
+
+        if ($request->hasFile('footer_icon')) {
+            $setting->clearMediaCollection('footer_icon');
+            $setting->addMedia($request->file('footer_icon'))->toMediaCollection('footer_icon');
         }
 
         $setting->refresh();

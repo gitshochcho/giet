@@ -34,7 +34,7 @@
           {{ cleanText($slide->description) }}
         </p>
         @endif
-        <a href="{{ route('services') }}" class="font-['Inter'] font-semibold text-[13px] bg-[#BA0C1B] text-white px-[26px] py-[11px] rounded-[4px] flex items-center gap-2 hover:bg-[#960A14] transition-all duration-150 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
+        <a href="{{ $slide->url ?: route('services') }}" class="font-['Inter'] font-semibold text-[13px] bg-[#BA0C1B] text-white px-[26px] py-[11px] rounded-[4px] flex items-center gap-2 hover:bg-[#960A14] transition-all duration-150 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
           Explore ➔
         </a>
       </div>
@@ -197,9 +197,9 @@
       </div>
       @endif
       <div class="p-6 flex flex-col flex-grow text-left">
-        <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">
+        <!-- <span class="font-['Newsreader'] font-semibold text-[10.5px] leading-none tracking-[1.47px] text-[#0E606B] uppercase mb-2 block">
           {{ $svc->section ?: $svc->service_name }}
-        </span>
+        </span> -->
         <h3 style="font-family:'Merriweather',serif;font-weight:800;font-size:18px;line-height:24.3px;" class="text-[#0F172A] mb-3">
           {{ $svc->service_name }}
         </h3>
@@ -302,8 +302,8 @@
       @forelse($homeProjects as $project)
       <div class="w-full bg-white border border-[#EEF3F8] rounded-[16px] overflow-hidden flex flex-col shadow-[0px_8px_36px_0px_#00305421] hover:shadow-[0px_8px_36px_0px_#00305421] transition-shadow duration-300">
         <div class="w-full h-[160px] overflow-hidden">
-          @if($project->imageUrl())
-          <img class="w-full h-full object-cover" src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}" loading="lazy" decoding="async">
+          @if($project->heroImageUrl())
+          <img class="w-full h-full object-cover" src="{{ $project->heroImageUrl() }}" alt="{{ $project->project_title }}" loading="lazy" decoding="async">
           @else
           <div class="w-full h-full bg-[#EEF3F8] flex items-center justify-center">
             <svg width="40" height="40" fill="none" stroke="#CBD5E1" stroke-width="1" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
@@ -311,23 +311,21 @@
           @endif
         </div>
         <div class="p-[22px] flex flex-col flex-grow text-left gap-[10px]">
-          @if($project->services->first())
+          @php $hMeta = array_filter([cleanText($project->client)]); @endphp
+          @if($hMeta)
           <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;" class="text-[#0E606B]">
-            {{ $project->services->first()->section ?: $project->services->first()->service_name }}
+            {{ implode(' · ', $hMeta) }}
           </span>
           @endif
           <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:22px;" class="text-[#0F172A]">
             {{ $project->project_title }}
           </h4>
-          @if($project->short_description)
+          @if($project->overview)
           <p style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;line-height:21px;" class="text-[#475569] line-clamp-3">
-            {{ cleanText($project->short_description) }}
+            {{ Str::limit(cleanText($project->overview), 120) }}
           </p>
           @endif
-          <div class="mt-auto pt-[14px] border-t border-[#EEF3F8] flex justify-between items-center">
-            <span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;" class="text-[#94A3B8]">
-              {{ $project->services->pluck('service_name')->implode(', ') }}
-            </span>
+          <div class="mt-auto pt-[14px] border-t border-[#EEF3F8] flex justify-end items-center">
             <a href="{{ route('projectdetails', $project->id) }}" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;color:#A80C18;" class="hover:opacity-75 flex items-center gap-1">
               View Project →
             </a>
@@ -355,13 +353,13 @@
 <section class="w-full bg-white border-t border-[#F0F0F0] select-none py-[60px] overflow-hidden">
   <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col items-center gap-[36px]">
 
-    <h2 style="font-family:'Lora',serif;font-weight:700;font-size:38px;line-height:46px;color:#0F172A;" class="text-center">
+    <h2 style="font-family:'Lora',serif;font-weight:700;font-size:50px;line-height:46px;color:#0F172A;" class="text-center">
       {{ $homePartnersBlock?->heading }}
     </h2>
 
     <div class="w-full relative">
       <button id="home-partner-prev"
-              class="w-[36px] h-[36px] rounded-full bg-[#F4F4F4] hover:bg-[#E2E8F0] flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-10 transition-colors cursor-pointer shadow-sm"
+              class="w-[40px] h-[40px] rounded-full bg-[#F4F4F4] hover:bg-[#E2E8F0] flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-10 transition-colors cursor-pointer shadow-sm"
               style="left:-18px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>

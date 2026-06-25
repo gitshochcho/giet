@@ -9,7 +9,7 @@
       {{-- Left: Photo + Social Icons --}}
       <div class="flex flex-col gap-[12px]">
         @if($team->imageUrl())
-          <img src="{{ $team- loading="lazy" decoding="async">imageUrl() }}" alt="{{ $team->fullName() }}" class="w-full md:w-[280px] h-[300px] md:h-[350px] object-cover rounded-[16px]" />
+          <img src="{{ $team->imageUrl() }}" alt="{{ $team->fullName() }}" class="w-full md:w-[280px] h-[300px] md:h-[350px] object-cover rounded-[16px]" loading="lazy" decoding="async" />
         @else
           <div class="w-full md:w-[280px] h-[300px] md:h-[350px] bg-[#EEF3F8] rounded-[16px] flex items-center justify-center">
             <span style="color:#6B7280;font-size:14px;">No Photo</span>
@@ -21,7 +21,7 @@
             @if($social->iconUrl())
             <a href="{{ $social->social_link ?: '#' }}" {{ $social->social_link ? 'target="_blank"' : '' }}
                style="width:38px;height:38px;border:1px solid #E4EAF0;border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;">
-              <img src="{{ $social- loading="lazy" decoding="async">iconUrl() }}" alt="{{ $social->title }}" style="width:18px;height:18px;" />
+              <img src="{{ $social->iconUrl() }}" alt="{{ $social->title }}" style="width:18px;height:18px;" loading="lazy" decoding="async" />
             </a>
             @endif
           @endforeach
@@ -162,7 +162,7 @@
            onmouseover="this.style.borderColor='#18909C'" onmouseout="this.style.borderColor='#EEF3F8'">
           @if($project->imageUrl ?? false)
           <div style="width:120px;height:80px;border-radius:10px;overflow:hidden;flex-shrink:0;">
-            <img src="{{ $project- loading="lazy" decoding="async">imageUrl() }}" alt="{{ $project->project_title }}" style="width:100%;height:100%;object-fit:cover;" />
+            <img src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" decoding="async" />
           </div>
           @endif
           <div style="display:flex;flex-direction:column;gap:6px;justify-content:center;">
@@ -202,7 +202,7 @@
       <a href="{{ route('teamdetails', $related->id) }}"
          style="background:#fff;border:1px solid #E4EAF0;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;">
         @if($related->imageUrl())
-          <img src="{{ $related- loading="lazy" decoding="async">imageUrl() }}" alt="{{ $related->fullName() }}" style="width:100%;height:170px;object-fit:cover;object-position:top;" />
+          <img src="{{ $related->imageUrl() }}" alt="{{ $related->fullName() }}" style="width:100%;height:170px;object-fit:cover;object-position:top;" loading="lazy" decoding="async" />
         @else
           <div style="width:100%;height:170px;background:#EEF3F8;display:flex;align-items:center;justify-content:center;">
             <span style="color:#6B7280;font-size:13px;">No Photo</span>

@@ -4,9 +4,10 @@
 
         {{-- Col 1: Logo + Description + Social --}}
         <div class="flex flex-col text-left">
-            @if($siteSettings?->logoImageUrl())
+            @php $footerImg = $siteSettings?->footerIconUrl() ?? $siteSettings?->logoImageUrl(); @endphp
+            @if($footerImg)
             <div class="w-[76px] h-[50px] bg-white rounded-[5px] p-1 flex items-center justify-center mb-4 overflow-hidden">
-                <img src="{{ $siteSettings->logoImageUrl() }}" alt="GIET Logo" class="max-h-full max-w-full object-contain" />
+                <img src="{{ $footerImg }}" alt="GIET Logo" class="max-h-full max-w-full object-contain" />
             </div>
             @endif
 

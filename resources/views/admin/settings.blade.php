@@ -54,6 +54,30 @@
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label class="form-label">Favicon</label>
+                                        <input type="file" name="favicon" class="form-control @error('favicon') is-invalid @enderror" accept="image/*,.ico">
+                                        @error('favicon')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        <small class="text-muted"><i class="fas fa-info-circle"></i> Browser tab icon — recommended 32×32px (ICO/PNG, max 512KB)</small>
+                                        @if($setting?->faviconUrl())
+                                        <div class="mt-2">
+                                            <img src="{{ $setting->faviconUrl() }}" alt="Favicon" style="width:32px;height:32px;object-fit:contain;border:1px solid #dee2e6;border-radius:4px;">
+                                        </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Footer Icon</label>
+                                        <input type="file" name="footer_icon" class="form-control @error('footer_icon') is-invalid @enderror" accept="image/*">
+                                        @error('footer_icon')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        <small class="text-muted"><i class="fas fa-info-circle"></i> Icon shown in the website footer — recommended 80×80px (PNG/SVG, max 2MB)</small>
+                                        @if($setting?->footerIconUrl())
+                                        <div class="mt-2">
+                                            <img src="{{ $setting->footerIconUrl() }}" alt="Footer Icon" style="height:50px;object-fit:contain;border:1px solid #dee2e6;border-radius:4px;padding:4px;">
+                                        </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-6">
                                         <label class="form-label">Logo Text</label>
                                         <input type="text" name="logo_text" value="{{ old('logo_text', $setting->logo_text ?? '') }}" class="form-control @error('logo_text') is-invalid @enderror" placeholder="TRACE">
                                         @error('logo_text')<div class="invalid-feedback">{{ $message }}</div>@enderror

@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\CvSubmissionController;
 use App\Http\Controllers\Admin\InsightTypeController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\EventProposalController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -196,6 +197,12 @@ Route::prefix('admin')->group(function () {
             Route::get('events-manager/{event}/edit', 'edit')->name('admin.events.edit');
             Route::put('events-manager/{event}', 'update')->name('admin.events.update');
             Route::delete('events-manager/{event}', 'destroy')->name('admin.events.destroy');
+        });
+
+        Route::controller(EventProposalController::class)->group(function () {
+            Route::get('event-proposals', 'index')->name('admin.event-proposals.index');
+            Route::get('event-proposals/{eventProposal}', 'show')->name('admin.event-proposals.show');
+            Route::delete('event-proposals/{eventProposal}', 'destroy')->name('admin.event-proposals.destroy');
         });
 
     });

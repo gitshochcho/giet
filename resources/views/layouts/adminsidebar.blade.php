@@ -85,7 +85,7 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.insight-types.index') }}" class="nav-link {{ request()->routeIs('admin.insight-types.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-tags"></i>
-                        <p>Insight Type</p>
+                        <p>Resource Type</p>
                     </a>
                 </li>
 
@@ -100,6 +100,13 @@
                     <a href="{{ route('admin.events.index') }}" class="nav-link {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-calendar-event"></i>
                         <p>Events Manager</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.event-proposals.index') }}" class="nav-link {{ request()->routeIs('admin.event-proposals.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-send"></i>
+                        <p>Event Proposals</p>
                     </a>
                 </li>
                 <li class="nav-item">
