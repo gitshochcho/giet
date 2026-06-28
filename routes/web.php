@@ -31,6 +31,7 @@ Route::get('/eventdetails/{event?}', [App\Http\Controllers\HomeController::class
 Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactMessageController::class, 'store'])->name('contact.store');
 Route::post('/event-proposal', [\App\Http\Controllers\EventProposalController::class, 'store'])->name('event-proposal.store');
+Route::post('/research-idea', [\App\Http\Controllers\ResearchIdeaController::class, 'store'])->name('research-idea.store');
 Route::post('/career/cv-submit', [\App\Http\Controllers\CvSubmissionController::class, 'store'])->name('cv.submit');
 // Route::get('login', [App\Http\Controllers\HomeController::class, 'login'])->name('login');
 Route::get('login', [App\Http\Controllers\Admin\AdminController::class, 'adminLogin'])->name('login');

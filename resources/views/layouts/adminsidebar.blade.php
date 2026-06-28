@@ -109,6 +109,13 @@
                         <p>Event Proposals</p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.research-ideas.index') }}" class="nav-link {{ request()->routeIs('admin.research-ideas.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-lightbulb"></i>
+                        <p>Research Ideas</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('admin.contact-messages.index') }}" class="nav-link {{ request()->routeIs('admin.contact-messages.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-envelope"></i>

@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\InsightTypeController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\EventProposalController;
+use App\Http\Controllers\Admin\ResearchIdeaController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -203,6 +204,12 @@ Route::prefix('admin')->group(function () {
             Route::get('event-proposals', 'index')->name('admin.event-proposals.index');
             Route::get('event-proposals/{eventProposal}', 'show')->name('admin.event-proposals.show');
             Route::delete('event-proposals/{eventProposal}', 'destroy')->name('admin.event-proposals.destroy');
+        });
+
+        Route::controller(ResearchIdeaController::class)->group(function () {
+            Route::get('research-ideas', 'index')->name('admin.research-ideas.index');
+            Route::get('research-ideas/{researchIdea}', 'show')->name('admin.research-ideas.show');
+            Route::delete('research-ideas/{researchIdea}', 'destroy')->name('admin.research-ideas.destroy');
         });
 
     });

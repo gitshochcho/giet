@@ -80,8 +80,8 @@
 
         {{-- Full Bio --}}
         @if($team->description)
-        <div style="display:flex;flex-direction:column;gap:16px;font-family:'Newsreader',Georgia,serif;font-size:16px;color:#1A1A1A;line-height:1.75;">
-          {!! nl2br(e($team->description)) !!}
+        <div style="display:flex;flex-direction:column;gap:16px;font-family:'Newsreader',Georgia,serif;font-size:16px;color:#1A1A1A;line-height:1.75;text-align:justify;">
+          {{ cleanText($team->description) }}
         </div>
         @endif
 
@@ -160,9 +160,9 @@
         <a href="{{ route('projectdetails', $project->id) }}"
            style="display:flex;gap:20px;background:#fff;border:1px solid #EEF3F8;border-radius:14px;padding:20px;text-decoration:none;transition:border-color 0.2s;"
            onmouseover="this.style.borderColor='#18909C'" onmouseout="this.style.borderColor='#EEF3F8'">
-          @if($project->imageUrl ?? false)
+          @if($project->heroimageUrl())
           <div style="width:120px;height:80px;border-radius:10px;overflow:hidden;flex-shrink:0;">
-            <img src="{{ $project->imageUrl() }}" alt="{{ $project->project_title }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" decoding="async" />
+            <img src="{{ $project->heroimageUrl() }}" alt="{{ $project->project_title }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" decoding="async" />
           </div>
           @endif
           <div style="display:flex;flex-direction:column;gap:6px;justify-content:center;">

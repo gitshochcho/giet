@@ -161,6 +161,22 @@
                     </div>
                 </div>
 
+                {{-- RESOURCES PAGE --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupResources" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-book-open me-1"></i> Resources Page
+                    </small>
+                    <div class="collapse" id="presetGroupResources">
+                        <div class="d-flex flex-wrap gap-2 pb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="resources_hero">Resources — Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="resources_research_cta">Resources — Research With Us CTA</button>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- PAGE HEROES --}}
                 <div class="mb-3">
                     <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
@@ -1002,6 +1018,18 @@ document.addEventListener('DOMContentLoaded', function () {
             heading: 'Ideas that inform policy.',
             sub_heading: '', design_word: 'inform policy.', type: 'Hero',
             description: 'Policy briefs, research publications, expert commentary, and video content — GIET\'s full body of published work.',
+        },
+        'resources_hero': {
+            slug: 'resources_hero', section: 'KNOWLEDGE & RESEARCH',
+            heading: 'Resources',
+            sub_heading: '', design_word: '', type: 'Hero',
+            description: 'Policy briefs, issue analyses, expert commentaries, research reports, videos, and podcasts from GIET\'s research team and contributing practitioners.',
+        },
+        'resources_research_cta': {
+            slug: 'resources_research_cta', section: 'Research With Us',
+            heading: 'Interested in Submitting a Research Idea?',
+            sub_heading: 'Submit a Research Idea', design_word: '', type: 'CTA',
+            description: 'GIET welcomes research ideas from government agencies, development partners, universities, and civil society organizations. We provide funding, mentorship, and publication support.',
         },
         'projects-page': {
             slug: 'projects-page', section: 'OUR PROJECTS',

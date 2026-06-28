@@ -249,12 +249,16 @@ class HomeController extends Controller
         $resourceTypes = InsightType::where('status', 1)->orderBy('id')->get();
 
         $all = Insight::with(['insightType', 'media'])
+            ->withCount('articles')
             ->where('active', true)
             ->orderBy('sort_order')
             ->latest('id')
             ->get();
 
-        return view('frontend.pages.resources', compact('all', 'resourceTypes'));
+        $resourcesHero     = contentBlock('resources_hero');
+        $resourcesResearch = contentBlock('resources_research_cta');
+
+        return view('frontend.pages.resources', compact('all', 'resourceTypes', 'resourcesHero', 'resourcesResearch'));
     }
 
     public function resourcedetails(Request $request, ?Insight $insight = null)

@@ -12,9 +12,9 @@
         <span>Resources</span>
       </div>
       <div class="bg-[#18909C] w-[40px] h-[3px] rounded-[2px] mb-[12px]"></div>
-      <h1 class="text-white font-['Newsreader'] font-extrabold leading-tight tracking-[-1.04px] drop-shadow-sm mb-[14px]" style="font-size:clamp(28px,5vw,52px);">Resources</h1>
+      <h1 class="text-white font-['Newsreader'] font-extrabold leading-tight tracking-[-1.04px] drop-shadow-sm mb-[14px]" style="font-size:clamp(28px,5vw,52px);">{{ $resourcesHero?->heading ?? '' }}</h1>
       <p class="text-white/60 font-['Newsreader'] font-normal text-[14px] leading-[24.5px] max-w-[654px] pb-[20px]">
-        Policy briefs, issue analyses, expert commentaries, research reports, videos, and podcasts from GIET's research team and contributing practitioners.
+        {{ cleanText($resourcesHero?->description ?? '') }}
       </p>
       <div class="w-full max-w-[580px] mt-[10px]">
         <div class="flex items-center bg-white rounded-[8px] overflow-hidden h-[52px]" style="box-shadow:0 2px 12px rgba(0,0,0,0.15);">
@@ -62,55 +62,80 @@
 
         @if($rtype->type_category === 'download')
         {{-- ── PUBLICATION LIST ── --}}
-        <div class="w-full flex flex-col bg-white">
-          @foreach($typeItems as $pub)
-          <div class="resource-card flex items-center justify-between py-[20px] gap-[20px] border-b border-[#E4EAF0] hover:bg-[#F7F9FB] transition-colors">
-            <div class="flex items-start gap-[20px] flex-grow">
-              <div class="w-[44px] h-[44px] rounded-[10px] flex items-center justify-center shrink-0" style="background:#E8F6F7;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E606B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        @php $pubList = $typeItems->values(); $pubTotal = $pubList->count(); @endphp
+        <div class="w-full flex flex-col bg-white" id="pub-list-{{ $rtype->id }}">
+          @foreach($pubList as $pubIdx => $pub)
+          @php
+            $metaParts = ['GIET Foundation'];
+            if ($pub->published_at) $metaParts[] = $pub->published_at->format('F Y');
+            if ($pub->page_count)   $metaParts[] = $pub->page_count . ' pages';
+            if (!empty($pub->topics)) foreach (array_slice($pub->topics, 0, 2) as $t) $metaParts[] = $t;
+            if ($pub->articles_count > 0) $metaParts[] = $pub->articles_count . ' ' . ($pub->articles_count === 1 ? 'chapter' : 'chapters');
+          @endphp
+          @php $pubHref = $pub->attachmentUrl() ?: route('resourcedetails', $pub->id); $pubTarget = $pub->attachmentUrl() ? '_blank' : '_self'; @endphp
+          <a href="{{ $pubHref }}" target="{{ $pubTarget }}"
+             class="resource-card pub-item flex items-center justify-between gap-[20px] border-b border-[#E4EAF0] transition-colors"
+             style="text-decoration:none;padding:20px 0;{{ $pubIdx >= 5 ? 'display:none;' : '' }}"
+             onmouseover="this.style.background='#F7F9FB';this.style.padding='20px 12px';this.style.borderRadius='8px';this.style.marginLeft='-12px';this.style.marginRight='-12px'"
+             onmouseout="this.style.background='';this.style.padding='20px 0';this.style.borderRadius='';this.style.marginLeft='';this.style.marginRight=''">
+            <div class="flex items-center gap-[18px] flex-grow min-w-0">
+              <div class="w-[42px] h-[42px] rounded-[10px] flex items-center justify-center shrink-0" style="background:#E8F6F7;border:1px solid rgba(14,96,107,0.08);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E606B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               </div>
-              <div class="flex flex-col gap-[6px]">
-                <div class="flex items-center gap-[6px]">
-                  <span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:10px;color:#0E606B;background:#E8F6F7;border-radius:999px;" class="uppercase tracking-[1px] py-[2px] px-[8px]">{{ $pub->insightType?->type ?? 'Publication' }}</span>
-                  @if($pub->published_at)<span style="font-family:'Outfit',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.8px;text-transform:uppercase;color:#003054;background:#00305412;border-radius:999px;" class="py-[2px] px-[8px]">{{ $pub->published_at->format('Y') }}</span>@endif
+              <div class="flex flex-col gap-[4px] min-w-0">
+                <div class="flex items-center flex-wrap gap-[5px]">
+                  <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:9.5px;color:#0E606B;background:#E8F6F7;border-radius:4px;letter-spacing:0.6px;" class="uppercase py-[2px] px-[7px] whitespace-nowrap">{{ $pub->insightType?->type ?? 'Publication' }}</span>
+                  @if($pub->published_at)<span style="font-family:'Inter',sans-serif;font-weight:700;font-size:9.5px;color:#003054;background:rgba(0,48,84,0.07);border-radius:4px;letter-spacing:0.6px;" class="uppercase py-[2px] px-[7px] whitespace-nowrap">{{ $pub->published_at->format('Y') }}</span>@endif
                 </div>
-                <h4 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;line-height:21.3px;color:#0F172A;">{{ $pub->heading }}</h4>
-                <p class="font-['Newsreader']" style="font-size:12px;color:#6B7280;">GIET Foundation{{ $pub->published_at ? ' · ' . $pub->published_at->format('M Y') : '' }}{{ $pub->page_count ? ' · ' . $pub->page_count . ' pages' : '' }}</p>
+                <h4 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;line-height:21px;color:#0F172A;margin:0;" class="truncate">{{ $pub->heading }}</h4>
+                <p style="font-family:'Inter',sans-serif;font-size:11px;color:#94A3B8;line-height:1.4;margin:0;">{{ implode(' · ', $metaParts) }}</p>
               </div>
             </div>
-            @if($pub->attachmentUrl())
-            <a href="{{ $pub->attachmentUrl() }}" target="_blank" class="flex items-center gap-[6px] shrink-0 hover:bg-[#E8F6F7] transition-all" style="padding:6px 14px;border-radius:999px;border:1px solid #E4EAF0;font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#003054;text-decoration:none;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download PDF
-            </a>
-            @else
-            <a href="{{ route('resourcedetails', $pub->id) }}" class="flex items-center gap-[6px] shrink-0 hover:bg-[#E8F6F7] transition-all" style="padding:6px 14px;border-radius:999px;border:1px solid #E4EAF0;font-family:'Outfit',sans-serif;font-weight:700;font-size:12px;color:#003054;text-decoration:none;">Read →</a>
-            @endif
-          </div>
+            <div class="shrink-0 flex items-center ml-[12px]">
+              <span style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:999px;border:1px solid #E4EAF0;font-family:'Inter',sans-serif;font-weight:600;font-size:11.5px;color:#003054;white-space:nowrap;">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download PDF
+              </span>
+            </div>
+          </a>
           @endforeach
         </div>
+        @if($pubTotal > 5)
+        <div class="w-full flex justify-center pt-[8px]" id="pub-load-more-{{ $rtype->id }}">
+          <button onclick="loadMorePubs('{{ $rtype->id }}')"
+                  style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:#475569;border:1.5px solid #E4EAF0;border-radius:999px;background:#fff;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;padding:10px 28px;"
+                  onmouseover="this.style.borderColor='#003054';this.style.color='#003054'" onmouseout="this.style.borderColor='#E4EAF0';this.style.color='#475569'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Load More <span style="color:#94A3B8;font-weight:400;">({{ $pubTotal - 5 }} more)</span>
+          </button>
+        </div>
+        @endif
 
         @elseif(in_array(strtolower($rtype->type_category), ['watch', 'video_watch']))
         {{-- ── VIDEO GRID ── --}}
-        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-[40px]">
-          @foreach($typeItems as $vid)
-          <a href="{{ $vid->videoUrl() ?: route('resourcedetails', $vid->id) }}" {{ $vid->videoUrl() ? 'target=_blank' : '' }} class="resource-card w-full border border-[#E4EAF0] rounded-[14px] bg-white overflow-hidden flex flex-col" style="height:270px;text-decoration:none;">
-            <div class="relative overflow-hidden bg-[#1a1a2e] shrink-0" style="height:170px;">
-              @if($vid->imageUrl())<img src="{{ $vid->imageUrl() }}" alt="{{ $vid->heading }}" class="w-full h-full object-cover" loading="lazy" decoding="async">@endif
+        @php $vidItems = $typeItems->values(); $vidTotal = $vidItems->count(); @endphp
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-x-[20px] gap-y-[24px]" id="card-grid-{{ $rtype->id }}">
+          @foreach($vidItems as $vIdx => $vid)
+          <a href="{{ $vid->videoUrl() ?: route('resourcedetails', $vid->id) }}" {{ $vid->videoUrl() ? 'target="_blank"' : '' }}
+             class="resource-card w-full border border-[#E4EAF0] rounded-[14px] bg-white overflow-hidden flex flex-col hover:shadow-[0_6px_24px_rgba(0,48,84,0.09)] transition-shadow duration-300"
+             style="text-decoration:none;{{ $vIdx >= 6 ? 'display:none;' : '' }}">
+            <div class="relative overflow-hidden bg-[#0f1923] shrink-0" style="height:190px;">
+              @if($vid->imageUrl())<img src="{{ $vid->imageUrl() }}" alt="{{ $vid->heading }}" class="w-full h-full object-cover" style="opacity:0.88;" loading="lazy" decoding="async">@endif
               <div class="absolute inset-0 flex items-center justify-center">
-                <div class="w-[52px] h-[52px] bg-white rounded-full flex items-center justify-center" style="box-shadow:0 4px 16px rgba(0,0,0,0.25);">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#A80C18" style="margin-left:3px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <div class="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center" style="box-shadow:0 4px 20px rgba(0,0,0,0.30);">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#A80C18" style="margin-left:3px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 </div>
               </div>
-              @if($vid->duration)<span class="absolute bottom-[8px] right-[8px] bg-black/70 text-white text-[10px] font-medium px-[6px] py-[2px] rounded-[3px]">{{ $vid->duration }}</span>@endif
+              @if($vid->duration)<span class="absolute bottom-[8px] right-[8px] text-white text-[10px] font-medium px-[6px] py-[2px] rounded-[3px]" style="background:rgba(0,0,0,0.72);">{{ $vid->duration }}</span>@endif
+              <span class="absolute top-[10px] left-[10px]" style="background:#003054;color:#fff;font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:3px 8px;border-radius:4px;">{{ $vid->insightType?->type ?? 'VIDEO' }}</span>
             </div>
-            <div class="p-[16px] flex flex-col flex-grow" style="gap:4.1px;">
-              <p class="font-['Newsreader']" style="font-weight:700;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:#0E606B;line-height:1;">
-                {{ strtoupper($vid->insightType?->type ?? 'VIDEO') }}{{ $vid->published_at ? ' · ' . strtoupper($vid->published_at->format('M Y')) : '' }}
+            <div class="p-[16px] flex flex-col flex-grow gap-[6px]">
+              <p style="font-family:'Inter',sans-serif;font-size:11px;color:#94A3B8;font-weight:500;margin:0;">
+                {{ strtoupper($vid->insightType?->type ?? 'VIDEO') }}{{ $vid->published_at ? ' · ' . $vid->published_at->format('M Y') : '' }}
               </p>
-              <h3 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:14.5px;line-height:20.3px;color:#0F172A;" class="cursor-pointer hover:text-[#A80C18] transition-colors line-clamp-2">{{ $vid->heading }}</h3>
+              <h3 style="font-family:'Merriweather',serif;font-weight:700;font-size:14.5px;line-height:21px;color:#0F172A;margin:0;" class="line-clamp-2">{{ $vid->heading }}</h3>
               @if($vid->published_at || $vid->attendee_count)
-              <p class="font-['Newsreader']" style="font-size:11.5px;color:#6B7280;line-height:1;">
+              <p style="font-family:'Inter',sans-serif;font-size:11px;color:#94A3B8;margin:0;">
                 {{ $vid->published_at?->format('d M Y') }}{{ $vid->attendee_count ? ' · ' . number_format($vid->attendee_count) . ' attendees' : '' }}
               </p>
               @endif
@@ -118,55 +143,89 @@
           </a>
           @endforeach
         </div>
+        @if($vidTotal > 6)
+        <div class="w-full flex justify-center" id="card-load-more-{{ $rtype->id }}">
+          <button onclick="loadMoreCards('{{ $rtype->id }}')"
+                  style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:#475569;border:1.5px solid #E4EAF0;border-radius:999px;background:#fff;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;padding:10px 28px;"
+                  onmouseover="this.style.borderColor='#003054';this.style.color='#003054'" onmouseout="this.style.borderColor='#E4EAF0';this.style.color='#475569'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Load More <span style="color:#94A3B8;font-weight:400;">({{ $vidTotal - 6 }} more)</span>
+          </button>
+        </div>
+        @endif
 
         @else
         {{-- ── ARTICLE CARDS: featured + grid ── --}}
-        @php $featured = $typeItems->firstWhere('is_featured', true) ?? $typeItems->first(); $gridItems = $typeItems->reject(fn($i) => $i->id === $featured->id); @endphp
-        <a href="{{ route('resourcedetails', $featured->id) }}" class="resource-card w-full grid grid-cols-1 md:grid-cols-[480px_1fr] border border-[#E4EAF0] rounded-[20px] bg-white overflow-hidden shadow-sm" style="text-decoration:none;">
-          <div class="w-full md:w-[480px] h-[220px] md:h-[320px] relative overflow-hidden bg-[#EEF3F8]">
-            <span class="absolute top-0 left-0 bg-[#003054] text-white text-[10px] font-bold tracking-wider uppercase py-[4px] px-[8px] rounded-[4px] z-10">{{ $featured->insightType?->type ?? 'Resource' }} · Featured</span>
+        @php
+          $featured  = $typeItems->firstWhere('is_featured', true) ?? $typeItems->first();
+          $gridItems = $typeItems->reject(fn($i) => $i->id === $featured->id)->values();
+          $gridTotal = $gridItems->count();
+        @endphp
+
+        {{-- Featured Card --}}
+        <a href="{{ route('resourcedetails', $featured->id) }}"
+           class="resource-card w-full grid grid-cols-1 md:grid-cols-[480px_1fr] border border-[#E4EAF0] rounded-[20px] bg-white overflow-hidden hover:shadow-[0_8px_32px_rgba(0,48,84,0.10)] transition-shadow duration-300"
+           style="text-decoration:none;">
+          <div class="w-full h-[240px] md:h-full relative overflow-hidden bg-[#EEF3F8] shrink-0">
+            <span class="absolute top-[12px] left-[12px] z-10" style="background:#003054;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:4px 10px;border-radius:4px;">{{ $featured->insightType?->type ?? 'Resource' }} · Featured</span>
             @if($featured->imageUrl())<img src="{{ $featured->imageUrl() }}" alt="{{ $featured->heading }}" class="w-full h-full object-cover">@endif
           </div>
-          <div class="w-full p-[24px] md:pt-[55px] md:pr-[32px] md:pb-[55px] md:pl-[32px] flex flex-col justify-between items-start">
-            <div class="flex flex-col gap-[8px]">
-              <div class="text-[#64748B] text-[11px] font-medium flex items-center gap-[6px]">
+          <div class="p-[28px] md:pt-[48px] md:pr-[40px] md:pb-[48px] md:pl-[40px] flex flex-col justify-between">
+            <div class="flex flex-col gap-[10px]">
+              <div style="font-family:'Inter',sans-serif;font-size:11px;color:#64748B;font-weight:500;" class="flex items-center gap-[6px] flex-wrap">
                 @if($featured->published_at)<span>{{ $featured->published_at->format('d M Y') }}</span>@endif
-                @if($featured->topics && count($featured->topics))<span class="text-[#CBD5E1]">•</span><span>{{ implode(', ', array_slice($featured->topics, 0, 2)) }}</span>@endif
-                @if($featured->page_count)<span class="text-[#CBD5E1]">•</span><span>{{ $featured->page_count }} pages</span>@endif
+                @if($featured->topics && count($featured->topics))<span style="color:#CBD5E1;">•</span><span>{{ implode(', ', array_slice($featured->topics, 0, 2)) }}</span>@endif
+                @if($featured->page_count)<span style="color:#CBD5E1;">•</span><span>{{ $featured->page_count }} pages</span>@endif
               </div>
-              <h2 style="font-family:'Merriweather',serif;" class="text-[#003054] text-[22px] font-extrabold leading-[30px] tracking-tight">{{ $featured->heading }}</h2>
-              @if($featured->description)<p class="font-['Newsreader'] text-[#475569] text-[13px] leading-[22px] max-w-[650px] mt-[4px]">{{ Str::limit(cleanText($featured->description), 220) }}</p>@endif
+              <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:22px;line-height:32px;color:#003054;letter-spacing:-0.3px;margin:0;">{{ $featured->heading }}</h2>
+              @if($featured->description)<p style="font-family:'Newsreader',serif;font-size:14px;line-height:23px;color:#475569;margin:0;">{{ Str::limit(cleanText($featured->description), 240) }}</p>@endif
             </div>
-            <span class="text-[#A80C18] hover:text-[#003054] text-[12px] font-bold flex items-center gap-[4px] transition-colors mt-[12px]">Read Full Brief <span class="text-[14px]">→</span></span>
+            <span style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#A80C18;display:inline-flex;align-items:center;gap:4px;margin-top:20px;">Read Full Brief <span style="font-size:14px;">→</span></span>
           </div>
         </a>
+
+        {{-- Grid Cards --}}
         @if($gridItems->isNotEmpty())
-        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-x-[20px] gap-y-[24px]">
-          @foreach($gridItems as $item)
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-x-[20px] gap-y-[24px]" id="card-grid-{{ $rtype->id }}">
+          @foreach($gridItems as $gIdx => $item)
           @php $oa = $item->outside_authors[0] ?? null; @endphp
-          <a href="{{ route('resourcedetails', $item->id) }}" class="resource-card w-full border border-[#E4EAF0] rounded-[14px] bg-white overflow-hidden flex flex-col justify-between p-[19px] shadow-sm hover:shadow-md transition-shadow" style="text-decoration:none;">
-            <div class="flex flex-col">
-              <div class="h-[160px] w-full relative overflow-hidden rounded-[8px] bg-[#EEF3F8]">
-                <span class="absolute top-0 left-0 bg-[#003054] text-white text-[9px] font-bold tracking-wider uppercase py-[3px] px-[6px] rounded-[3px] z-10">{{ $item->insightType?->type ?? 'Resource' }}</span>
-                @if($item->imageUrl())<img src="{{ $item->imageUrl() }}" alt="{{ $item->heading }}" class="w-full h-full object-cover" loading="lazy" decoding="async">@endif
-              </div>
-              <div class="pt-[14px] flex flex-col gap-[6px]">
-                <div class="text-[#64748B] text-[11px] font-medium flex items-center gap-[4px]">
-                  @if($item->published_at)<span>{{ $item->published_at->format('d M Y') }}</span>@endif
-                  @if($item->topics && count($item->topics))<span class="text-[#CBD5E1]">•</span><span>{{ $item->topics[0] }}</span>@endif
-                  @if($item->page_count)<span class="text-[#CBD5E1]">•</span><span>{{ $item->page_count }} pages</span>@endif
-                </div>
-                <h3 style="font-family:'Merriweather',serif;" class="text-[#003054] text-[15px] font-bold leading-[22px] tracking-tight hover:text-[#8B1D2F] transition-colors line-clamp-2">{{ $item->heading }}</h3>
-                @if($item->description)<p class="font-['Newsreader'] text-[#475569] text-[13px] leading-[18px] mt-[2px] pb-[16px]">{{ Str::limit(cleanText($item->description), 120) }}</p>@endif
-              </div>
+          <a href="{{ route('resourcedetails', $item->id) }}"
+             class="resource-card w-full border border-[#E4EAF0] rounded-[14px] bg-white overflow-hidden flex flex-col hover:shadow-[0_6px_24px_rgba(0,48,84,0.09)] transition-shadow duration-300"
+             style="text-decoration:none;{{ $gIdx >= 6 ? 'display:none;' : '' }}">
+            {{-- Image: full-bleed, no padding --}}
+            <div class="w-full relative overflow-hidden bg-[#EEF3F8] shrink-0" style="height:200px;">
+              <span class="absolute top-[10px] left-[10px] z-10" style="background:#003054;color:#fff;font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:3px 8px;border-radius:4px;">{{ $item->insightType?->type ?? 'Resource' }}</span>
+              @if($item->imageUrl())<img src="{{ $item->imageUrl() }}" alt="{{ $item->heading }}" class="w-full h-full object-cover" loading="lazy" decoding="async">@endif
             </div>
-            <div class="w-full pt-[10px] flex justify-between items-center border-t border-[#E4EAF0]">
-              <span class="text-[#64748B] text-[11px] font-medium">{{ $oa['name'] ?? 'GIET Foundation' }}</span>
-              <span class="text-[#0E606B] hover:text-[#8B1D2F] text-[11px] font-bold transition-colors">{{ $item->attachmentUrl() ? 'Download PDF' : 'Read →' }}</span>
+            {{-- Text content with padding --}}
+            <div class="p-[18px] flex flex-col flex-grow gap-[7px]">
+              <div style="font-family:'Inter',sans-serif;font-size:11px;color:#94A3B8;font-weight:500;" class="flex items-center gap-[4px] flex-wrap">
+                @if($item->published_at)<span>{{ $item->published_at->format('d M Y') }}</span>@endif
+                @if($item->topics && count($item->topics))<span style="color:#E2E8F0;">•</span><span>{{ $item->topics[0] }}</span>@endif
+                @if($item->page_count)<span style="color:#E2E8F0;">•</span><span>{{ $item->page_count }} pages</span>@endif
+              </div>
+              <h3 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:22px;color:#003054;margin:0;letter-spacing:-0.2px;" class="line-clamp-2">{{ $item->heading }}</h3>
+              @if($item->description)
+              <p style="font-family:'Newsreader',serif;font-size:13px;line-height:19px;color:#64748B;margin:0;" class="line-clamp-3 flex-grow">{{ Str::limit(cleanText($item->description), 150) }}</p>
+              @endif
+              <div class="mt-auto pt-[10px] border-t border-[#F1F5F9] flex items-center justify-between">
+                <span style="font-family:'Inter',sans-serif;font-size:11px;color:#94A3B8;font-weight:500;">{{ $oa['name'] ?? 'GIET Foundation' }}</span>
+                <span style="font-family:'Inter',sans-serif;font-size:11px;color:#0E606B;font-weight:700;">{{ $item->attachmentUrl() ? 'Download PDF' : 'Read →' }}</span>
+              </div>
             </div>
           </a>
           @endforeach
         </div>
+        @if($gridTotal > 6)
+        <div class="w-full flex justify-center" id="card-load-more-{{ $rtype->id }}">
+          <button onclick="loadMoreCards('{{ $rtype->id }}')"
+                  style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:#475569;border:1.5px solid #E4EAF0;border-radius:999px;background:#fff;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;padding:10px 28px;"
+                  onmouseover="this.style.borderColor='#003054';this.style.color='#003054'" onmouseout="this.style.borderColor='#E4EAF0';this.style.color='#475569'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Load More <span style="color:#94A3B8;font-weight:400;">({{ $gridTotal - 6 }} more)</span>
+          </button>
+        </div>
+        @endif
         @endif
         @endif
 
@@ -179,6 +238,28 @@
 </section>
 
 <script>
+  function loadMorePubs(rtypeId) {
+    const list = document.getElementById('pub-list-' + rtypeId);
+    if (!list) return;
+    list.querySelectorAll('.pub-hidden').forEach(function(el) {
+      el.style.display = '';
+      el.classList.remove('pub-hidden');
+    });
+    const btn = document.getElementById('pub-load-more-' + rtypeId);
+    if (btn) btn.style.display = 'none';
+  }
+
+  function loadMoreCards(rtypeId) {
+    const grid = document.getElementById('card-grid-' + rtypeId);
+    if (grid) {
+      grid.querySelectorAll('a[style*="display:none"]').forEach(function(el) {
+        el.style.display = '';
+      });
+    }
+    const btn = document.getElementById('card-load-more-' + rtypeId);
+    if (btn) btn.style.display = 'none';
+  }
+
   const tabBtns     = document.querySelectorAll('.tab-btn');
   const searchInput = document.getElementById('resourceSearch');
   const searchClear = document.getElementById('searchClear');
@@ -254,17 +335,39 @@
   <div class="hidden md:block" style="background-color:rgba(0,48,84,0.04);width:300px;height:300px;top:-60px;right:-60px;border-radius:150px;position:absolute;pointer-events:none;"></div>
   <div class="w-full max-w-[1204px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[60px] items-center relative z-10 px-4 md:px-0">
     <div class="w-full max-w-[522px] flex flex-col gap-[14px] px-4">
-      <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:11px;" class="text-[#0E606B] uppercase tracking-wider">Research With Us</span>
-      <h2 style="font-family:'Merriweather',serif;font-weight:700;font-size:38px;line-height:46px;" class="text-[#003054] tracking-tight">Interested in Submitting a Research Idea?</h2>
-      <p class="font-['Newsreader'] text-[#475569]" style="font-size:14px;line-height:23px;">GIET welcomes research ideas from government agencies, development partners, universities, and civil society organizations. We provide funding, mentorship, and publication support.</p>
+      <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:11px;" class="text-[#0E606B] uppercase tracking-wider">{{ $resourcesResearch?->section ?? '' }}</span>
+      <h2 style="font-family:'Merriweather',serif;font-weight:700;font-size:38px;line-height:46px;" class="text-[#003054] tracking-tight">{{ $resourcesResearch?->heading ?? '' }}</h2>
+      <p class="font-['Newsreader'] text-[#475569]" style="font-size:14px;line-height:23px;">{{ cleanText($resourcesResearch?->description ?? '') }}</p>
     </div>
     <div style="background-color:#FFFFFF;border:1px solid #E4EAF0;border-radius:20px;" class="p-[36px] flex flex-col justify-between shadow-sm">
-      <h3 style="font-family:'Merriweather',serif;font-weight:700;font-size:18px;" class="text-[#003054] tracking-tight">Submit a Research Idea</h3>
-      <form class="flex flex-col gap-[14px] mt-[10px] w-full" action="{{ route('contact') }}" method="GET">
-        <input type="text" placeholder="Your name" style="font-family:'Inter',sans-serif;background-color:#F8FAFC;border-color:#E4EAF0;" class="w-full h-[46px] rounded-[8px] px-[16px] text-[13px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#18909C] transition-all border">
-        <input type="email" placeholder="Email address" style="font-family:'Inter',sans-serif;background-color:#F8FAFC;border-color:#E4EAF0;" class="w-full h-[46px] rounded-[8px] px-[16px] text-[13px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#18909C] transition-all border">
-        <input type="text" placeholder="Organisation" style="font-family:'Inter',sans-serif;background-color:#F8FAFC;border-color:#E4EAF0;" class="w-full h-[46px] rounded-[8px] px-[16px] text-[13px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#18909C] transition-all border">
-        <textarea placeholder="Describe your research proposal..." rows="3" style="font-family:'Inter',sans-serif;background-color:#F8FAFC;border-color:#E4EAF0;resize:none;" class="w-full h-[88px] rounded-[8px] p-[16px] text-[13px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#18909C] transition-all border"></textarea>
+      <h3 style="font-family:'Merriweather',serif;font-weight:700;font-size:18px;" class="text-[#003054] tracking-tight">{{ $resourcesResearch?->sub_heading ?? '' }}</h3>
+
+      @if(session('research_success'))
+      <div style="font-family:'Inter',sans-serif;font-size:13px;background:#ecfdf5;border:1px solid #6ee7b7;border-radius:8px;" class="mt-[10px] px-[16px] py-[12px] text-[#065f46]">
+        {{ session('research_success') }}
+      </div>
+      @endif
+
+      <form class="flex flex-col gap-[14px] mt-[10px] w-full" action="{{ route('research-idea.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="text" name="name" value="{{ old('name') }}" placeholder="Your name" required style="font-family:'Inter',sans-serif;background-color:#F8FAFC;border-color:{{ $errors->has('name') ? '#ef4444' : '#E4EAF0' }};" class="w-full h-[46px] rounded-[8px] px-[16px] text-[13px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#18909C] transition-all border">
+        @error('name')<p style="font-family:'Inter',sans-serif;font-size:11px;color:#ef4444;margin-top:-8px;">{{ $message }}</p>@enderror
+
+        <input type="email" name="email" value="{{ old('email') }}" placeholder="Email address" required style="font-family:'Inter',sans-serif;background-color:#F8FAFC;border-color:{{ $errors->has('email') ? '#ef4444' : '#E4EAF0' }};" class="w-full h-[46px] rounded-[8px] px-[16px] text-[13px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#18909C] transition-all border">
+        @error('email')<p style="font-family:'Inter',sans-serif;font-size:11px;color:#ef4444;margin-top:-8px;">{{ $message }}</p>@enderror
+
+        <input type="text" name="organisation" value="{{ old('organisation') }}" placeholder="Organisation" style="font-family:'Inter',sans-serif;background-color:#F8FAFC;border-color:#E4EAF0;" class="w-full h-[46px] rounded-[8px] px-[16px] text-[13px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#18909C] transition-all border">
+
+        <textarea name="message" placeholder="Describe your research proposal..." rows="3" style="font-family:'Inter',sans-serif;background-color:#F8FAFC;border-color:#E4EAF0;resize:none;" class="w-full h-[88px] rounded-[8px] p-[16px] text-[13px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#18909C] transition-all border">{{ old('message') }}</textarea>
+
+        <div>
+          <label style="font-family:'Inter',sans-serif;font-weight:600;font-size:11px;color:#64748B;letter-spacing:0.5px;" class="block mb-[6px] uppercase">Attach a file <span class="font-normal normal-case">(PDF, DOC, DOCX, or image — max 5MB)</span></label>
+          <input type="file" name="attachment" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                 style="font-family:'Inter',sans-serif;font-size:12px;background-color:#F8FAFC;border-color:#E4EAF0;"
+                 class="w-full rounded-[8px] px-[12px] py-[10px] text-[#0F172A] border file:mr-3 file:py-[4px] file:px-[10px] file:rounded-[4px] file:border-0 file:text-[11px] file:font-semibold file:bg-[#003054] file:text-white hover:file:bg-[#002040] cursor-pointer">
+          @error('attachment')<p style="font-family:'Inter',sans-serif;font-size:11px;color:#ef4444;margin-top:4px;">{{ $message }}</p>@enderror
+        </div>
+
         <button type="submit" style="font-family:'Inter',sans-serif;background-color:#003054;" class="w-full h-[44px] rounded-[8px] mt-[4px] text-white font-semibold text-[13px] flex items-center justify-center gap-[6px] hover:bg-[#002040] transition-colors shadow-sm">
           <span>Submit</span><span class="text-[14px] font-normal">→</span>
         </button>
