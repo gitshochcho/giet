@@ -173,6 +173,32 @@
                                         </div>
                                     </div>
 
+                                    {{-- Event Detail Page Icons --}}
+                                    <div class="col-12">
+                                        <hr class="my-2">
+                                        <label class="form-label fw-bold">Event Detail Page Icons</label>
+                                        <p class="text-muted small mb-3">These icons appear in the event metadata strip (Date &amp; Time / Venue / Registration) — same icon used for all events.</p>
+                                        <div class="row g-3">
+                                            @foreach([
+                                                ['name' => 'event_date_icon',         'label' => 'Date & Time Icon',   'method' => 'eventDateIconUrl'],
+                                                ['name' => 'event_venue_icon',        'label' => 'Venue Icon',         'method' => 'eventVenueIconUrl'],
+                                                ['name' => 'event_registration_icon', 'label' => 'Registration Icon',  'method' => 'eventRegistrationIconUrl'],
+                                            ] as $icon)
+                                            <div class="col-md-4 col-lg-2">
+                                                <label class="form-label">{{ $icon['label'] }}</label>
+                                                <input type="file" name="{{ $icon['name'] }}" class="form-control form-control-sm @error($icon['name']) is-invalid @enderror" accept="image/*">
+                                                @error($icon['name'])<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                                @if($setting && method_exists($setting, $icon['method']) && $setting->{$icon['method']}())
+                                                <div class="mt-2 d-flex align-items-center gap-2">
+                                                    <img src="{{ $setting->{$icon['method']}() }}" alt="{{ $icon['label'] }}" style="width:36px;height:36px;object-fit:contain;border:1px solid #dee2e6;border-radius:6px;padding:4px;background:#f8f9fa;">
+                                                    <small class="text-muted">Current</small>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
                                     {{-- Page Visibility Toggles --}}
                                     <div class="col-12">
                                         <hr class="my-2">

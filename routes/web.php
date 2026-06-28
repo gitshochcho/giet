@@ -32,6 +32,18 @@ Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact'])-
 Route::post('/contact', [ContactMessageController::class, 'store'])->name('contact.store');
 Route::post('/event-proposal', [\App\Http\Controllers\EventProposalController::class, 'store'])->name('event-proposal.store');
 Route::post('/research-idea', [\App\Http\Controllers\ResearchIdeaController::class, 'store'])->name('research-idea.store');
+
+Route::get('/download/insight/{insight}', function (\App\Models\Insight $insight) {
+    $media = $insight->getFirstMedia('attachment');
+    if (!$media) abort(404);
+    $path = $media->getPath();
+    if (!file_exists($path)) {
+        // Orphaned DB record — delete it so admin panel shows clean state
+        $media->delete();
+        abort(404, 'Attachment file not found. Please re-upload from admin panel.');
+    }
+    return response()->download($path, $media->file_name);
+})->name('insight.download');
 Route::post('/career/cv-submit', [\App\Http\Controllers\CvSubmissionController::class, 'store'])->name('cv.submit');
 // Route::get('login', [App\Http\Controllers\HomeController::class, 'login'])->name('login');
 Route::get('login', [App\Http\Controllers\Admin\AdminController::class, 'adminLogin'])->name('login');

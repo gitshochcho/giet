@@ -98,7 +98,7 @@
       {{-- Date & Time --}}
       <div class="flex-1 flex items-start gap-3 px-3 md:px-6 border-r border-[#FFFFFF14] py-2 md:py-0">
         <div class="w-[30px] h-[30px] md:w-[36px] md:h-[36px] rounded-[8px] bg-[#FFFFFF14] flex items-center justify-center shrink-0">
-          <img src="{{ asset('icons/SVG (51).png') }}" alt="Date" class="w-4 h-4 md:w-6 md:h-6 object-contain" loading="lazy" decoding="async">
+          <img src="{{ $siteSettings?->eventDateIconUrl() ?? asset('icons/SVG (51).png') }}" alt="Date" class="w-4 h-4 md:w-6 md:h-6 object-contain" loading="lazy" decoding="async">
         </div>
         <div class="flex flex-col">
           <span class="text-[9px] md:text-[11px] font-semibold text-[#8FB2C9] uppercase tracking-[0.5px]">Date & Time</span>
@@ -113,7 +113,7 @@
       @if($event->venue || $event->venue_address)
       <div class="flex-1 flex items-start gap-3 px-3 md:px-6 border-r border-[#FFFFFF14] py-2 md:py-0">
         <div class="w-[30px] h-[30px] md:w-[36px] md:h-[36px] rounded-[8px] bg-[#FFFFFF14] flex items-center justify-center shrink-0">
-          <img src="{{ asset('icons/SVG (52).png') }}" alt="Venue" class="w-4 h-4 md:w-6 md:h-6 object-contain" loading="lazy" decoding="async">
+          <img src="{{ $siteSettings?->eventVenueIconUrl() ?? asset('icons/SVG (52).png') }}" alt="Venue" class="w-4 h-4 md:w-6 md:h-6 object-contain" loading="lazy" decoding="async">
         </div>
         <div class="flex flex-col">
           <span class="text-[9px] md:text-[11px] font-semibold text-[#8FB2C9] uppercase tracking-[0.5px]">Venue</span>
@@ -128,7 +128,7 @@
       {{-- Registration --}}
       <div class="flex-1 flex items-start gap-3 px-3 md:px-6 py-2 md:py-0">
         <div class="w-[30px] h-[30px] md:w-[36px] md:h-[36px] rounded-[8px] bg-[#FFFFFF14] flex items-center justify-center shrink-0">
-          <img src="{{ asset('icons/SVG (59).png') }}" alt="Registration" class="w-4 h-4 md:w-6 md:h-6 object-contain" loading="lazy" decoding="async">
+          <img src="{{ $siteSettings?->eventRegistrationIconUrl() ?? asset('icons/SVG (59).png') }}" alt="Registration" class="w-4 h-4 md:w-6 md:h-6 object-contain" loading="lazy" decoding="async">
         </div>
         <div class="flex flex-col">
           <span class="text-[9px] md:text-[11px] font-semibold text-[#8FB2C9] uppercase tracking-[0.5px]">Registration</span>
@@ -171,7 +171,7 @@
         <ul class="space-y-3 text-[15px] text-[#475569]">
           @foreach(array_filter(explode("\n", $event->who_should_attend)) as $item)
           <li class="flex items-start gap-3">
-            <img src="{{ asset('icons/SVG (59).png') }}" class="w-[18px] h-[18px] mt-0.5 opacity-80" alt="icon" loading="lazy" decoding="async">
+            <img src="{{ $siteSettings?->eventRegistrationIconUrl() ?? asset('icons/SVG (59).png') }}" class="w-[18px] h-[18px] mt-0.5 opacity-80" alt="icon" loading="lazy" decoding="async">
             <span class="font-['Newsreader']">{{ trim($item) }}</span>
           </li>
           @endforeach
@@ -309,7 +309,7 @@
         <span class="text-[10px] font-bold text-[#0E606B] bg-[#E6F3F5] px-2 py-0.5 rounded w-fit uppercase tracking-[0.4px]">{{ $rel->event_type }}</span>
         <h3 class="font-['Newsreader'] font-bold text-[14.5px] leading-[20.3px] text-[#0F172A]">{{ Str::limit($rel->title, 80) }}</h3>
         <p class="font-['Newsreader'] text-[12px] text-[#64748B] flex items-center gap-1.5 mt-auto">
-          <img src="{{ asset('icons/SVG (52).png') }}" alt="Location" class="w-3.5 h-3.5 object-contain opacity-70" loading="lazy" decoding="async">
+          <img src="{{ $siteSettings?->eventVenueIconUrl() ?? asset('icons/SVG (52).png') }}" alt="Location" class="w-3.5 h-3.5 object-contain opacity-70" loading="lazy" decoding="async">
           {{ $rel->venue ?: $rel->event_format }}@if($rel->venue_address), {{ $rel->venue_address }}@endif
         </p>
         <div class="flex justify-between items-center mt-2 border-t pt-3">

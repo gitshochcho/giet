@@ -55,7 +55,7 @@
 
     <div class="flex flex-col md:flex-row items-start md:items-center gap-[12px]">
       @if($insight->attachmentUrl())
-      <a href="{{ $insight->attachmentUrl() }}" target="_blank"
+      <a href="{{ route('insight.download', $insight->id) }}"
          class="flex items-center justify-center gap-[8px] text-white text-[12px] font-semibold bg-[#003054] hover:bg-[#00223C] px-[22px] py-[10px] rounded-[6px] transition-colors shadow-sm"
          style="text-decoration:none;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -137,7 +137,7 @@
     @if($insight->attachmentUrl())
     <div style="background:#003054;border:1px solid #003054;border-radius:14px;padding:22px;" class="w-full flex flex-col gap-[14px] items-center text-center">
       <span class="font-['Newsreader'] text-[10px] text-[#FFFFFF] uppercase font-bold tracking-widest w-full pb-[10px] border-b border-white/[0.10] block text-left">Download</span>
-      <a href="{{ $insight->attachmentUrl() }}" target="_blank"
+      <a href="{{ route('insight.download', $insight->id) }}"
          style="background:#A80C18;text-decoration:none;"
          class="w-full py-[10px] rounded-[6px] text-white text-[12px] font-semibold flex items-center justify-center gap-[6px] hover:bg-[#8F0A13] transition-colors">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>

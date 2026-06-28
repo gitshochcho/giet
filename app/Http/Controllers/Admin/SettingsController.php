@@ -39,11 +39,14 @@ class SettingsController extends Controller
             'footer_contact_location' => ['nullable', 'string'],
             'footer_description'  => ['nullable', 'string'],
             'show_about_story'    => ['nullable', 'boolean'],
-            'project_client_icon'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
-            'project_duration_icon' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
-            'project_location_icon' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
-            'project_sector_icon'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
-            'project_status_icon'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'project_client_icon'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'project_duration_icon'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'project_location_icon'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'project_sector_icon'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'project_status_icon'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'event_date_icon'           => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'event_venue_icon'          => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'event_registration_icon'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
         ]);
 
         $setting = Setting::with('media')->first() ?? new Setting();
@@ -115,7 +118,7 @@ class SettingsController extends Controller
             $setting->addMedia($request->file('footer_icon'))->toMediaCollection('footer_icon');
         }
 
-        foreach (['project_client_icon', 'project_duration_icon', 'project_location_icon', 'project_sector_icon', 'project_status_icon'] as $col) {
+        foreach (['project_client_icon', 'project_duration_icon', 'project_location_icon', 'project_sector_icon', 'project_status_icon', 'event_date_icon', 'event_venue_icon', 'event_registration_icon'] as $col) {
             if ($request->hasFile($col)) {
                 $setting->clearMediaCollection($col);
                 $setting->addMedia($request->file($col))->toMediaCollection($col);

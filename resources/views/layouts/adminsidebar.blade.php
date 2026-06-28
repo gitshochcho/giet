@@ -137,7 +137,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="{{ route('admin.job-postings.index') }}" class="nav-link {{ request()->routeIs('admin.job-postings.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-briefcase"></i>
                         <p>Job Postings</p>
@@ -156,7 +156,7 @@
                         <i class="nav-icon bi bi-file-earmark-person"></i>
                         <p>CV Submissions</p>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
     <a href="#" class="nav-link {{ request()->is('admin/partners*') ? 'active' : '' }}">

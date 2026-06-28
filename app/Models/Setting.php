@@ -75,6 +75,24 @@ class Setting extends Model implements HasMedia
         return $url !== '' ? $url : null;
     }
 
+    public function eventDateIconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('event_date_icon');
+        return $url !== '' ? $url : null;
+    }
+
+    public function eventVenueIconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('event_venue_icon');
+        return $url !== '' ? $url : null;
+    }
+
+    public function eventRegistrationIconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('event_registration_icon');
+        return $url !== '' ? $url : null;
+    }
+
     public function socialLinksWithIcons(): array
     {
         $links = is_array($this->social_links) ? $this->social_links : [];

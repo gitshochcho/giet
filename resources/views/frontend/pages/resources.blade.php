@@ -72,7 +72,7 @@
             if (!empty($pub->topics)) foreach (array_slice($pub->topics, 0, 2) as $t) $metaParts[] = $t;
             if ($pub->articles_count > 0) $metaParts[] = $pub->articles_count . ' ' . ($pub->articles_count === 1 ? 'chapter' : 'chapters');
           @endphp
-          @php $pubHref = $pub->attachmentUrl() ?: route('resourcedetails', $pub->id); $pubTarget = $pub->attachmentUrl() ? '_blank' : '_self'; @endphp
+          @php $pubHref = $pub->attachmentUrl() ? route('insight.download', $pub->id) : route('resourcedetails', $pub->id); $pubTarget = '_self'; @endphp
           <a href="{{ $pubHref }}" target="{{ $pubTarget }}"
              class="resource-card pub-item flex items-center justify-between gap-[20px] border-b border-[#E4EAF0] transition-colors"
              style="text-decoration:none;padding:20px 0;{{ $pubIdx >= 5 ? 'display:none;' : '' }}"
@@ -120,7 +120,8 @@
              class="resource-card w-full border border-[#E4EAF0] rounded-[14px] bg-white overflow-hidden flex flex-col hover:shadow-[0_6px_24px_rgba(0,48,84,0.09)] transition-shadow duration-300"
              style="text-decoration:none;{{ $vIdx >= 6 ? 'display:none;' : '' }}">
             <div class="relative overflow-hidden bg-[#0f1923] shrink-0" style="height:190px;">
-              @if($vid->imageUrl())<img src="{{ $vid->imageUrl() }}" alt="{{ $vid->heading }}" class="w-full h-full object-cover" style="opacity:0.88;" loading="lazy" decoding="async">@endif
+              @php $vidImg = $vid->articleImageUrl() ?? $vid->imageUrl(); @endphp
+              @if($vidImg)<img src="{{ $vidImg }}" alt="{{ $vid->heading }}" class="w-full h-full object-cover" style="opacity:0.88;" loading="lazy" decoding="async">@endif
               <div class="absolute inset-0 flex items-center justify-center">
                 <div class="w-[50px] h-[50px] bg-white rounded-full flex items-center justify-center" style="box-shadow:0 4px 20px rgba(0,0,0,0.30);">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="#A80C18" style="margin-left:3px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
@@ -168,7 +169,8 @@
            style="text-decoration:none;">
           <div class="w-full h-[240px] md:h-full relative overflow-hidden bg-[#EEF3F8] shrink-0">
             <span class="absolute top-[12px] left-[12px] z-10" style="background:#003054;color:#fff;font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:4px 10px;border-radius:4px;">{{ $featured->insightType?->type ?? 'Resource' }} · Featured</span>
-            @if($featured->imageUrl())<img src="{{ $featured->imageUrl() }}" alt="{{ $featured->heading }}" class="w-full h-full object-cover">@endif
+            @php $featuredImg = $featured->articleImageUrl() ?? $featured->imageUrl(); @endphp
+            @if($featuredImg)<img src="{{ $featuredImg }}" alt="{{ $featured->heading }}" class="w-full h-full object-cover">@endif
           </div>
           <div class="p-[28px] md:pt-[48px] md:pr-[40px] md:pb-[48px] md:pl-[40px] flex flex-col justify-between">
             <div class="flex flex-col gap-[10px]">
@@ -195,7 +197,8 @@
             {{-- Image: full-bleed, no padding --}}
             <div class="w-full relative overflow-hidden bg-[#EEF3F8] shrink-0" style="height:200px;">
               <span class="absolute top-[10px] left-[10px] z-10" style="background:#003054;color:#fff;font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:3px 8px;border-radius:4px;">{{ $item->insightType?->type ?? 'Resource' }}</span>
-              @if($item->imageUrl())<img src="{{ $item->imageUrl() }}" alt="{{ $item->heading }}" class="w-full h-full object-cover" loading="lazy" decoding="async">@endif
+              @php $cardImg = $item->articleImageUrl() ?? $item->imageUrl(); @endphp
+              @if($cardImg)<img src="{{ $cardImg }}" alt="{{ $item->heading }}" class="w-full h-full object-cover" loading="lazy" decoding="async">@endif
             </div>
             {{-- Text content with padding --}}
             <div class="p-[18px] flex flex-col flex-grow gap-[7px]">
