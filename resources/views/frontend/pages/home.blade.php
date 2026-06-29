@@ -1,5 +1,18 @@
 @extends('frontend.layout.app')
 
+@php
+  $firstSlide = $sliderItems->first();
+@endphp
+@if($firstSlide && $firstSlide->webpUrl())
+@push('custome-css')
+<link rel="preload" as="image" href="{{ $firstSlide->webpUrl() }}" type="image/webp">
+@endpush
+@elseif($firstSlide && $firstSlide->imageUrl())
+@push('custome-css')
+<link rel="preload" as="image" href="{{ $firstSlide->imageUrl() }}">
+@endpush
+@endif
+
 @section('content')
 
 {{-- ===== 1. HERO SLIDER ===== --}}
@@ -9,11 +22,6 @@
 
     @forelse($sliderItems as $i => $slide)
     @php
-      $bgImg = $slide->imageUrl();
-      $bgStyle = $bgImg
-        ? "background-image:linear-gradient(rgba(0,24,43,0.58),rgba(0,24,43,0.58)),url('{$bgImg}');background-size:cover;background-position:center;"
-        : "background-color:#00223D;";
-
       $title = $slide->title ?? '';
       $dw    = $slide->design_word ?? '';
       $titleHtml = $dw
@@ -21,7 +29,24 @@
         : e($title);
     @endphp
     <div class="hero-slide absolute inset-0 w-full h-full transition-opacity duration-700 {{ $i === 0 ? 'opacity-100' : 'opacity-0' }}" style="{{ $i !== 0 ? 'pointer-events:none;' : '' }}">
-      <div class="absolute inset-0" style="{{ $bgStyle }}"></div>
+      {{-- Background image: <picture> with WebP source for fast load --}}
+      @if($slide->imageUrl())
+      <picture class="absolute inset-0 w-full h-full" style="display:block;">
+        @if($slide->webpUrl())
+        <source srcset="{{ $slide->webpUrl() }}" type="image/webp">
+        @endif
+        <img src="{{ $slide->imageUrl() }}"
+             alt=""
+             class="w-full h-full object-cover object-center"
+             loading="{{ $i === 0 ? 'eager' : 'lazy' }}"
+             decoding="{{ $i === 0 ? 'sync' : 'async' }}"
+             fetchpriority="{{ $i === 0 ? 'high' : 'auto' }}"
+             aria-hidden="true">
+      </picture>
+      @endif
+      {{-- Dark gradient overlay --}}
+      <div class="absolute inset-0" style="background:linear-gradient(rgba(0,24,43,0.58),rgba(0,24,43,0.58));"></div>
+      {{-- Slide content --}}
       <div class="relative z-10 flex flex-col items-center justify-center h-full max-w-[1204px] mx-auto px-4 pt-[45px]">
         @if($slide->tagline)
         <span class="text-[10px] font-bold uppercase tracking-[2.5px] text-gray-300 mb-2">— {{ $slide->tagline }} —</span>

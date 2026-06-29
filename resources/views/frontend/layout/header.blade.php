@@ -33,11 +33,12 @@
                     <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:#18909C;margin-top:2px;"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
                 <div id="res-dd-menu-contact" class="hidden absolute top-full left-0 w-[214px] bg-white border border-[#E4EAF0] shadow-lg z-50 rounded-b-[6px] overflow-hidden">
-                    <a href="{{ route('insights') }}" onclick="setResActive(this)" class="res-dd-link res-dd-item flex items-center w-full h-[45px] px-[22px] text-[13px] font-medium border-b-[3px] border-transparent">Issue Briefs/Articles</a>
-                    <a href="{{ route('insights') }}" onclick="setResActive(this)" class="res-dd-link res-dd-item flex items-center w-full h-[45px] px-[22px] text-[13px] font-medium border-b-[3px] border-transparent">Expert Speak/Blog</a>
-                    <a href="{{ route('insights') }}" onclick="setResActive(this)" class="res-dd-link res-dd-item flex items-center w-full h-[45px] px-[22px] text-[13px] font-medium border-b-[3px] border-transparent">Publications & Reports</a>
-                    <a href="{{ route('insights') }}" onclick="setResActive(this)" class="res-dd-link res-dd-item flex items-center w-full h-[45px] px-[22px] text-[13px] font-medium border-b-[3px] border-transparent">News & Commentary/Op-Ed</a>
-                    <a href="{{ route('insights') }}" onclick="setResActive(this)" class="res-dd-link res-dd-item flex items-center w-full h-[45px] px-[22px] text-[13px] font-medium border-b-[3px] border-transparent">Videos & Podcasts</a>
+                    @foreach($navInsightTypes ?? [] as $navType)
+                    <a href="{{ route('insights') }}#type-{{ $navType->id }}"
+                       class="res-dd-link res-dd-item flex items-center w-full h-[45px] px-[22px] text-[13px] font-medium border-b-[3px] border-transparent">
+                        {{ $navType->type }}
+                    </a>
+                    @endforeach
                 </div>
             </div>
 

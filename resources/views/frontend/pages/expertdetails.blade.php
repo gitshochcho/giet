@@ -100,8 +100,8 @@
       </div>
     </div>
 
-    {{-- Tabs: Publications / Projects --}}
-    @if($team->insightArticles->count() || $team->projects->count())
+    {{-- Tabs: Publications / Speaking & Events / Projects --}}
+    @if($team->insightArticles->count() || $speakingEvents->count() || $team->projects->count())
     <div style="display:flex;flex-direction:column;gap:32px;">
 
       <div style="display:flex;gap:32px;border-bottom:1px solid #E4EAF0;">
@@ -111,9 +111,15 @@
           Publications
         </button>
         @endif
+        @if($speakingEvents->count())
+        <button id="exp-tab-events" onclick="expSwitchTab('events')"
+          style="padding-bottom:10px;border:none;border-bottom:2px solid {{ !$team->insightArticles->count() ? '#003054' : 'transparent' }};background:none;color:{{ !$team->insightArticles->count() ? '#0F172A' : '#64748B' }};font-weight:{{ !$team->insightArticles->count() ? '600' : '500' }};font-size:14px;cursor:pointer;">
+          Speaking &amp; Events
+        </button>
+        @endif
         @if($team->projects->count())
         <button id="exp-tab-projects" onclick="expSwitchTab('projects')"
-          style="padding-bottom:10px;border:none;border-bottom:2px solid transparent;background:none;color:#64748B;font-weight:500;font-size:14px;cursor:pointer;">
+          style="padding-bottom:10px;border:none;border-bottom:2px solid {{ (!$team->insightArticles->count() && !$speakingEvents->count()) ? '#003054' : 'transparent' }};background:none;color:{{ (!$team->insightArticles->count() && !$speakingEvents->count()) ? '#0F172A' : '#64748B' }};font-weight:{{ (!$team->insightArticles->count() && !$speakingEvents->count()) ? '600' : '500' }};font-size:14px;cursor:pointer;">
           Projects
         </button>
         @endif
@@ -153,23 +159,90 @@
       </div>
       @endif
 
+      {{-- Speaking & Events --}}
+      @if($speakingEvents->count())
+      @php $eventsVisible = !$team->insightArticles->count(); @endphp
+      <div id="exp-content-events" style="display:{{ $eventsVisible ? 'flex' : 'none' }};flex-direction:column;gap:0;">
+        @foreach($speakingEvents as $ev)
+        @php
+          $speakerRow = $ev->speakers->firstWhere('team_id', $team->id);
+          $metaParts = [];
+          if ($ev->venue) $metaParts[] = $ev->venue;
+          if ($ev->organizer) $metaParts[] = $ev->organizer;
+          if ($speakerRow?->session_role) $metaParts[] = $speakerRow->session_role;
+          $statusLabel = $ev->is_past ? 'Past' : 'Upcoming';
+          if (!$ev->is_past) $metaParts[] = $statusLabel;
+        @endphp
+        <a href="{{ route('events') }}"
+           style="display:flex;gap:20px;align-items:flex-start;padding:20px 0;border-bottom:1px solid #E4EAF0;text-decoration:none;"
+           onmouseover="this.style.background='#F9FBFC'" onmouseout="this.style.background='transparent'">
+          {{-- Date block --}}
+          <div style="flex-shrink:0;width:52px;text-align:center;padding-top:2px;">
+            <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:1px;line-height:1;">
+              {{ strtoupper($ev->event_date->format('M')) }}
+            </div>
+            <div style="font-family:'Merriweather',serif;font-weight:800;font-size:28px;line-height:1.1;color:#0F172A;margin-top:2px;">
+              {{ $ev->event_date->format('d') }}
+            </div>
+          </div>
+          {{-- Content --}}
+          <div style="flex:1;display:flex;flex-direction:column;gap:5px;">
+            @if($ev->event_type)
+            <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#0E606B;">
+              {{ strtoupper($ev->event_type) }}
+            </span>
+            @endif
+            <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:1.4;color:#0F172A;margin:0;">
+              {{ $ev->title }}
+            </h4>
+            @if(count($metaParts))
+            <p style="font-family:'Inter',sans-serif;font-size:12.5px;color:#64748B;margin:0;">
+              {{ implode(' · ', $metaParts) }}
+            </p>
+            @endif
+          </div>
+        </a>
+        @endforeach
+      </div>
+      @endif
+
       {{-- Projects --}}
       @if($team->projects->count())
-      <div id="exp-content-projects" style="display:{{ $team->insightArticles->count() ? 'none' : 'flex' }};flex-direction:column;gap:16px;">
+      @php $projectsVisible = !$team->insightArticles->count() && !$speakingEvents->count(); @endphp
+      <div id="exp-content-projects" style="display:{{ $projectsVisible ? 'flex' : 'none' }};flex-direction:column;gap:0;">
         @foreach($team->projects as $project)
+        @php
+          $statusLabel = strtoupper($project->project_status ?? 'Ongoing');
+          $catLabel    = strtoupper($project->category?->name ?? '');
+          $badge       = $catLabel ? $statusLabel . ' · ' . $catLabel : $statusLabel;
+        @endphp
         <a href="{{ route('projectdetails', $project->id) }}"
-           style="display:flex;gap:20px;background:#fff;border:1px solid #EEF3F8;border-radius:14px;padding:20px;text-decoration:none;transition:border-color 0.2s;"
-           onmouseover="this.style.borderColor='#18909C'" onmouseout="this.style.borderColor='#EEF3F8'">
+           style="display:flex;gap:24px;align-items:flex-start;padding:24px 0;border-bottom:1px solid #E4EAF0;text-decoration:none;"
+           onmouseover="this.querySelector('.proj-title').style.color='#0E606B'" onmouseout="this.querySelector('.proj-title').style.color='#0F172A'">
+
+          {{-- Thumbnail --}}
           @if($project->heroimageUrl())
-          <div style="width:120px;height:80px;border-radius:10px;overflow:hidden;flex-shrink:0;">
-            <img src="{{ $project->heroimageUrl() }}" alt="{{ $project->project_title }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" decoding="async" />
+          <div style="width:220px;min-width:220px;height:140px;border-radius:10px;overflow:hidden;flex-shrink:0;">
+            <img src="{{ $project->heroimageUrl() }}" alt="{{ $project->project_title }}"
+                 style="width:100%;height:100%;object-fit:cover;" loading="lazy" decoding="async" />
+          </div>
+          @else
+          <div style="width:220px;min-width:220px;height:140px;border-radius:10px;background:#EEF3F8;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+            <span style="color:#94A3B8;font-size:12px;">No Image</span>
           </div>
           @endif
-          <div style="display:flex;flex-direction:column;gap:6px;justify-content:center;">
-            <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:15px;line-height:21px;color:#0F172A;margin:0;">{{ $project->project_title }}</h4>
-            @if($project->short_description ?? $project->description ?? false)
-            <p style="font-family:'Newsreader',Georgia,serif;font-size:12.5px;line-height:1.5;color:#6B7280;margin:0;">
-              {{ Str::limit(cleanText($project->short_description ?? $project->description), 120) }}
+
+          {{-- Content --}}
+          <div style="display:flex;flex-direction:column;gap:8px;padding-top:4px;flex:1;">
+            <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#0E606B;">
+              {{ $badge }}
+            </span>
+            <h4 class="proj-title" style="font-family:'Merriweather',serif;font-weight:700;font-size:16px;line-height:1.4;color:#0F172A;margin:0;transition:color 0.15s;">
+              {{ $project->project_title }}
+            </h4>
+            @if($project->overview)
+            <p style="font-family:'Newsreader',Georgia,serif;font-size:13.5px;line-height:1.65;color:#64748B;margin:0;">
+              {{ Str::limit(cleanText($project->overview), 160) }}
             </p>
             @endif
           </div>
@@ -191,10 +264,10 @@
 
     <div style="display:flex;justify-content:space-between;align-items:flex-end;">
       <div style="display:flex;flex-direction:column;gap:8px;">
-        <span style="color:#0E606B;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;">More Experts</span>
-        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:30px;line-height:1;color:#0F172A;margin:0;">GIET Team Members</h3>
+        <span style="color:#0E606B;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;">{{ $expertRelated?->section ?? '' }}</span>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:800;font-size:30px;line-height:1;color:#0F172A;margin:0;">{{ $expertRelated?->heading ?? '' }}</h3>
       </div>
-      <a href="{{ route('team') }}" style="color:#003054;font-size:14px;font-weight:600;text-decoration:none;">View All →</a>
+      <a href="{{ route('team') }}" style="color:#003054;font-size:14px;font-weight:600;text-decoration:none;">{{ $expertRelated?->sub_heading ?? ''}} →</a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-[18px]">
@@ -223,7 +296,7 @@
 
 <script>
 function expSwitchTab(tab) {
-  const tabs = ['pub', 'projects'];
+  const tabs = ['pub', 'events', 'projects'];
   tabs.forEach(function(t) {
     const content = document.getElementById('exp-content-' + t);
     const btn = document.getElementById('exp-tab-' + t);

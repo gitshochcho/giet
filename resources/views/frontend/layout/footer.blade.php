@@ -26,15 +26,15 @@
             @if(count($socialLinks) > 0)
             <div style="padding-top:18px;display:flex;align-items:center;gap:8px;">
                 @foreach($socialLinks as $social)
-                @if(!empty($social['icon_class']) || !empty($social['title']))
+                @if(!empty($social['icon_url']) || !empty($social['title']))
                 @php $href = !empty($social['link']) ? $social['link'] : '#'; @endphp
                 <a href="{{ $href }}" {{ !empty($social['link']) ? 'target="_blank" rel="noopener"' : '' }}
                    title="{{ $social['title'] ?? '' }}"
                    style="width:34px;height:34px;background:#FFFFFF12;border:1px solid #FFFFFF1A;border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.7);transition:background 0.15s,color 0.15s;text-decoration:none;flex-shrink:0;"
                    onmouseover="this.style.background='rgba(255,255,255,0.15)';this.style.color='#fff';"
                    onmouseout="this.style.background='#FFFFFF12';this.style.color='rgba(255,255,255,0.7)';">
-                    @if(!empty($social['icon_class']))
-                        <i class="{{ $social['icon_class'] }}" style="font-size:14px;line-height:1;"></i>
+                    @if(!empty($social['icon_url']))
+                        <img src="{{ $social['icon_url'] }}" alt="{{ $social['title'] ?? '' }}" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);opacity:0.75;" loading="lazy">
                     @else
                         <span style="font-size:10px;font-weight:700;letter-spacing:0.02em;">{{ strtoupper(substr($social['title'] ?? '?', 0, 2)) }}</span>
                     @endif

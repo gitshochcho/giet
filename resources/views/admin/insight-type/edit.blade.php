@@ -50,6 +50,14 @@
                                             <label class="form-check-label" for="activeSwitch">Active</label>
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Show Featured Card</label>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" name="show_featured" value="1" id="showFeaturedSwitch" @checked(old('show_featured', $insightType->show_featured) == '1')>
+                                            <label class="form-check-label" for="showFeaturedSwitch">Enable featured card layout</label>
+                                        </div>
+                                        <small class="text-muted">When enabled, the first (or marked) item shows as a large featured card on the Resources page.</small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-between">

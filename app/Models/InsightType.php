@@ -13,7 +13,11 @@ class InsightType extends Model
             'type',
             'type_category',
             'status',
-            
+            'show_featured',
+        ];
+
+        protected $casts = [
+            'show_featured' => 'boolean',
         ];
 
         public function insights()

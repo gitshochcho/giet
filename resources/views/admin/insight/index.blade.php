@@ -5,12 +5,12 @@
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-sm-6">
-                <h3 class="mb-0">Insights Manager</h3>
+                <h3 class="mb-0">Resource Manager</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Insights Manager</li>
+                    <li class="breadcrumb-item active" aria-current="page">Resources Manager</li>
                 </ol>
             </div>
         </div>
@@ -24,11 +24,11 @@
                 <div class="card card-outline card-primary">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center gap-2">
-                            <h3 class="card-title mb-0">All Insights ({{ $insights->total() }})</h3>
+                            <h3 class="card-title mb-0">All Resources ({{ $insights->total() }})</h3>
                             <div class="d-flex gap-2 align-items-center">
                                 <input type="text" id="insightSearch" class="form-control form-control-sm" placeholder="Search by heading, type..." style="width: 240px;">
                                 <a href="{{ route('admin.insights.create') }}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-plus"></i> Add Insight
+                                    <i class="fas fa-plus"></i> Add Resource
                                 </a>
                             </div>
                         </div>

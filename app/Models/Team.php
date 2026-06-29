@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Models\Event;
+use App\Models\EventSpeaker;
 
 class Team extends Model implements HasMedia
 {
@@ -46,6 +48,18 @@ class Team extends Model implements HasMedia
     public function insightArticles()
     {
         return $this->hasMany(InsightArticle::class, 'author_team_id')->orderBy('sort_order');
+    }
+
+    public function speakingEvents()
+    {
+        return $this->hasManyThrough(
+            Event::class,
+            EventSpeaker::class,
+            'team_id',
+            'id',
+            'id',
+            'event_id'
+        );
     }
 
     public function imageUrl(): ?string

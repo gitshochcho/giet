@@ -541,7 +541,11 @@ class HomeController extends Controller
             ->latest('id')
             ->firstOrFail();
 
-        $team->load(['experties.media', 'socialMedia.media', 'projects.media', 'media', 'insightArticles.insight.insightType']);
+        $team->load(['experties.media', 'socialMedia.media', 'projects.media', 'projects.category', 'media', 'insightArticles.insight.insightType']);
+
+        $speakingEvents = \App\Models\Event::whereHas('speakers', fn($q) => $q->where('team_id', $team->id))
+            ->orderByDesc('event_date')
+            ->get();
 
         $relatedTeams = Team::query()
             ->with(['media'])
@@ -551,7 +555,9 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
-        return view('frontend.pages.expertdetails', compact('team', 'relatedTeams'));
+        $expertRelated = contentBlock('expertdetails_related_experts');
+
+        return view('frontend.pages.expertdetails', compact('team', 'relatedTeams', 'expertRelated', 'speakingEvents'));
     }
 
     public function dashboard(Request $request)

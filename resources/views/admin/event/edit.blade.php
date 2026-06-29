@@ -7,12 +7,13 @@
         $statusOptions = ['Open', 'Closed', 'Full', 'Coming Soon'];
         $speakers      = old('speakers', $event->speakers->map(fn($s) => [
             'id'           => $s->id,
+            'team_id'      => $s->team_id,
             'name'         => $s->name,
             'designation'  => $s->designation,
             'session_role' => $s->session_role,
             'speaker_type' => $s->speaker_type,
             'image'        => $s->image,
-        ])->toArray() ?: [['id' => null, 'name' => '', 'designation' => '', 'session_role' => '', 'speaker_type' => 'External', 'image' => null]]);
+        ])->toArray() ?: [['id' => null, 'team_id' => null, 'name' => '', 'designation' => '', 'session_role' => '', 'speaker_type' => 'External', 'image' => null]]);
         $evtPartners   = old('event_partners', $event->eventPartners->map(fn($p) => [
             'id'    => $p->id,
             'name'  => $p->name,
@@ -239,17 +240,26 @@
                                         <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 remove-speaker">×</button>
                                         <input type="hidden" name="speakers[{{ $si }}][id]" value="{{ $spk['id'] ?? '' }}">
                                         <div class="row g-2">
-                                            <div class="col-md-4">
-                                                <label class="form-label small">Name</label>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Link to GIET Team Member <span class="text-muted">(optional)</span></label>
+                                                <select name="speakers[{{ $si }}][team_id]" class="form-select form-select-sm speaker-team-select">
+                                                    <option value="">— External Speaker —</option>
+                                                    @foreach($teamMembers as $tm)
+                                                    <option value="{{ $tm->id }}" @selected(($spk['team_id'] ?? '') == $tm->id)>{{ $tm->first_name }} {{ $tm->last_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Session Role</label>
+                                                <input type="text" name="speakers[{{ $si }}][session_role]" value="{{ $spk['session_role'] ?? '' }}" class="form-control form-control-sm" placeholder="Opening Keynote">
+                                            </div>
+                                            <div class="col-md-4 speaker-name-wrap">
+                                                <label class="form-label small">Name <span class="text-muted">(if external)</span></label>
                                                 <input type="text" name="speakers[{{ $si }}][name]" value="{{ $spk['name'] ?? '' }}" class="form-control form-control-sm">
                                             </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label small">Designation</label>
+                                            <div class="col-md-4 speaker-name-wrap">
+                                                <label class="form-label small">Designation <span class="text-muted">(if external)</span></label>
                                                 <input type="text" name="speakers[{{ $si }}][designation]" value="{{ $spk['designation'] ?? '' }}" class="form-control form-control-sm">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <label class="form-label small">Session Role</label>
-                                                <input type="text" name="speakers[{{ $si }}][session_role]" value="{{ $spk['session_role'] ?? '' }}" class="form-control form-control-sm">
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label small">Type</label>
@@ -258,8 +268,8 @@
                                                     <option value="External" @selected(($spk['speaker_type'] ?? 'External') === 'External')>External</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-8">
-                                                <label class="form-label small">Photo</label>
+                                            <div class="col-md-8 speaker-name-wrap">
+                                                <label class="form-label small">Photo <span class="text-muted">(if external)</span></label>
                                                 @if(!empty($spk['image']))
                                                     <p class="text-muted small mb-1">Current: <img src="{{ asset('storage/' . $spk['image']) }}" style="height:30px;border-radius:50%;"></p>
                                                 @endif
@@ -329,6 +339,16 @@ function previewImg(input, previewId) {
     }
 }
 
+const teamMembersData = @json($teamMembers->map(fn($t) => ['id' => $t->id, 'name' => $t->first_name . ' ' . $t->last_name]));
+
+function buildTeamOptions(selectedId) {
+    let opts = '<option value="">— External Speaker —</option>';
+    teamMembersData.forEach(function(tm) {
+        opts += `<option value="${tm.id}" ${selectedId == tm.id ? 'selected' : ''}>${tm.name}</option>`;
+    });
+    return opts;
+}
+
 let speakerIndex = {{ count($speakers) }};
 document.getElementById('addSpeaker').addEventListener('click', function () {
     const si = speakerIndex++;
@@ -338,11 +358,20 @@ document.getElementById('addSpeaker').addEventListener('click', function () {
         <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 remove-speaker">×</button>
         <input type="hidden" name="speakers[${si}][id]" value="">
         <div class="row g-2">
-            <div class="col-md-4"><label class="form-label small">Name</label><input type="text" name="speakers[${si}][name]" class="form-control form-control-sm" placeholder="Dr. Aminur Rahman"></div>
-            <div class="col-md-4"><label class="form-label small">Designation</label><input type="text" name="speakers[${si}][designation]" class="form-control form-control-sm" placeholder="Chairman, GIET Foundation"></div>
-            <div class="col-md-4"><label class="form-label small">Session Role</label><input type="text" name="speakers[${si}][session_role]" class="form-control form-control-sm" placeholder="Opening Keynote"></div>
+            <div class="col-md-6">
+                <label class="form-label small">Link to GIET Team Member <span class="text-muted">(optional)</span></label>
+                <select name="speakers[${si}][team_id]" class="form-select form-select-sm speaker-team-select">
+                    ${buildTeamOptions(null)}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small">Session Role</label>
+                <input type="text" name="speakers[${si}][session_role]" class="form-control form-control-sm" placeholder="Opening Keynote">
+            </div>
+            <div class="col-md-4 speaker-name-wrap"><label class="form-label small">Name <span class="text-muted">(if external)</span></label><input type="text" name="speakers[${si}][name]" class="form-control form-control-sm" placeholder="Dr. Aminur Rahman"></div>
+            <div class="col-md-4 speaker-name-wrap"><label class="form-label small">Designation <span class="text-muted">(if external)</span></label><input type="text" name="speakers[${si}][designation]" class="form-control form-control-sm" placeholder="Chairman, GIET Foundation"></div>
             <div class="col-md-4"><label class="form-label small">Type</label><select name="speakers[${si}][speaker_type]" class="form-select form-select-sm"><option value="GIET">GIET</option><option value="External" selected>External</option></select></div>
-            <div class="col-md-8"><label class="form-label small">Photo</label><input type="file" name="speakers[${si}][image]" accept="image/*" class="form-control form-control-sm"></div>
+            <div class="col-md-8 speaker-name-wrap"><label class="form-label small">Photo <span class="text-muted">(if external)</span></label><input type="file" name="speakers[${si}][image]" accept="image/*" class="form-control form-control-sm"></div>
         </div>`;
     document.getElementById('speakersList').appendChild(row);
     bindRemove(row, 'remove-speaker');

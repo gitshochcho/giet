@@ -121,20 +121,32 @@
 
                                         <div id="socialLinksWrapper" class="d-grid gap-3">
                                             @foreach($socialLinks as $index => $socialLink)
+                                            @php
+                                                $mediaKey   = $socialLink['media_key'] ?? '';
+                                                $currentIcon = ($mediaKey && $setting)
+                                                    ? $setting->getFirstMediaUrl('social_icon_' . $mediaKey)
+                                                    : '';
+                                            @endphp
                                                 <div class="row g-2 social-link-row align-items-end">
                                                     <div class="col-md-3">
                                                         <label class="form-label">Title</label>
                                                         <input type="text" name="social_links[{{ $index }}][title]" value="{{ $socialLink['title'] ?? '' }}" class="form-control" placeholder="LinkedIn">
-                                                        <input type="hidden" name="social_links[{{ $index }}][media_key]" value="{{ $socialLink['media_key'] ?? '' }}">
+                                                        <input type="hidden" name="social_links[{{ $index }}][media_key]" value="{{ $mediaKey }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label class="form-label">Link (URL)</label>
                                                         <input type="text" name="social_links[{{ $index }}][link]" value="{{ $socialLink['link'] ?? '' }}" class="form-control" placeholder="https://linkedin.com/...">
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <label class="form-label">FontAwesome Icon Class</label>
-                                                        <input type="text" name="social_links[{{ $index }}][icon_class]" value="{{ $socialLink['icon_class'] ?? '' }}" class="form-control" placeholder="fab fa-linkedin-in">
-                                                        <small class="text-muted">e.g. <code>fab fa-linkedin-in</code>, <code>fab fa-x-twitter</code>, <code>fab fa-facebook-f</code>, <code>fab fa-youtube</code></small>
+                                                        <label class="form-label">Icon Image</label>
+                                                        <input type="file" name="social_links_icons[{{ $index }}]" class="form-control form-control-sm" accept="image/*">
+                                                        @if($currentIcon)
+                                                        <div class="mt-1 d-flex align-items-center gap-2">
+                                                            <img src="{{ $currentIcon }}" alt="{{ $socialLink['title'] ?? '' }}"
+                                                                 style="width:28px;height:28px;object-fit:contain;border:1px solid #dee2e6;border-radius:6px;padding:3px;background:#f8f9fa;">
+                                                            <small class="text-muted">Current icon</small>
+                                                        </div>
+                                                        @endif
                                                     </div>
                                                     <div class="col-md-1 d-grid">
                                                         <button type="button" class="btn btn-outline-danger remove-social-link">&times;</button>
@@ -142,7 +154,7 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <div class="form-text">FontAwesome class দিলে icon দেখাবে। Image upload করলে image priority পাবে। দুটোই না দিলে title এর প্রথম ২ অক্ষর দেখাবে।</div>
+                                        <div class="form-text">Icon upload করলে সেটি footer এ দেখাবে। Upload না করলে title এর প্রথম ২ অক্ষর দেখাবে।</div>
                                     </div>
 
                                     {{-- Project Detail Page Icons --}}
@@ -239,9 +251,9 @@
                 <input type="text" name="__NAME__[link]" class="form-control" placeholder="https://linkedin.com/...">
             </div>
             <div class="col-md-4">
-                <label class="form-label">FontAwesome Icon Class</label>
-                <input type="text" name="__NAME__[icon_class]" class="form-control" placeholder="fab fa-linkedin-in">
-                <small class="text-muted">e.g. <code>fab fa-linkedin-in</code>, <code>fab fa-x-twitter</code></small>
+                <label class="form-label">Icon Image</label>
+                <input type="file" name="__ICON_NAME__" class="form-control form-control-sm" accept="image/*">
+                <small class="text-muted">PNG, SVG, JPG — recommended 32×32px</small>
             </div>
             <div class="col-md-1 d-grid">
                 <button type="button" class="btn btn-outline-danger remove-social-link">&times;</button>

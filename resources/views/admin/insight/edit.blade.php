@@ -20,11 +20,11 @@ $currentInsightImageRemoveField = $insight->articleImageUrl() ? 'remove_article_
 <div class="app-content-header">
     <div class="container-fluid">
         <div class="row align-items-center">
-            <div class="col-sm-6"><h3 class="mb-0">Edit Insight</h3></div>
+            <div class="col-sm-6"><h3 class="mb-0">Edit Resource</h3></div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.insights.index') }}">Insights Manager</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.insights.index') }}">Resources Manager</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Edit</li>
                 </ol>
             </div>
@@ -64,7 +64,7 @@ $currentInsightImageRemoveField = $insight->articleImageUrl() ? 'remove_article_
     <p class="text-muted small mb-2">Click to select, click again to remove</p>
     <div class="author-chip-grid d-flex flex-wrap gap-2" id="authorChipGrid">
         @foreach($teams as $team)
-            @php $isSelected = in_array($team->id, old('author_team_ids', [])); @endphp
+            @php $isSelected = in_array($team->id, $savedAuthorTeamIds); @endphp
             <div class="author-chip d-flex align-items-center gap-2 rounded-pill px-3 py-2 border {{ $isSelected ? 'chip-selected' : '' }}"
                  data-id="{{ $team->id }}"
                  style="cursor:pointer; user-select:none; transition: all 0.15s;">
@@ -523,8 +523,8 @@ document.addEventListener('DOMContentLoaded', function () {
         setVisible(editSourceNameWrap,   isOpEdType());
         setVisible(editInsightAttWrap,   isBrochuresType());
         setVisible(editArticleAttWrap,   isArticleOrPub());
-        setVisible(editArticleImageWrap, isArticleOrPub());
-        setVisible(editImageDescWrap,    isArticleOrPub());
+        setVisible(editArticleImageWrap, true);
+        setVisible(editImageDescWrap,    true);
         setVisible(editSocialLinksWrap,  isArticleOrPub());
         setVisible(editPublishLinkWrap,  isArticleOrPub());
         setVisible(editArticleSectWrap,  isArticleOrPub());

@@ -531,8 +531,8 @@ document.addEventListener('DOMContentLoaded', function () {
         setVisible(sourceNameWrap,   isOpEdType());
         setVisible(insightAttWrap,   isBrochuresType());
         setVisible(articleAttWrap,   isArticleOrPub());
-        setVisible(articleImageWrap, isArticleOrPub());
-        setVisible(imageDescWrap,    isArticleOrPub());
+        setVisible(articleImageWrap, true);
+        setVisible(imageDescWrap,    true);
         setVisible(socialLinksWrap,  isArticleOrPub());
         setVisible(publishLinkWrap,  isArticleOrPub());
         setVisible(articleSectWrap,  isArticleOrPub());

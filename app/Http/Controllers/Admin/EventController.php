@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\EventSpeaker;
 use App\Models\EventPartner;
+use App\Models\Team;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class EventController extends Controller
 
     public function create()
     {
-        return view('admin.event.create');
+        $teamMembers = Team::orderBy('first_name')->get(['id', 'first_name', 'last_name', 'designation']);
+        return view('admin.event.create', compact('teamMembers'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -54,6 +56,7 @@ class EventController extends Controller
             'hero_image'             => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'],
             'speakers'               => ['nullable', 'array'],
             'speakers.*.id'          => ['nullable', 'integer'],
+            'speakers.*.team_id'     => ['nullable', 'integer', 'exists:teams,id'],
             'speakers.*.name'        => ['nullable', 'string', 'max:255'],
             'speakers.*.designation' => ['nullable', 'string', 'max:255'],
             'speakers.*.session_role'=> ['nullable', 'string', 'max:255'],
@@ -100,7 +103,8 @@ class EventController extends Controller
     public function edit(Event $event)
     {
         $event->load(['speakers', 'eventPartners', 'media']);
-        return view('admin.event.edit', compact('event'));
+        $teamMembers = Team::orderBy('first_name')->get(['id', 'first_name', 'last_name', 'designation']);
+        return view('admin.event.edit', compact('event', 'teamMembers'));
     }
 
     public function update(Request $request, Event $event): RedirectResponse
@@ -129,6 +133,7 @@ class EventController extends Controller
             'hero_image'             => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'],
             'speakers'               => ['nullable', 'array'],
             'speakers.*.id'          => ['nullable', 'integer'],
+            'speakers.*.team_id'     => ['nullable', 'integer', 'exists:teams,id'],
             'speakers.*.name'        => ['nullable', 'string', 'max:255'],
             'speakers.*.designation' => ['nullable', 'string', 'max:255'],
             'speakers.*.session_role'=> ['nullable', 'string', 'max:255'],
@@ -225,9 +230,15 @@ class EventController extends Controller
                 ? EventSpeaker::firstOrNew(['id' => $speakerId, 'event_id' => $event->id])
                 : new EventSpeaker(['event_id' => $event->id]);
 
+            $teamId = ! empty($item['team_id']) ? (int) $item['team_id'] : null;
+            if ($teamId) {
+                $teamMember = Team::find($teamId);
+            }
+
             $record->event_id     = $event->id;
-            $record->name         = $name;
-            $record->designation  = $item['designation'] ?? null;
+            $record->team_id      = $teamId;
+            $record->name         = ($teamId && isset($teamMember)) ? $teamMember->fullName() : $name;
+            $record->designation  = ($teamId && isset($teamMember) && empty($item['designation'])) ? $teamMember->designation : ($item['designation'] ?? null);
             $record->session_role = $item['session_role'] ?? null;
             $record->speaker_type = $item['speaker_type'] ?? 'External';
             $record->sort_order   = $index;

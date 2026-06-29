@@ -6,12 +6,12 @@
 <section class="w-full bg-[#F7F9FB] border-b border-[#E4EAF0] pt-[48px] pb-[48px] px-4 md:px-8 flex flex-col justify-center items-center select-none overflow-hidden md:h-[413px]">
   <div class="w-full max-w-[1204px] mx-auto h-auto md:h-[316px] px-4 md:px-0 flex flex-col gap-[16px] justify-between items-start text-left bg-transparent">
 
-    <div style="font-family:'Inter',sans-serif;font-size:12px;line-height:100%;" class="flex items-center gap-[6px] text-medium">
-      <a href="{{ route('home') }}" class="text-[#0E606B] hover:underline">Home</a>
-      <span class="text-[#6B7280]">/</span>
-      <a href="{{ route('insights') }}" class="text-[#0E606B] hover:underline">Resources</a>
-      <span class="text-[#6B7280]">/</span>
-      <span class="text-[#6B7280]">{{ $insight->insightType?->type ?? 'Resource' }}</span>
+    <div style="font-family:'Inter',sans-serif;font-size:12px;line-height:100%;display:flex;align-items:center;gap:6px;">
+      <a href="{{ route('home') }}" style="color:#0E606B;font-weight:500;">Home</a>
+      <span style="color:#6B7280;">/</span>
+      <a href="{{ route('insights') }}" style="color:#0E606B;font-weight:500;">Resources</a>
+      <span style="color:#6B7280;">/</span>
+      <span style="color:#6B7280;">{{ $insight->insightType?->type ?? 'Resource' }}</span>
     </div>
 
     <div class="flex flex-wrap items-center gap-[8px]">

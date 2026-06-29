@@ -61,9 +61,9 @@
       <div class="type-section w-full flex flex-col gap-[40px]" data-type-id="{{ $rtype->id }}">
 
         @if($rtype->type_category === 'download')
-        {{-- ── PUBLICATION LIST ── --}}
+        {{-- ── PUBLICATION CARDS (horizontal, same style as screenshot) ── --}}
         @php $pubList = $typeItems->values(); $pubTotal = $pubList->count(); @endphp
-        <div class="w-full flex flex-col bg-white" id="pub-list-{{ $rtype->id }}">
+        <div class="w-full flex flex-col gap-[12px]" id="card-grid-{{ $rtype->id }}">
           @foreach($pubList as $pubIdx => $pub)
           @php
             $metaParts = ['GIET Foundation'];
@@ -71,42 +71,46 @@
             if ($pub->page_count)   $metaParts[] = $pub->page_count . ' pages';
             if (!empty($pub->topics)) foreach (array_slice($pub->topics, 0, 2) as $t) $metaParts[] = $t;
             if ($pub->articles_count > 0) $metaParts[] = $pub->articles_count . ' ' . ($pub->articles_count === 1 ? 'chapter' : 'chapters');
+            $hasAttach = (bool) $pub->attachmentUrl();
+            $pubHref   = $hasAttach ? route('insight.download', $pub->id) : route('resourcedetails', $pub->id);
           @endphp
-          @php $pubHref = $pub->attachmentUrl() ? route('insight.download', $pub->id) : route('resourcedetails', $pub->id); $pubTarget = '_self'; @endphp
-          <a href="{{ $pubHref }}" target="{{ $pubTarget }}"
-             class="resource-card pub-item flex items-center justify-between gap-[20px] border-b border-[#E4EAF0] transition-colors"
-             style="text-decoration:none;padding:20px 0;{{ $pubIdx >= 5 ? 'display:none;' : '' }}"
-             onmouseover="this.style.background='#F7F9FB';this.style.padding='20px 12px';this.style.borderRadius='8px';this.style.marginLeft='-12px';this.style.marginRight='-12px'"
-             onmouseout="this.style.background='';this.style.padding='20px 0';this.style.borderRadius='';this.style.marginLeft='';this.style.marginRight=''">
-            <div class="flex items-center gap-[18px] flex-grow min-w-0">
-              <div class="w-[42px] h-[42px] rounded-[10px] flex items-center justify-center shrink-0" style="background:#E8F6F7;border:1px solid rgba(14,96,107,0.08);">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0E606B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              </div>
-              <div class="flex flex-col gap-[4px] min-w-0">
-                <div class="flex items-center flex-wrap gap-[5px]">
-                  <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:9.5px;color:#0E606B;background:#E8F6F7;border-radius:4px;letter-spacing:0.6px;" class="uppercase py-[2px] px-[7px] whitespace-nowrap">{{ $pub->insightType?->type ?? 'Publication' }}</span>
-                  @if($pub->published_at)<span style="font-family:'Inter',sans-serif;font-weight:700;font-size:9.5px;color:#003054;background:rgba(0,48,84,0.07);border-radius:4px;letter-spacing:0.6px;" class="uppercase py-[2px] px-[7px] whitespace-nowrap">{{ $pub->published_at->format('Y') }}</span>@endif
-                </div>
-                <h4 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;line-height:21px;color:#0F172A;margin:0;" class="truncate">{{ $pub->heading }}</h4>
-                <p style="font-family:'Inter',sans-serif;font-size:11px;color:#94A3B8;line-height:1.4;margin:0;">{{ implode(' · ', $metaParts) }}</p>
-              </div>
+          <a href="{{ $pubHref }}"
+             class="resource-card w-full flex items-center justify-between gap-[20px] bg-white border border-[#E4EAF0] rounded-[14px] hover:shadow-[0_4px_20px_rgba(0,48,84,0.08)] hover:border-[#C8D8E8] transition-all duration-200"
+             style="text-decoration:none;padding:20px 24px;{{ $pubIdx >= 6 ? 'display:none;' : '' }}">
+            {{-- Left: icon --}}
+            <div class="w-[46px] h-[46px] rounded-[12px] flex items-center justify-center shrink-0" style="background:#E8F6F7;border:1px solid rgba(14,96,107,0.10);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E606B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
             </div>
-            <div class="shrink-0 flex items-center ml-[12px]">
-              <span style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:999px;border:1px solid #E4EAF0;font-family:'Inter',sans-serif;font-weight:600;font-size:11.5px;color:#003054;white-space:nowrap;">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            {{-- Middle: badges + title + meta --}}
+            <div class="flex flex-col gap-[5px] flex-grow min-w-0">
+              <div class="flex items-center flex-wrap gap-[5px]">
+                <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:9.5px;color:#0E606B;background:#E8F6F7;border-radius:4px;letter-spacing:0.6px;" class="uppercase py-[2px] px-[8px] whitespace-nowrap">{{ $pub->insightType?->type ?? 'Publication' }}</span>
+                @if($pub->published_at)<span style="font-family:'Inter',sans-serif;font-weight:700;font-size:9.5px;color:#003054;background:rgba(0,48,84,0.07);border-radius:4px;letter-spacing:0.6px;" class="uppercase py-[2px] px-[8px] whitespace-nowrap">{{ $pub->published_at->format('Y') }}</span>@endif
+              </div>
+              <h4 style="font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;line-height:22px;color:#0F172A;margin:0;" class="truncate">{{ $pub->heading }}</h4>
+              <p style="font-family:'Inter',sans-serif;font-size:11.5px;color:#94A3B8;line-height:1.5;margin:0;">{{ implode(' · ', $metaParts) }}</p>
+            </div>
+            {{-- Right: download button --}}
+            <div class="shrink-0 flex items-center ml-[8px]">
+              <span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid #E4EAF0;font-family:'Inter',sans-serif;font-weight:600;font-size:12px;color:#003054;white-space:nowrap;background:#fff;">
+                @if($hasAttach)
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 Download PDF
+                @else
+                Read →
+                @endif
               </span>
             </div>
           </a>
           @endforeach
         </div>
-        @if($pubTotal > 5)
-        <div class="w-full flex justify-center pt-[8px]" id="pub-load-more-{{ $rtype->id }}">
-          <button onclick="loadMorePubs('{{ $rtype->id }}')"
+        @if($pubTotal > 6)
+        <div class="w-full flex justify-center pt-[8px]" id="card-load-more-{{ $rtype->id }}">
+          <button onclick="loadMoreCards('{{ $rtype->id }}')"
                   style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;color:#475569;border:1.5px solid #E4EAF0;border-radius:999px;background:#fff;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;padding:10px 28px;"
                   onmouseover="this.style.borderColor='#003054';this.style.color='#003054'" onmouseout="this.style.borderColor='#E4EAF0';this.style.color='#475569'">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Load More <span style="color:#94A3B8;font-weight:400;">({{ $pubTotal - 5 }} more)</span>
+            Load More <span style="color:#94A3B8;font-weight:400;">({{ $pubTotal - 6 }} more)</span>
           </button>
         </div>
         @endif
@@ -156,14 +160,16 @@
         @endif
 
         @else
-        {{-- ── ARTICLE CARDS: featured + grid ── --}}
+        {{-- ── ARTICLE/READ CARDS ── --}}
         @php
-          $featured  = $typeItems->firstWhere('is_featured', true) ?? $typeItems->first();
-          $gridItems = $typeItems->reject(fn($i) => $i->id === $featured->id)->values();
-          $gridTotal = $gridItems->count();
+          $showFeatured = (bool) $rtype->show_featured;
+          $featured     = $showFeatured ? ($typeItems->firstWhere('is_featured', true) ?? $typeItems->first()) : null;
+          $gridItems    = ($showFeatured && $featured) ? $typeItems->reject(fn($i) => $i->id === $featured->id)->values() : $typeItems->values();
+          $gridTotal    = $gridItems->count();
         @endphp
 
-        {{-- Featured Card --}}
+        {{-- Featured Card — only for types with show_featured = true (Issue Briefs/Articles) --}}
+        @if($showFeatured && $featured)
         <a href="{{ route('resourcedetails', $featured->id) }}"
            class="resource-card w-full grid grid-cols-1 md:grid-cols-[480px_1fr] border border-[#E4EAF0] rounded-[20px] bg-white overflow-hidden hover:shadow-[0_8px_32px_rgba(0,48,84,0.10)] transition-shadow duration-300"
            style="text-decoration:none;">
@@ -185,22 +191,25 @@
             <span style="font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:#A80C18;display:inline-flex;align-items:center;gap:4px;margin-top:20px;">Read Full Brief <span style="font-size:14px;">→</span></span>
           </div>
         </a>
+        @endif
 
         {{-- Grid Cards --}}
         @if($gridItems->isNotEmpty())
         <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-x-[20px] gap-y-[24px]" id="card-grid-{{ $rtype->id }}">
           @foreach($gridItems as $gIdx => $item)
-          @php $oa = $item->outside_authors[0] ?? null; @endphp
-          <a href="{{ route('resourcedetails', $item->id) }}"
+          @php
+            $oa        = $item->outside_authors[0] ?? null;
+            $hasAttach = (bool) $item->attachmentUrl();
+            $cardHref  = $hasAttach ? route('insight.download', $item->id) : route('resourcedetails', $item->id);
+          @endphp
+          <a href="{{ $cardHref }}"
              class="resource-card w-full border border-[#E4EAF0] rounded-[14px] bg-white overflow-hidden flex flex-col hover:shadow-[0_6px_24px_rgba(0,48,84,0.09)] transition-shadow duration-300"
              style="text-decoration:none;{{ $gIdx >= 6 ? 'display:none;' : '' }}">
-            {{-- Image: full-bleed, no padding --}}
             <div class="w-full relative overflow-hidden bg-[#EEF3F8] shrink-0" style="height:200px;">
               <span class="absolute top-[10px] left-[10px] z-10" style="background:#003054;color:#fff;font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:3px 8px;border-radius:4px;">{{ $item->insightType?->type ?? 'Resource' }}</span>
               @php $cardImg = $item->articleImageUrl() ?? $item->imageUrl(); @endphp
               @if($cardImg)<img src="{{ $cardImg }}" alt="{{ $item->heading }}" class="w-full h-full object-cover" loading="lazy" decoding="async">@endif
             </div>
-            {{-- Text content with padding --}}
             <div class="p-[18px] flex flex-col flex-grow gap-[7px]">
               <div style="font-family:'Inter',sans-serif;font-size:11px;color:#94A3B8;font-weight:500;" class="flex items-center gap-[4px] flex-wrap">
                 @if($item->published_at)<span>{{ $item->published_at->format('d M Y') }}</span>@endif
@@ -213,7 +222,14 @@
               @endif
               <div class="mt-auto pt-[10px] border-t border-[#F1F5F9] flex items-center justify-between">
                 <span style="font-family:'Inter',sans-serif;font-size:11px;color:#94A3B8;font-weight:500;">{{ $oa['name'] ?? 'GIET Foundation' }}</span>
-                <span style="font-family:'Inter',sans-serif;font-size:11px;color:#0E606B;font-weight:700;">{{ $item->attachmentUrl() ? 'Download PDF' : 'Read →' }}</span>
+                @if($hasAttach)
+                <span style="display:inline-flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:11px;color:#0E606B;font-weight:700;">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Download PDF
+                </span>
+                @else
+                <span style="font-family:'Inter',sans-serif;font-size:11px;color:#0E606B;font-weight:700;">Read →</span>
+                @endif
               </div>
             </div>
           </a>
@@ -331,7 +347,15 @@
     });
   }
 
-  activateTab('all', '');
+  // Activate tab from URL hash (e.g. #type-5 from header dropdown)
+  const _hash = window.location.hash;
+  if (_hash && _hash.startsWith('#type-')) {
+    const _typeId = _hash.replace('#type-', '');
+    activateTab('type-' + _typeId, _typeId);
+    document.querySelector('.tab-btn')?.closest('div')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    activateTab('all', '');
+  }
 </script>
 
 <section style="background-color: #F1F5F9;" class="w-full py-[48px] md:py-[80px] relative flex justify-center items-center overflow-hidden select-none">
@@ -364,7 +388,7 @@
         <textarea name="message" placeholder="Describe your research proposal..." rows="3" style="font-family:'Inter',sans-serif;background-color:#F8FAFC;border-color:#E4EAF0;resize:none;" class="w-full h-[88px] rounded-[8px] p-[16px] text-[13px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:border-[#18909C] transition-all border">{{ old('message') }}</textarea>
 
         <div>
-          <label style="font-family:'Inter',sans-serif;font-weight:600;font-size:11px;color:#64748B;letter-spacing:0.5px;" class="block mb-[6px] uppercase">Attach a file <span class="font-normal normal-case">(PDF, DOC, DOCX, or image — max 5MB)</span></label>
+          <label style="font-family:'Inter',sans-serif;font-weight:600;font-size:11px;color:#64748B;letter-spacing:0.5px;" class="block mb-[6px] uppercase">Attach a file <span class="font-normal normal-case">(PDF, DOC, DOCX, or image — max 5MB) (Optional)</span></label>
           <input type="file" name="attachment" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                  style="font-family:'Inter',sans-serif;font-size:12px;background-color:#F8FAFC;border-color:#E4EAF0;"
                  class="w-full rounded-[8px] px-[12px] py-[10px] text-[#0F172A] border file:mr-3 file:py-[4px] file:px-[10px] file:rounded-[4px] file:border-0 file:text-[11px] file:font-semibold file:bg-[#003054] file:text-white hover:file:bg-[#002040] cursor-pointer">
