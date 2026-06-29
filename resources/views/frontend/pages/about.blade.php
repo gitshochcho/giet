@@ -84,6 +84,10 @@
                 <span class="text-[13px] font-normal pt-[0.5px]">↗</span>
             </a>
             @endif
+            <a href="{{ route('services') }}" class="mt-3 w-[197px] h-[49.09px] pt-[12px] pr-[28px] pb-[13.09px] pl-[28px] rounded-[6px] bg-[#A80C18] hover:bg-[#8F0A14] text-white font-['Newsreader'] font-semibold text-[13px] flex items-center justify-center gap-1.5 transition-colors cursor-pointer" style="text-decoration:none;color:#ffffff;">
+                <span>Our Areas of Work</span>
+                <span class="text-[13px] font-normal pt-[0.5px]">↗</span>
+            </a>
 
         </div>
     </div>
