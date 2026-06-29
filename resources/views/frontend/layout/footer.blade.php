@@ -12,13 +12,13 @@
             @endif
 
             @if($siteSettings?->logo_text)
-            <h3 class="mb-[12px] uppercase" style="font-family:'Inter',sans-serif;font-weight:400;font-size:11px;line-height:16.5px;color:#FFFFFFCC;letter-spacing:0.04em;max-width:220px;">
+            <h3 class="mb-[12px] uppercase" style="font-family:'Newsreader',serif;font-weight:400;font-size:11px;line-height:16.5px;color:#FFFFFFCC;letter-spacing:0;max-width:220px;">
                 {{ $siteSettings->logo_text }}
             </h3>
             @endif
 
-            <p class="mb-6" style="font-family:'Newsreader',serif;font-weight:400;font-size:13px;line-height:23.4px;color:rgba(255,255,255,0.75);max-width:400px;">
-                {{ $siteSettings?->footer_description ?? 'A non-partisan, non-profit think tank advancing evidence-based governance reform and economic transformation in Bangladesh and beyond.' }}
+            <p class="mb-6" style="font-family:'Newsreader',serif;font-weight:400;font-size:11px;line-height:16.5px;letter-spacing:0;color:#FFFFFFCC;max-width:400px;">
+                {{ $siteSettings?->footer_description ?? '' }}
             </p>
 
             {{-- Social Icons --}}

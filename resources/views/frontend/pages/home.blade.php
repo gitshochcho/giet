@@ -152,7 +152,7 @@
           ? str_replace($aboutDw, '<span style="color:#18909C;">'.$aboutDw.'</span>', e($aboutHeading))
           : e($aboutHeading);
       @endphp
-      <h2 class="font-['Newsreader'] font-bold text-[36px] leading-[43.2px] tracking-[0] text-[#0F172A]">
+      <h2 style="font-family:'Merriweather',serif;font-weight:700;font-size:36px;line-height:43.2px;letter-spacing:0;color:#0F172A;margin:0;">
         {!! $aboutHeadingHtml !!}
       </h2>
       @if($homeAboutTrace?->description)
@@ -202,7 +202,7 @@
       <span class="font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] uppercase text-[#0E606B] block mb-2">
         {{ $homeFocusAreas?->section }}
       </span>
-      <h2 class="font-['Newsreader'] font-bold text-[36px] leading-[43.2px] text-[#0F172A]">
+      <h2 style="font-family:'Merriweather',serif;font-weight:700;font-size:36px;line-height:43.2px;letter-spacing:0;color:#0F172A;margin:0;">
         {{ $homeFocusAreas?->heading }}
       </h2>
     </div>
@@ -313,7 +313,7 @@
       <span class="font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] uppercase text-[#0E606B] block">
         {{ $homeProjectsBlock?->section }}
       </span>
-      <h2 class="font-['Newsreader'] font-bold text-[36px] leading-[43.2px] text-[#0F172A] mt-1">
+      <h2 style="font-family:'Merriweather',serif;font-weight:700;font-size:36px;line-height:43.2px;letter-spacing:0;color:#0F172A;margin:4px 0 0 0;">
         {{ $homeProjectsBlock?->heading }}
       </h2>
       @if($homeProjectsBlock?->description)

@@ -143,7 +143,7 @@
                         </svg>
                     @endif
                 </div>
-                <span class="text-[#31f50a] font-['Newsreader'] font-bold text-[10px] leading-[14px] tracking-[1.54px] uppercase block">
+                <span class="text-[#0E606B] font-['Newsreader'] font-bold text-[10px] leading-[14px] tracking-[1.54px] uppercase block">
                     {{ $visionContent?->section }}
                 </span>
                 @if($visionContent?->description)

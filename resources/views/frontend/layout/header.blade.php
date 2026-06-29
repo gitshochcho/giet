@@ -8,9 +8,9 @@
         </a>
 
         <style>
-            .nav-link { color: #003054 !important; transition: color 0.15s; }
+            .nav-link { color: #003054 !important; transition: color 0.15s, background 0.15s; border-radius: 6px; }
             .nav-link:hover { color: #18909C !important; }
-            .nav-link.active { color: #18909C !important; }
+            .nav-link.active { color: #fff !important; background: #18909C !important; }
             .res-dd-link { color: #64748B !important; transition: color 0.15s, background 0.15s, border-color 0.15s; }
             .res-dd-link:hover { background: #F7F9FB; border-bottom-color: #A80C18 !important; color: #003054 !important; }
             .res-dd-link.active { border-bottom-color: #A80C18 !important; color: #003054 !important; font-weight: 600; }
