@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Edit Contact Information</h3>
                         </div>
-                        <form action="{{ route('admin.contact-info.update', $contactInfo->id) }}" method="POST" class="card-body">
+                        <form action="{{ route('admin.contact-info.update', $contactInfo->id) }}" method="POST" enctype="multipart/form-data" class="card-body">
                             @csrf
                             @method('PUT')
 
@@ -42,11 +42,34 @@
                                 @error('type') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
+                            {{-- Icon Upload --}}
                             <div class="mb-3">
-                                <label class="form-label">Icon Class (Font Awesome)</label>
+                                <label class="form-label fw-semibold">Icon Image <span class="text-muted fw-normal">(PNG, SVG, WebP — recommended 48×48px)</span></label>
+                                @if($contactInfo->iconUrl())
+                                <div class="mb-2 d-flex align-items-center gap-3">
+                                    <img src="{{ $contactInfo->iconUrl() }}" id="currentIconPreview"
+                                         style="width:48px;height:48px;object-fit:contain;border:1px solid #dee2e6;border-radius:8px;padding:4px;background:#f8f9fa;">
+                                    <div>
+                                        <p class="mb-1 text-muted small">Current icon</p>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="remove_icon" value="1" id="removeIcon"
+                                                   onchange="document.getElementById('currentIconPreview').style.opacity = this.checked ? '0.3' : '1'">
+                                            <label class="form-check-label text-danger small" for="removeIcon">Remove icon</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                <input type="file" name="icon_image" accept="image/*" class="form-control @error('icon_image') is-invalid @enderror"
+                                       onchange="previewIcon(this)">
+                                <div id="iconPreview" class="mt-2"></div>
+                                @error('icon_image') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                                <small class="text-muted">Icon upload করলে FontAwesome class এর চেয়ে এটি priority পাবে।</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Icon Class (Font Awesome) <span class="text-muted fw-normal">(icon upload না করলে এটি ব্যবহার হবে)</span></label>
                                 <input type="text" name="icon_class" class="form-control @error('icon_class') is-invalid @enderror"
                                     placeholder="e.g., fas fa-phone-alt, fas fa-envelope, fas fa-map-marker-alt" value="{{ old('icon_class', $contactInfo->icon_class) }}">
-                                <small class="text-muted">FontAwesome class নাম দিন। খালি রাখলে default icon দেখাবে।</small>
                                 @error('icon_class') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
@@ -158,6 +181,17 @@
     </div>
 
     <script>
+        function previewIcon(input) {
+            const preview = document.getElementById('iconPreview');
+            preview.innerHTML = '';
+            if (input.files && input.files[0]) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(input.files[0]);
+                img.style.cssText = 'width:48px;height:48px;object-fit:contain;border:1px solid #dee2e6;border-radius:8px;padding:4px;background:#f8f9fa;';
+                preview.appendChild(img);
+            }
+        }
+
         function setInputsDisabled(container, disabled) {
             container.querySelectorAll('input, textarea, select').forEach(el => el.disabled = disabled);
         }

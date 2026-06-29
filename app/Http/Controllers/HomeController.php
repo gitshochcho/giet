@@ -429,15 +429,22 @@ class HomeController extends Controller
 
     public function contact(Request $request)
     {
-        $heroContent      = contentBlock('contact-page');
-        $contactHeader    = contentBlock('contact-us-head');
-        $faqSection       = contentBlock('contact-faq-section');
-        $contactPhones    = ContactInfo::where('type', 'phone')->active()->ordered()->get();
-        $contactEmails    = ContactInfo::where('type', 'email')->active()->ordered()->get();
-        $contactAddresses = ContactInfo::where('type', 'address')->active()->ordered()->get();
-        $contactCareers   = ContactInfo::where('type', 'career')->active()->ordered()->get();
-        $faqs             = Faq::active()->ordered()->get();
-        return view('frontend.pages.contact', compact('heroContent', 'contactHeader', 'faqSection', 'contactPhones', 'contactEmails', 'contactAddresses', 'contactCareers', 'faqs'));
+        $heroContent       = contentBlock('contact-page');
+        $contactFormHeader = contentBlock('contact_form_section');
+        $contactInfoLabel  = contentBlock('contact-us-head');
+        $contactMap        = contentBlock('contact_map');
+        $contactFollowUs   = contentBlock('contact_follow_us');
+        $faqSection        = contentBlock('contact-faq-section');
+        $contactPhones     = ContactInfo::where('type', 'phone')->active()->ordered()->get();
+        $contactEmails     = ContactInfo::where('type', 'email')->active()->ordered()->get();
+        $contactAddresses  = ContactInfo::where('type', 'address')->active()->ordered()->get();
+        $contactCareers    = ContactInfo::where('type', 'career')->active()->ordered()->get();
+        $faqs              = Faq::active()->ordered()->get();
+        return view('frontend.pages.contact', compact(
+            'heroContent', 'contactFormHeader', 'contactInfoLabel',
+            'contactMap', 'contactFollowUs',
+            'faqSection', 'contactPhones', 'contactEmails', 'contactAddresses', 'contactCareers', 'faqs'
+        ));
     }
 
     public function about(Request $request)

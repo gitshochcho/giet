@@ -134,7 +134,12 @@
             @if($pe->participant_count) · {{ $pe->participant_count }} Participants @endif
             @if($pe->co_host) · {{ $pe->co_host }} @endif
           </p>
-          <a href="{{ route('eventdetails', $pe->id) }}" class="text-[#0E606B] font-semibold text-[14px] mt-1 flex items-center" style="text-decoration:none;">View Summary →</a>
+          <a href="{{ route('eventdetails', $pe->id) }}"
+             style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 14px;border:1px solid #0E606B;border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:#0E606B;text-decoration:none;width:fit-content;transition:background 0.15s,color 0.15s;"
+             onmouseover="this.style.background='#0E606B';this.style.color='#fff';"
+             onmouseout="this.style.background='transparent';this.style.color='#0E606B';">
+            View Summary →
+          </a>
         </div>
         @if($pe->heroImageUrl())
         <div class="w-full md:w-[352px] h-[180px] md:h-[160px] bg-[#EEF3F8] rounded-[8px] overflow-hidden md:flex-shrink-0">

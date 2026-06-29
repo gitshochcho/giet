@@ -47,9 +47,15 @@
     <!-- LEFT: CONTACT FORM -->
     <div class="flex flex-col gap-6">
       <div class="flex flex-col gap-2">
-        <p class="font-['Newsreader'] text-[12px] font-bold text-[#0E606B] uppercase tracking-wider">Send us a message</p>
-        <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:36px;line-height:42.48px;letter-spacing:-0.36px;" class="text-[#0F172A]">How Can We Help?</h2>
-        <p class="font-['Newsreader'] font-normal text-[15px] leading-[26.25px] text-[#475569] max-w-[640px]">Fill out the form below and a member of our team will get back to you within 2 business days. For event enquiries or media requests, please indicate this in your message.</p>
+        @if($contactFormHeader?->section)
+        <p class="font-['Newsreader'] text-[12px] font-bold text-[#0E606B] uppercase tracking-wider">{{ $contactFormHeader->section }}</p>
+        @endif
+        <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:36px;line-height:42.48px;letter-spacing:-0.36px;" class="text-[#0F172A]">
+          {{ $contactFormHeader?->heading ?? 'How Can We Help?' }}
+        </h2>
+        @if($contactFormHeader?->description)
+        <p class="font-['Newsreader'] font-normal text-[15px] leading-[26.25px] text-[#475569] max-w-[640px]">{{ cleanText($contactFormHeader->description) }}</p>
+        @endif
       </div>
       
       @if(session('success'))
@@ -108,18 +114,22 @@
         </div>
         <button type="submit" class="col-span-2 bg-[#A80C18] text-white py-3 rounded-[8px] font-bold hover:bg-[#8e0a14] transition">Send Message →</button>
       </form>
-      <p class="font-['Newsreader'] font-normal text-[12px] leading-none text-[#64748B] text-center">We respect your privacy. Your information will not be shared with third parties.</p>
+      @if($contactFormHeader?->sub_heading)
+      <p class="font-['Newsreader'] font-normal text-[12px] leading-none text-[#64748B] text-center">{{ $contactFormHeader->sub_heading }}</p>
+      @endif
     </div>
 
     <!-- RIGHT: CONTACT DETAILS & MAP -->
     <div class="w-full md:w-[400px] flex flex-col gap-[14px]">
-      <p class="font-['Newsreader'] text-[12px] font-bold text-[#0E606B] uppercase tracking-wider">Our Contact Details</p>
+      <p class="font-['Newsreader'] text-[12px] font-bold text-[#0E606B] uppercase tracking-wider">{{ $contactInfoLabel?->section ?? 'Our Contact Details' }}</p>
 
       <!-- Address -->
       @foreach($contactAddresses as $addr)
       <div class="border border-[#E4EAF0] rounded-[14px] p-[18px] flex gap-4 items-start">
         <div class="w-[44px] h-[44px] rounded-[10px] bg-[#E6F3F5] flex items-center justify-center shrink-0">
-          @if($addr->icon_class)
+          @if($addr->iconUrl())
+            <img src="{{ $addr->iconUrl() }}" alt="{{ $addr->title }}" style="width:24px;height:24px;object-fit:contain;">
+          @elseif($addr->icon_class)
             <i class="{{ $addr->icon_class }}" style="color:#0E606B;font-size:18px;"></i>
           @else
             <i class="fas fa-map-marker-alt" style="color:#0E606B;font-size:18px;"></i>
@@ -150,7 +160,9 @@
       @foreach($contactEmails as $emailInfo)
       <div class="border border-[#E4EAF0] rounded-[14px] p-[18px] flex gap-4 items-start">
         <div class="w-[44px] h-[44px] rounded-[10px] bg-[#E6F3F5] flex items-center justify-center shrink-0">
-          @if($emailInfo->icon_class)
+          @if($emailInfo->iconUrl())
+            <img src="{{ $emailInfo->iconUrl() }}" alt="{{ $emailInfo->title }}" style="width:24px;height:24px;object-fit:contain;">
+          @elseif($emailInfo->icon_class)
             <i class="{{ $emailInfo->icon_class }}" style="color:#0E606B;font-size:18px;"></i>
           @else
             <i class="fas fa-envelope" style="color:#0E606B;font-size:18px;"></i>
@@ -173,7 +185,9 @@
       @foreach($contactPhones as $phone)
       <div class="border border-[#E4EAF0] rounded-[14px] p-[18px] flex gap-4 items-start">
         <div class="w-[44px] h-[44px] rounded-[10px] bg-[#E6F3F5] flex items-center justify-center shrink-0">
-          @if($phone->icon_class)
+          @if($phone->iconUrl())
+            <img src="{{ $phone->iconUrl() }}" alt="{{ $phone->title }}" style="width:24px;height:24px;object-fit:contain;">
+          @elseif($phone->icon_class)
             <i class="{{ $phone->icon_class }}" style="color:#0E606B;font-size:18px;"></i>
           @else
             <i class="fas fa-phone-alt" style="color:#0E606B;font-size:18px;"></i>
@@ -196,7 +210,9 @@
       @foreach($contactCareers as $career)
       <div class="bg-[#003054] rounded-[14px] p-[18px] flex gap-4 items-start">
         <div class="w-[40px] h-[40px] rounded-[10px] bg-[#FFFFFF14] flex items-center justify-center shrink-0">
-          @if($career->icon_class)
+          @if($career->iconUrl())
+            <img src="{{ $career->iconUrl() }}" alt="{{ $career->title }}" style="width:24px;height:24px;object-fit:contain;">
+          @elseif($career->icon_class)
             <i class="{{ $career->icon_class }}" style="color:#18909C;font-size:18px;"></i>
           @else
             <i class="fas fa-briefcase" style="color:#18909C;font-size:18px;"></i>
@@ -220,27 +236,37 @@
       @endforeach
 
       <!-- Google Map -->
+      @if($contactMap?->description)
       <div class="w-full h-[250px] rounded-[14px] border border-[#E4EAF0] overflow-hidden">
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.7765103442656!2d90.39958377519969!3d23.79155988775464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c70c6a51d8b3%3A0x6006e89798cc0d4f!2sBRAC%20Centre%20Inn!5e0!3m2!1sen!2sbd!4v1717696668744!5m2!1sen!2sbd"
+          src="{{ $contactMap->description }}"
           width="100%" height="100%" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
       </div>
+      @endif
 
       <!-- Follow Us -->
+      @if($contactFollowUs)
       <div class="bg-[#F7F9FB] border border-[#E4EAF0] rounded-[14px] p-[18px] flex flex-col gap-3">
-        <p class="font-['Newsreader'] text-[11px] font-bold uppercase text-[#64748B] tracking-wider">Follow Us</p>
-        <div class="flex gap-2">
-          <button class="border border-[#E4EAF0] px-4 py-2 rounded-[8px] text-[13px] font-semibold hover:bg-gray-50 flex items-center gap-2">
+        <p class="font-['Newsreader'] text-[11px] font-bold uppercase text-[#64748B] tracking-wider">{{ $contactFollowUs->section ?? 'Follow Us' }}</p>
+        <div class="flex gap-2 flex-wrap">
+          @if($contactFollowUs->sub_heading)
+          <a href="{{ $contactFollowUs->sub_heading }}" target="_blank" rel="noopener"
+             class="border border-[#E4EAF0] px-4 py-2 rounded-[8px] text-[13px] font-semibold hover:bg-gray-50 flex items-center gap-2" style="text-decoration:none;color:#0F172A;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
             LinkedIn
-          </button>
-          <button class="border border-[#E4EAF0] px-4 py-2 rounded-[8px] text-[13px] font-semibold hover:bg-gray-50 flex items-center gap-2">
+          </a>
+          @endif
+          @if($contactFollowUs->description)
+          <a href="{{ $contactFollowUs->description }}" target="_blank" rel="noopener"
+             class="border border-[#E4EAF0] px-4 py-2 rounded-[8px] text-[13px] font-semibold hover:bg-gray-50 flex items-center gap-2" style="text-decoration:none;color:#0F172A;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             X / Twitter
-          </button>
+          </a>
+          @endif
         </div>
       </div>
+      @endif
     </div>
   </div>
 </section>
