@@ -264,7 +264,7 @@
                 @foreach($project->phaseDetails as $phase)
                 <div class="w-full bg-[#F7F9FB] border border-[#E4EAF0] rounded-[10px] p-[14px] flex items-center gap-[10px] hover:bg-slate-50 transition-colors text-left">
                     <div class="w-[32px] h-[32px] bg-[#E8F6F7] rounded-[6px] flex items-center justify-center shrink-0 overflow-hidden">
-                        <img src="{{ asset('icons/deliverable-icon.svg') }}" alt="Icon" class="w-[16px] h-[16px] object-contain" loading="lazy" decoding="async">
+                        <img src="{{ $phase->iconUrl() ?? asset('icons/deliverable-icon.svg') }}" alt="Icon" class="w-[16px] h-[16px] object-contain" loading="lazy" decoding="async">
                     </div>
                     <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 12.5px; line-height: 16px;" class="text-[#1E293B] line-clamp-2">
                         {{ cleanText($phase->phase_description) }}
@@ -276,14 +276,16 @@
 
             <!-- ACTION BUTTONS -->
             <div class="flex flex-col md:flex-row items-stretch md:items-center gap-[12px] pt-[10px] border-t border-gray-100">
-                <a href="{{ route('contact') }}" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;"
-                        class="bg-[#A80C18] text-white pt-[13px] pr-[24px] pb-[16px] pl-[24px] rounded-[6px] hover:bg-[#8e0a13] transition-colors flex items-center justify-center gap-1.5">
-                    {{ $pdActions?->heading }} <span class="text-[14px]">→</span>
+                <a href="{{ route('contact') }}"
+                        style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;background:#A80C18;color:#fff;padding:13px 24px 16px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background 0.15s;"
+                        onmouseover="this.style.background='#8e0a13';" onmouseout="this.style.background='#A80C18';">
+                    {{ $pdActions?->heading ?: 'Contact Us' }} <span style="font-size:14px;">→</span>
                 </a>
 
-                <a href="{{ route('projects') }}" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;"
-                        class="bg-white text-[#003054] border-2 border-[#003054] pt-[11px] pr-[24px] pb-[14px] pl-[24px] rounded-[6px] hover:bg-slate-50 transition-colors flex items-center justify-center gap-1.5">
-                    <span class="text-[14px]">←</span> {{ $pdActions?->sub_heading }}
+                <a href="{{ route('projects') }}"
+                        style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;background:#fff;color:#003054;border:2px solid #003054;padding:11px 24px 14px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background 0.15s;"
+                        onmouseover="this.style.background='#f1f5f9';" onmouseout="this.style.background='#fff';">
+                    <span style="font-size:14px;">←</span> {{ $pdActions?->sub_heading ?: 'View All Projects' }}
                 </a>
             </div>
 

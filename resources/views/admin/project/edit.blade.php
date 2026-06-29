@@ -15,10 +15,11 @@
 
         $phases = old('phases', $project->phaseDetails->map(function ($phase) {
             return [
-                'id' => $phase->id,
-                'phase_description' => $phase->phase_description,
-                'attachment_url' => $phase->attachmentUrl(),
-                'attachment_name' => $phase->attachment ? basename($phase->attachment) : null,
+                'id'               => $phase->id,
+                'phase_description'=> $phase->phase_description,
+                'icon_url'         => $phase->iconUrl(),
+                'attachment_url'   => $phase->attachmentUrl(),
+                'attachment_name'  => $phase->attachment ? basename($phase->attachment) : null,
             ];
         })->values()->all());
 
@@ -283,14 +284,26 @@
                                                     <label class="form-label">Phase Description</label>
                                                     <textarea name="phases[{{ $index }}][phase_description]" class="form-control project-text-editor" rows="4">{{ $phase['phase_description'] ?? '' }}</textarea>
                                                 </div>
-                                                <div class="col-md-10">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Phase Icon <small class="text-muted">(PNG, SVG, WebP)</small></label>
+                                                    @if(! empty($phase['icon_url']))
+                                                    <div class="mb-1">
+                                                        <img src="{{ $phase['icon_url'] }}" style="width:40px;height:40px;object-fit:contain;border:1px solid #dee2e6;border-radius:6px;padding:3px;background:#f8f9fa;">
+                                                        <small class="text-muted ms-1">Current icon</small>
+                                                    </div>
+                                                    @endif
+                                                    <input type="file" name="phases[{{ $index }}][icon]" class="form-control" accept="image/*"
+                                                           onchange="previewPhaseIcon(this)">
+                                                    <div class="phase-icon-preview mt-1"></div>
+                                                </div>
+                                                <div class="col-md-6">
                                                     <label class="form-label">PDF Attachment</label>
                                                     <input type="file" name="phases[{{ $index }}][attachment]" class="form-control" accept="application/pdf">
                                                     @if(! empty($phase['attachment_url']))
                                                         <a href="{{ $phase['attachment_url'] }}" target="_blank" class="d-inline-block mt-2 small">{{ $phase['attachment_name'] ?? 'Current attachment' }}</a>
                                                     @endif
                                                 </div>
-                                                <div class="col-md-2 d-grid">
+                                                <div class="col-md-2 d-grid align-self-end">
                                                     <button type="button" class="btn btn-outline-danger remove-phase-row">Remove</button>
                                                 </div>
                                             </div>
@@ -376,11 +389,16 @@
                     <label class="form-label">Phase Description</label>
                     <textarea name="__PHASE_NAME__[phase_description]" class="form-control project-text-editor" rows="4"></textarea>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-4">
+                    <label class="form-label">Phase Icon <small class="text-muted">(PNG, SVG, WebP)</small></label>
+                    <input type="file" name="__PHASE_NAME__[icon]" class="form-control" accept="image/*" onchange="previewPhaseIcon(this)">
+                    <div class="phase-icon-preview mt-1"></div>
+                </div>
+                <div class="col-md-6">
                     <label class="form-label">PDF Attachment</label>
                     <input type="file" name="__PHASE_ATTACHMENT_NAME__" class="form-control" accept="application/pdf">
                 </div>
-                <div class="col-md-2 d-grid">
+                <div class="col-md-2 d-grid align-self-end">
                     <button type="button" class="btn btn-outline-danger remove-phase-row">Remove</button>
                 </div>
             </div>
@@ -413,6 +431,18 @@
 @push('custome-js')
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <script>
+function previewPhaseIcon(input) {
+    const preview = input.closest('.row').querySelector('.phase-icon-preview');
+    if (!preview) return;
+    preview.innerHTML = '';
+    if (input.files && input.files[0]) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(input.files[0]);
+        img.style.cssText = 'width:48px;height:48px;object-fit:contain;border:1px solid #dee2e6;border-radius:8px;padding:4px;background:#f8f9fa;';
+        preview.appendChild(img);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
     const activeEditors    = new Map();
