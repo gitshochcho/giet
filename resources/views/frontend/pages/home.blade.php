@@ -375,7 +375,7 @@
 
 {{-- ===== 6. PARTNERS SECTION ===== --}}
 @if($partners->isNotEmpty())
-<section class="w-full bg-white border-t border-[#F0F0F0] select-none py-[60px] overflow-hidden">
+<section class="w-full bg-white border-t border-[#F0F0F0] select-none py-[80px] overflow-hidden">
   <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col items-center gap-[36px]">
 
     <h2 style="font-family:'Lora',serif;font-weight:700;font-size:50px;line-height:46px;color:#0F172A;" class="text-center">
@@ -393,9 +393,9 @@
         <div class="swiper-wrapper items-center">
           @foreach($partners as $partner)
           <div class="swiper-slide">
-            <div class="h-[80px] bg-white border border-[#EEF3F8] rounded-[10px] flex items-center justify-center p-4 hover:shadow-md transition-all duration-200 cursor-default">
+            <div class="h-[100px] bg-white border border-[#EEF3F8] rounded-[10px] flex items-center justify-center p-4 hover:shadow-md transition-all duration-200 cursor-default">
               @if($partner->imageUrl())
-              <img class="max-h-[38px] max-w-full object-contain opacity-85 hover:opacity-100 transition-opacity"
+              <img class="max-h-[58px] max-w-full object-contain opacity-85 hover:opacity-100 transition-opacity"
                    src="{{ $partner->imageUrl() }}"
                    alt="{{ $partner->name }}"
                    loading="lazy" decoding="async">

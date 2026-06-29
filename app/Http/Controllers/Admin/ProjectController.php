@@ -62,6 +62,7 @@ class ProjectController extends Controller
             'phases' => ['nullable', 'array'],
             'phases.*.id' => ['nullable', 'integer'],
             'phases.*.phase_description' => ['nullable', 'string'],
+            'phases.*.icon' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1024'],
             'phases.*.attachment' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
             'outcomes' => ['nullable', 'array'],
             'outcomes.*.id' => ['nullable', 'integer'],
@@ -131,6 +132,7 @@ class ProjectController extends Controller
             'phases' => ['nullable', 'array'],
             'phases.*.id' => ['nullable', 'integer'],
             'phases.*.phase_description' => ['nullable', 'string'],
+            'phases.*.icon' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1024'],
             'phases.*.attachment' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
             'outcomes' => ['nullable', 'array'],
             'outcomes.*.id' => ['nullable', 'integer'],
@@ -176,6 +178,9 @@ class ProjectController extends Controller
         $project->locations()->delete();
 
         $project->phaseDetails->each(function (ProjectPhaseDetail $phase) {
+            if ($phase->icon) {
+                Storage::disk('public')->delete($phase->icon);
+            }
             if ($phase->attachment) {
                 Storage::disk('public')->delete($phase->attachment);
             }
@@ -284,10 +289,11 @@ class ProjectController extends Controller
 
         foreach (array_values($phases) as $index => $item) {
             $description = $item['phase_description'] ?? null;
-            $phaseId = ! empty($item['id']) ? (int) $item['id'] : null;
-            $attachment = $phaseFiles[$index]['attachment'] ?? null;
+            $phaseId     = ! empty($item['id']) ? (int) $item['id'] : null;
+            $iconFile    = $phaseFiles[$index]['icon'] ?? null;
+            $attachment  = $phaseFiles[$index]['attachment'] ?? null;
 
-            if ($description === '' && ! $attachment && $phaseId === null) {
+            if ($description === '' && ! $attachment && ! $iconFile && $phaseId === null) {
                 continue;
             }
 
@@ -295,16 +301,23 @@ class ProjectController extends Controller
                 ? ProjectPhaseDetail::firstOrNew(['id' => $phaseId, 'project_id' => $project->id])
                 : new ProjectPhaseDetail(['project_id' => $project->id]);
 
-            $record->project_id = $project->id;
+            $record->project_id        = $project->id;
             $record->phase_description = $description;
-            $record->sort_order = $index;
+            $record->sort_order        = $index;
             $record->save();
+
+            if ($iconFile) {
+                if ($record->icon) {
+                    Storage::disk('public')->delete($record->icon);
+                }
+                $record->icon = $iconFile->store('projects/phases/icons', 'public');
+                $record->save();
+            }
 
             if ($attachment) {
                 if ($record->attachment) {
                     Storage::disk('public')->delete($record->attachment);
                 }
-
                 $record->attachment = $attachment->store('projects/phases', 'public');
                 $record->save();
             }
@@ -316,6 +329,9 @@ class ProjectController extends Controller
             ->whereNotIn('id', $keptIds)
             ->get()
             ->each(function (ProjectPhaseDetail $phase) {
+                if ($phase->icon) {
+                    Storage::disk('public')->delete($phase->icon);
+                }
                 if ($phase->attachment) {
                     Storage::disk('public')->delete($phase->attachment);
                 }
