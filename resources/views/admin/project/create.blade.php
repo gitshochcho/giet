@@ -50,6 +50,11 @@
                                         @error('client')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-6">
+                                        <label class="form-label">Partner</label>
+                                        <input type="text" name="partner" value="{{ old('partner') }}" class="form-control @error('partner') is-invalid @enderror" placeholder="Partner organization">
+                                        @error('partner')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
                                         <label class="form-label">Project Standard</label>
                                         <input type="text" name="project_standard" value="{{ old('project_standard') }}" class="form-control @error('project_standard') is-invalid @enderror" placeholder="ISO/IEC 17025:2017">
                                         @error('project_standard')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -77,6 +82,16 @@
                                             @endforeach
                                         </select>
                                         @error('project_status')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Category</label>
+                                        <select name="project_category_id" class="form-select @error('project_category_id') is-invalid @enderror">
+                                            <option value="">— No Category —</option>
+                                            @foreach($categories as $cat)
+                                                <option value="{{ $cat->id }}" @selected(old('project_category_id') == $cat->id)>{{ $cat->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('project_category_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Sort Order</label>
@@ -194,11 +209,17 @@
                                                     <label class="form-label">Phase Description</label>
                                                     <textarea name="phases[{{ $index }}][phase_description]" class="form-control project-text-editor" rows="4">{{ $phase['phase_description'] ?? '' }}</textarea>
                                                 </div>
-                                                <div class="col-md-10">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Phase Icon <small class="text-muted">(PNG, SVG, WebP)</small></label>
+                                                    <input type="file" name="phases[{{ $index }}][icon]" class="form-control" accept="image/*"
+                                                           onchange="previewPhaseIcon(this)">
+                                                    <div class="phase-icon-preview mt-1"></div>
+                                                </div>
+                                                <div class="col-md-6">
                                                     <label class="form-label">PDF Attachment</label>
                                                     <input type="file" name="phases[{{ $index }}][attachment]" class="form-control" accept="application/pdf">
                                                 </div>
-                                                <div class="col-md-2 d-grid">
+                                                <div class="col-md-2 d-grid align-self-end">
                                                     <button type="button" class="btn btn-outline-danger remove-phase-row">Remove</button>
                                                 </div>
                                             </div>
@@ -279,11 +300,16 @@
                     <label class="form-label">Phase Description</label>
                     <textarea name="__PHASE_NAME__[phase_description]" class="form-control project-text-editor" rows="4"></textarea>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-4">
+                    <label class="form-label">Phase Icon <small class="text-muted">(PNG, SVG, WebP)</small></label>
+                    <input type="file" name="__PHASE_NAME__[icon]" class="form-control" accept="image/*" onchange="previewPhaseIcon(this)">
+                    <div class="phase-icon-preview mt-1"></div>
+                </div>
+                <div class="col-md-6">
                     <label class="form-label">PDF Attachment</label>
                     <input type="file" name="__PHASE_ATTACHMENT_NAME__" class="form-control" accept="application/pdf">
                 </div>
-                <div class="col-md-2 d-grid">
+                <div class="col-md-2 d-grid align-self-end">
                     <button type="button" class="btn btn-outline-danger remove-phase-row">Remove</button>
                 </div>
             </div>
@@ -317,6 +343,17 @@
 @push('custome-js')
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <script>
+function previewPhaseIcon(input) {
+    const preview = input.closest('.row').querySelector('.phase-icon-preview');
+    if (!preview) return;
+    preview.innerHTML = '';
+    if (input.files && input.files[0]) {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(input.files[0]);
+        img.style.cssText = 'width:48px;height:48px;object-fit:contain;border:1px solid #dee2e6;border-radius:8px;padding:4px;background:#f8f9fa;';
+        preview.appendChild(img);
+    }
+}
 document.addEventListener('DOMContentLoaded', function () {
 
     const activeEditors    = new Map();

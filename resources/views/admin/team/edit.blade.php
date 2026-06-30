@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-end mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.teams.index') }}">Team Manager</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.experts.index') }}">Expert Manager</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Edit</li>
                     </ol>
                 </div>
@@ -43,7 +43,7 @@
 
     <div class="app-content">
         <div class="container-fluid">
-            <form action="{{ route('admin.teams.update', $team) }}" method="POST" enctype="multipart/form-data" id="teamForm">
+            <form action="{{ route('admin.experts.update', $team) }}" method="POST" enctype="multipart/form-data" id="teamForm">
                 @csrf
                 @method('PUT')
                 <div class="row g-4">
@@ -64,28 +64,45 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label class="form-label">Expertise Label</label>
-                                        <input type="text" name="expertise_label" value="{{ old('expertise_label', $team->expertise_label) }}" class="form-control @error('expertise_label') is-invalid @enderror">
-                                        @error('expertise_label')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                                    </div>
-
-                                    <div class="col-md-6">
                                         <label class="form-label">Type</label>
-                                        <select name="type" class="form-select">
-                                            <option value="1" {{ old('type', $team->type) == 1 ? 'selected' : '' }}>Team Member</option>
-                                            <option value="2" {{ old('type', $team->type) == 2 ? 'selected' : '' }}>Advisor</option>
+                                        <select name="type" id="typeSelect" class="form-select">
+                                            <option value="1" {{ old('type', $team->type) == 1 ? 'selected' : '' }}>Leadership</option>
+                                            <option value="2" {{ old('type', $team->type) == 2 ? 'selected' : '' }}>Core Team</option>
+                                            <option value="3" {{ old('type', $team->type) == 3 ? 'selected' : '' }}>Advisor</option>
                                         </select>
                                     </div>
-                                     <div class="col-md-6">
-                                        <label class="form-label">Department</label>
+                                    <div class="col-md-6" id="advisorCategoryWrapper" style="{{ old('type', $team->type) == 3 ? '' : 'display:none;' }}">
+                                        <label class="form-label">Advisor Category</label>
+                                        <select name="advisor_category" class="form-select">
+                                            <option value="national" {{ old('advisor_category', $team->advisor_category) == 'national' ? 'selected' : '' }}>National</option>
+                                            <option value="international" {{ old('advisor_category', $team->advisor_category) == 'international' ? 'selected' : '' }}>International</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Designation <small class="text-muted">(e.g. Executive Director)</small></label>
+                                        <input type="text" name="designation" value="{{ old('designation', $team->designation) }}" class="form-control @error('designation') is-invalid @enderror">
+                                        @error('designation')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Department <small class="text-muted">(badge label)</small></label>
                                         <input type="text" name="headtitle" value="{{ old('headtitle', $team->headtitle) }}" class="form-control @error('headtitle') is-invalid @enderror">
                                         @error('headtitle')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
-
-                                    <div class="col-md-8">
-                                        <label class="form-label">Designation</label>
-                                        <input type="text" name="designation" value="{{ old('designation', $team->designation) }}" class="form-control @error('designation') is-invalid @enderror">
-                                        @error('designation')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    <div class="col-md-6">
+                                        <label class="form-label">Education</label>
+                                        <input type="text" name="education" value="{{ old('education', $team->education) }}" class="form-control" placeholder="PhD · London School of Economics">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Experience</label>
+                                        <input type="text" name="experience" value="{{ old('experience', $team->experience) }}" class="form-control" placeholder="18+ Years">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Languages</label>
+                                        <input type="text" name="languages" value="{{ old('languages', $team->languages) }}" class="form-control" placeholder="Bangla · English">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Location</label>
+                                        <input type="text" name="location" value="{{ old('location', $team->location) }}" class="form-control" placeholder="Dhaka, Bangladesh">
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">Sort Order</label>
@@ -93,14 +110,13 @@
                                         @error('sort_order')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-12">
-                                        <label class="form-label">Short Description</label>
-                                        <textarea name="short_description" rows="3" maxlength="500" class="form-control @error('short_description') is-invalid @enderror" placeholder="Brief intro shown on team cards (max 500 chars)">{{ old('short_description', $team->short_description) }}</textarea>
-                                        <small class="text-muted"><i class="fas fa-info-circle"></i> Shown on the team card preview. Keep it short and punchy.</small>
+                                        <label class="form-label">Short Bio <small class="text-muted">(shown on listing cards)</small></label>
+                                        <textarea name="short_description" rows="2" maxlength="500" class="form-control @error('short_description') is-invalid @enderror" placeholder="Brief intro shown on team cards (max 500 chars)">{{ old('short_description', $team->short_description) }}</textarea>
                                         @error('short_description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
                                     <div class="col-12">
-                                        <label class="form-label">Description</label>
-                                        <textarea name="description" rows="6" class="form-control team-description-editor @error('description') is-invalid @enderror">{{ old('description', $team->description) }}</textarea>
+                                        <label class="form-label">Full Bio <small class="text-muted">(shown on detail page)</small></label>
+                                        <textarea name="description" rows="8" class="form-control team-description-editor @error('description') is-invalid @enderror">{{ old('description', $team->description) }}</textarea>
                                         @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                     </div>
 
@@ -283,6 +299,15 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+        // ── Advisor category toggle ───────────────────────────────────
+        const typeSelect = document.getElementById('typeSelect');
+        const advisorWrapper = document.getElementById('advisorCategoryWrapper');
+        if (typeSelect && advisorWrapper) {
+            typeSelect.addEventListener('change', function () {
+                advisorWrapper.style.display = this.value === '3' ? '' : 'none';
+            });
+        }
+
         // ── CKEditor for description ─────────────────────────────────
         const descEditorEl = document.querySelector('.team-description-editor');
         let descEditor = null;

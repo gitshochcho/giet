@@ -1,6 +1,10 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>{{ config('app.name', 'Laravel') }}</title>
+@if($siteSettings?->faviconUrl())
+<link rel="icon" type="image/png" href="{{ $siteSettings->faviconUrl() }}">
+<link rel="shortcut icon" href="{{ $siteSettings->faviconUrl() }}">
+@endif
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="ColorlibHQ">

@@ -24,6 +24,7 @@ class SliderController extends Controller
             'items.*.tagline'        => ['nullable', 'string', 'max:255'],
             'items.*.description'    => ['nullable', 'string'],
             'items.*.design_word'    => ['nullable', 'string', 'max:255'],
+            'items.*.url'            => ['nullable', 'string', 'max:2048'],
             'item_images'            => ['nullable', 'array'],
             'item_images.*'          => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'],
             'removed_item_ids'       => ['nullable', 'array'],
@@ -42,6 +43,7 @@ class SliderController extends Controller
                 'tagline'     => $row['tagline']      ?? null,
                 'description' => $row['description']  ?? null,
                 'design_word' => $row['design_word']  ?? null,
+                'url'         => $row['url']          ?? null,
                 'sort_order'  => $index,
                 'active'      => true,
             ]);

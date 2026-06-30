@@ -4,7 +4,7 @@
 @if($setting?->getFirstMediaUrl('logo_image'))
     <img src="{{ $setting->getFirstMediaUrl('logo_image') }}"
          alt="{{ $setting->logo_text ?? 'Logo' }}"
-         class="brand-image opacity-75 shadow"
+         class="brand-image opacity-100 shadow"
          style="height: 33px; width: auto; object-fit: contain;">
 @else
     <img src="{{ asset('dist/assets/img/AdminLTELogo.png') }}"
@@ -14,7 +14,7 @@
 
 {{-- Logo Text + Tagline --}}
 <span class="brand-text fw-light">
-    {{ $setting?->logo_text ?? 'Trace Consultancy ltd.' }}
+    {{ $setting?->logo_text ?? '' }}
     @if($setting?->logo_tagline)
         <small class="d-block opacity-50" style="font-size:10px; line-height:1;">
             {{ $setting->logo_tagline }}
@@ -57,7 +57,7 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.services.index') }}" class="nav-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-collection"></i>
-                        <p>Services Manager</p>
+                        <p>Work Manager</p>
                     </a>
                 </li>
 
@@ -69,23 +69,51 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('admin.teams.index') }}" class="nav-link {{ request()->routeIs('admin.teams.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.project-categories.index') }}" class="nav-link {{ request()->routeIs('admin.project-categories.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-tags"></i>
+                        <p>Project Categories</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.experts.index') }}" class="nav-link {{ request()->routeIs('admin.experts.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-people"></i>
-                        <p>Team Manager</p>
+                        <p>Expert Manager</p>
                     </a>
                 </li>
                 
                 <li class="nav-item">
                     <a href="{{ route('admin.insight-types.index') }}" class="nav-link {{ request()->routeIs('admin.insight-types.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-tags"></i>
-                        <p>Insight Type</p>
+                        <p>Resource Type</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="{{ route('admin.insights.index') }}" class="nav-link {{ request()->routeIs('admin.insights.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-journals"></i>
-                        <p>Insights Manager</p>
+                        <p>Resources Manager</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.events.index') }}" class="nav-link {{ request()->routeIs('admin.events.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-calendar-event"></i>
+                        <p>Events Manager</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.event-proposals.index') }}" class="nav-link {{ request()->routeIs('admin.event-proposals.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-send"></i>
+                        <p>Event Proposals</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('admin.research-ideas.index') }}" class="nav-link {{ request()->routeIs('admin.research-ideas.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-lightbulb"></i>
+                        <p>Research Ideas</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -103,6 +131,13 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('admin.faq.index') }}" class="nav-link {{ request()->routeIs('admin.faq.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-question-circle"></i>
+                        <p>FAQs</p>
+                    </a>
+                </li>
+
+                <!-- <li class="nav-item">
                     <a href="{{ route('admin.job-postings.index') }}" class="nav-link {{ request()->routeIs('admin.job-postings.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-briefcase"></i>
                         <p>Job Postings</p>
@@ -121,7 +156,7 @@
                         <i class="nav-icon bi bi-file-earmark-person"></i>
                         <p>CV Submissions</p>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
     <a href="#" class="nav-link {{ request()->is('admin/partners*') ? 'active' : '' }}">

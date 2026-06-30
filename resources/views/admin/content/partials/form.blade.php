@@ -9,51 +9,192 @@
     $currentDescription = $currentContent ? $currentContent->description : '';
     $currentIconUrl = $currentContent ? $currentContent->iconUrl() : null;
     $currentImageUrl = $currentContent ? $currentContent->imageUrl() : null;
+    $isEdit = $currentContent && $currentContent->id;
 @endphp
 
 <div class="row g-3">
+
+    {{-- ======= QUICK PRESETS CARD ======= --}}
     <div class="col-12">
-        <div class="card card-primary card-outline mb-2">
-            <div class="card-header py-2">
-                <div class="card-title">Quick Presets</div>
+        <div class="card card-primary card-outline mb-0">
+            <div class="card-header py-2 d-flex align-items-center justify-content-between">
+                <div class="card-title mb-0">
+                    <i class="fas fa-magic me-1 text-primary"></i> Quick Presets
+                </div>
+                <small class="text-muted">Click a preset to auto-fill all fields</small>
             </div>
             <div class="card-body py-3">
 
-                {{-- Page Heroes --}}
+                {{-- HOME PAGE --}}
                 <div class="mb-3">
                     <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
-                           style="letter-spacing:.05em; cursor:pointer;"
-                           data-bs-toggle="collapse" data-bs-target="#presetGroupHeroes" aria-expanded="false">
-                        <i class="fas fa-chevron-down preset-chevron"></i> Page Heroes
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupHome" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-home me-1"></i> Home Page
                     </small>
-                    <div class="collapse" id="presetGroupHeroes">
-                        <div class="d-flex flex-wrap gap-2 pb-1">
-                            <button type="button" id="applyServicesPagePreset" class="btn btn-sm btn-outline-primary preset-btn">Services Page</button>
-                            <button type="button" id="applyContactPagePreset" class="btn btn-sm btn-outline-primary preset-btn">Contact Page</button>
-                            <button type="button" id="applyTeamPagePreset" class="btn btn-sm btn-outline-primary preset-btn">Team Page</button>
-                            <button type="button" id="applyTeamLeadershipPreset" class="btn btn-sm btn-outline-primary preset-btn">Team Leadership</button>
-                            <button type="button" id="applyTeamCorePreset" class="btn btn-sm btn-outline-primary preset-btn">Team Core</button>
-                            <button type="button" id="applyTeamExpertsPreset" class="btn btn-sm btn-outline-primary preset-btn">Team Experts</button>
-                            <button type="button" id="applyInsightsPagePreset" class="btn btn-sm btn-outline-primary preset-btn">Insights Page</button>
-                            <button type="button" id="applyProjectsPagePreset" class="btn btn-sm btn-outline-primary preset-btn">Projects Page</button>
-                            <button type="button" id="applyCareerPagePreset" class="btn btn-sm btn-outline-primary preset-btn">Career Page</button>
+                    <div class="collapse" id="presetGroupHome">
+                        <div class="d-flex flex-wrap gap-2 pb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="home_about_trace">Home — About GIET</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="home_about_trace_one">Home — About Item 1</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="home_about_trace_two">Home — About Item 2</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="home_about_trace_three">Home — About Item 3</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="home_focus_areas">Home — Focus Areas Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="home_mission">Home — Mission Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="home_projects">Home — Projects Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="home_partners">Home — Partners Heading</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="home_years_of_expertise">Home — Years Badge</button>
                         </div>
                     </div>
                 </div>
 
-                {{-- Project Details --}}
+                {{-- ABOUT PAGE --}}
                 <div class="mb-3">
                     <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
-                           style="letter-spacing:.05em; cursor:pointer;"
-                           data-bs-toggle="collapse" data-bs-target="#presetGroupProject" aria-expanded="false">
-                        <i class="fas fa-chevron-down preset-chevron"></i> Project Details
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupAbout" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-info-circle me-1"></i> About Page
                     </small>
-                    <div class="collapse" id="presetGroupProject">
+                    <div class="collapse" id="presetGroupAbout">
                         <div class="d-flex flex-wrap gap-2 pb-1">
-                            <button type="button" id="applyProjectLocationPreset" class="btn btn-sm btn-outline-primary preset-btn">Project Location</button>
-                            <button type="button" id="applyProjectPhasePreset" class="btn btn-sm btn-outline-primary preset-btn">Project Phase</button>
-                            <button type="button" id="applyProjectOutcomePreset" class="btn btn-sm btn-outline-primary preset-btn">Project Outcome</button>
-                            <button type="button" id="applyProjectsWorkWithUsPreset" class="btn btn-sm btn-outline-primary preset-btn">Projects CTA Toggle</button>
+                            {{-- Section headers --}}
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_header">About — Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_who_we_are">About — Who We Are</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_our_mission">About — MVG Header</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_trace">About — Our Story Header</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_we_make_trace_different">About — Approach Header</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_how_we_work">About — Values Header</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_partners">About — Partners Section</button>
+                            {{-- Mission / Vision / Goals cards --}}
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_mission">About — Mission Card</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_vision">About — Vision Card</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_goals">About — Goals Card</button>
+                            {{-- Approach cards --}}
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_insight">About — Approach Card 1</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_strategy">About — Approach Card 2</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_impact">About — Approach Card 3</button>
+                            {{-- Values cards --}}
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_industry_wide_network">About — Values Card 1</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_sustainable_approach">About — Values Card 2</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_tailored_innovation">About — Values Card 3</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_us_end_to_end_integrated_solutions">About — Values Card 4</button>
+                            {{-- Story / Timeline --}}
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="about_story_template">About — Story Item (Template)</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- PROJECTS PAGE --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupProjects" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-folder-open me-1"></i> Projects Page
+                    </small>
+                    <div class="collapse" id="presetGroupProjects">
+                        <div class="d-flex flex-wrap gap-2 pb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projects-page">Projects — Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projects_portfolio">Projects — Portfolio Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projects_impact">Projects — Impact Section Header</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projects_stat_1">Projects — Stat 1</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projects_stat_2">Projects — Stat 2</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projects_stat_3">Projects — Stat 3</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projects_stat_4">Projects — Stat 4</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projects_work_with_us">Projects — Work With Us CTA</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- PROJECT DETAILS PAGE --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupProjectDetails" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-file-alt me-1"></i> Project Details Page
+                    </small>
+                    <div class="collapse" id="presetGroupProjectDetails">
+                        <div class="d-flex flex-wrap gap-2 pb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projectdetails_sidebar">Project Details — Sidebar Card</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projectdetails_team">Project Details — Team Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="projectdetails_actions">Project Details — Action Buttons</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- EVENTS PAGE --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupEvents" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-calendar-alt me-1"></i> Events Page
+                    </small>
+                    <div class="collapse" id="presetGroupEvents">
+                        <div class="d-flex flex-wrap gap-2 pb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="events_page_header">Events — Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="events_upcoming">Events — Upcoming Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="events_past">Events — Past Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="events_cta">Events — Co-host CTA</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- WORK DETAILS PAGE --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupWorkDetails" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-briefcase me-1"></i> Work Details Page
+                    </small>
+                    <div class="collapse" id="presetGroupWorkDetails">
+                        <div class="d-flex flex-wrap gap-2 pb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_overview">Work Details — Overview Label</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_services_include">Work Details — Services Include Label</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_solutions">Work Details — Products & Solutions Label</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_related_projects">Work Details — Related Projects Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="workdetails_experts">Work Details — Experts Section</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- RESOURCES PAGE --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupResources" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-book-open me-1"></i> Resources Page
+                    </small>
+                    <div class="collapse" id="presetGroupResources">
+                        <div class="d-flex flex-wrap gap-2 pb-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="resources_hero">Resources — Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary preset-btn" data-preset="resources_research_cta">Resources — Research With Us CTA</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- PAGE HEROES --}}
+                <div class="mb-3">
+                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupHeroes" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-flag me-1"></i> Page Heroes
+                    </small>
+                    <div class="collapse" id="presetGroupHeroes">
+                        <div class="d-flex flex-wrap gap-2 pb-1">
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="services-page">Work Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="work_key_focus_areas">Work — Key Focus Areas</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="team-page">Team Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="team-leadership">Team Leadership</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="team-core">Team Core Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="team-experts">Team Experts Section</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="insights-page">Resources Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="career-heading">Career Page Hero</button>
                         </div>
                     </div>
                 </div>
@@ -61,89 +202,47 @@
                 {{-- CTA --}}
                 <div class="mb-3">
                     <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
-                           style="letter-spacing:.05em; cursor:pointer;"
+                           style="letter-spacing:.05em;cursor:pointer;"
                            data-bs-toggle="collapse" data-bs-target="#presetGroupCta" aria-expanded="false">
-                        <i class="fas fa-chevron-down preset-chevron"></i> CTA
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-bullhorn me-1"></i> CTA Section
                     </small>
                     <div class="collapse" id="presetGroupCta">
                         <div class="d-flex flex-wrap gap-2 pb-1">
-                            <button type="button" id="applyWorkWithUsPreset" class="btn btn-sm btn-outline-primary preset-btn">Work With Us</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="work-with-us">Work With Us CTA</button>
                         </div>
                     </div>
                 </div>
 
-                <hr class="my-2">
-
-                {{-- About Page --}}
+                {{-- CONTACT --}}
                 <div class="mb-3">
                     <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
-                           style="letter-spacing:.05em; cursor:pointer;"
-                           data-bs-toggle="collapse" data-bs-target="#presetGroupAbout" aria-expanded="false">
-                        <i class="fas fa-chevron-down preset-chevron"></i> About Page
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupContact" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-envelope me-1"></i> Contact Page
                     </small>
-                    <div class="collapse" id="presetGroupAbout">
+                    <div class="collapse" id="presetGroupContact">
                         <div class="d-flex flex-wrap gap-2 pb-1">
-                            <button type="button" id="applyAboutHeaderPreset" class="btn btn-sm btn-outline-secondary preset-btn">About Header</button>
-                            <button type="button" id="applyAboutTracePreset" class="btn btn-sm btn-outline-secondary preset-btn">About Trace</button>
-                            <button type="button" id="applyWhoWeArePreset" class="btn btn-sm btn-outline-secondary preset-btn">Who We Are</button>
-                            <button type="button" id="applyOurMissionPreset" class="btn btn-sm btn-outline-secondary preset-btn">Our Mission</button>
-                            <button type="button" id="applyPartnersPreset" class="btn btn-sm btn-outline-secondary preset-btn">About Partners</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="contact-page">Contact Page Hero</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="contact-faq-section">Contact FAQ Section</button>
                         </div>
                     </div>
                 </div>
 
-                {{-- Home Page --}}
-                <div class="mb-3">
-                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
-                           style="letter-spacing:.05em; cursor:pointer;"
-                           data-bs-toggle="collapse" data-bs-target="#presetGroupHome" aria-expanded="false">
-                        <i class="fas fa-chevron-down preset-chevron"></i> Home Page
-                    </small>
-                    <div class="collapse" id="presetGroupHome">
-                        <div class="d-flex flex-wrap gap-2 pb-1">
-                            <button type="button" id="applyHomeAboutTracePreset" class="btn btn-sm btn-outline-secondary preset-btn">Home About Trace</button>
-                            <button type="button" id="applyHomeAboutTraceOnePreset" class="btn btn-sm btn-outline-secondary preset-btn">Home About Item 1</button>
-                            <button type="button" id="applyHomeAboutTraceTwoPreset" class="btn btn-sm btn-outline-secondary preset-btn">Home About Item 2</button>
-                            <button type="button" id="applyHomeAboutTraceThreePreset" class="btn btn-sm btn-outline-secondary preset-btn">Home About Item 3</button>
-                            <button type="button" id="applyHomeYearsPreset" class="btn btn-sm btn-outline-secondary preset-btn">Home Years Expertise</button>
-                        </div>
-                    </div>
-                </div>
-
-                <hr class="my-2">
-
-                {{-- About Framework --}}
-                <div class="mb-3">
-                    <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
-                           style="letter-spacing:.05em; cursor:pointer;"
-                           data-bs-toggle="collapse" data-bs-target="#presetGroupFramework" aria-expanded="false">
-                        <i class="fas fa-chevron-down preset-chevron"></i> About Framework
-                    </small>
-                    <div class="collapse" id="presetGroupFramework">
-                        <div class="d-flex flex-wrap gap-2 pb-1">
-                            <button type="button" id="applyAboutCommitmentPreset" class="btn btn-sm btn-outline-info preset-btn">About Commitment</button>
-                            <button type="button" id="applyAboutFrameworkPreset" class="btn btn-sm btn-outline-info preset-btn">About How We Work</button>
-                            <button type="button" id="applyAboutInsightPreset" class="btn btn-sm btn-outline-info preset-btn">About Insight</button>
-                            <button type="button" id="applyAboutStrategyPreset" class="btn btn-sm btn-outline-info preset-btn">About Strategy</button>
-                            <button type="button" id="applyAboutImpactPreset" class="btn btn-sm btn-outline-info preset-btn">About Impact</button>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- About Unique Features --}}
+                {{-- PROJECT DETAILS --}}
                 <div class="mb-0">
                     <small class="preset-group-label fw-semibold text-uppercase text-muted d-flex align-items-center gap-1 mb-2"
-                           style="letter-spacing:.05em; cursor:pointer;"
-                           data-bs-toggle="collapse" data-bs-target="#presetGroupUnique" aria-expanded="false">
-                        <i class="fas fa-chevron-down preset-chevron"></i> About Unique Features
+                           style="letter-spacing:.05em;cursor:pointer;"
+                           data-bs-toggle="collapse" data-bs-target="#presetGroupProject" aria-expanded="false">
+                        <i class="fas fa-chevron-down preset-chevron"></i>
+                        <i class="fas fa-project-diagram me-1"></i> Project Details
                     </small>
-                    <div class="collapse" id="presetGroupUnique">
+                    <div class="collapse" id="presetGroupProject">
                         <div class="d-flex flex-wrap gap-2 pb-1">
-                            <button type="button" id="applyAboutUniqueFeaturesPreset" class="btn btn-sm btn-outline-info preset-btn">About Unique Features</button>
-                            <button type="button" id="applyAboutIndustryNetworkPreset" class="btn btn-sm btn-outline-info preset-btn">Industry Network</button>
-                            <button type="button" id="applyAboutSustainablePreset" class="btn btn-sm btn-outline-info preset-btn">Sustainable Approach</button>
-                            <button type="button" id="applyAboutTailoredPreset" class="btn btn-sm btn-outline-info preset-btn">Tailored Innovation</button>
-                            <button type="button" id="applyAboutEndToEndPreset" class="btn btn-sm btn-outline-info preset-btn">End-to-End</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="project-location-section">Project Locations</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="project-phase-section">Project Phases</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary preset-btn" data-preset="project-outcome-section">Project Outcomes</button>
                         </div>
                     </div>
                 </div>
@@ -152,68 +251,137 @@
         </div>
     </div>
 
-    @php $isEdit = $currentContent && $currentContent->id; @endphp
+    {{-- ======= DYNAMIC FIELD GUIDE ======= --}}
+    <div class="col-12" id="field-guide-wrapper" style="display:none;">
+        <div class="alert alert-info border-start border-4 border-info mb-0 py-2 px-3" id="field-guide-content">
+        </div>
+    </div>
 
+    {{-- ======= FORM FIELDS ======= --}}
+
+    {{-- Slug --}}
     <div class="col-md-6">
-        <label class="form-label">
+        <label for="content_slug" class="form-label fw-semibold">
             Slug
-            @if($isEdit)<span class="badge bg-secondary ms-1" style="font-size:10px;">Read-only</span>@endif
+            @if($isEdit)
+                <span class="badge bg-secondary ms-1" style="font-size:10px;">Read-only after save</span>
+            @endif
         </label>
-        <input type="text" id="content_slug" name="slug" value="{{ old('slug', $currentSlug) }}"
-               class="form-control @error('slug') is-invalid @enderror {{ $isEdit ? 'bg-light' : '' }}"
-               placeholder="work-with-us" @if($isEdit) readonly @endif>
+        <input type="text" id="content_slug" name="slug"
+               value="{{ old('slug', $currentSlug) }}"
+               class="form-control font-monospace @error('slug') is-invalid @enderror {{ $isEdit ? 'bg-light' : '' }}"
+               placeholder="e.g. home_mission" @if($isEdit) readonly @endif>
+        <small class="text-muted">
+            <i class="fas fa-key me-1"></i>
+            System ID — used to find this block in the website code. <strong>Do not change after creation.</strong>
+        </small>
         @error('slug')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 
+    {{-- Section Label --}}
     <div class="col-md-6">
-        <label class="form-label">
-            Section
-            @if($isEdit)<span class="badge bg-secondary ms-1" style="font-size:10px;">Read-only</span>@endif
+        <label for="content_section" class="form-label fw-semibold">
+            Section Label
+            @if($isEdit)
+                <span class="badge bg-secondary ms-1" style="font-size:10px;">Read-only after save</span>
+            @endif
         </label>
-        <input type="text" id="content_section" name="section" value="{{ old('section', $currentSection) }}"
+        <input type="text" id="content_section" name="section"
+               value="{{ old('section', $currentSection) }}"
                class="form-control @error('section') is-invalid @enderror {{ $isEdit ? 'bg-light' : '' }}"
-               placeholder="WORK WITH US" @if($isEdit) readonly @endif>
+               placeholder="e.g. ABOUT GIET" @if($isEdit) readonly @endif>
+        <small class="text-muted">
+            <i class="fas fa-tag me-1"></i>
+            Small uppercase tag shown above the main heading on the page.
+        </small>
         @error('section')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 
+    {{-- Main Heading --}}
     <div class="col-md-6">
-        <label class="form-label">Heading</label>
-        <input type="text" id="content_heading" name="heading" value="{{ old('heading', $currentHeading) }}" class="form-control @error('heading') is-invalid @enderror" placeholder="Have a project in mind?">
+        <label for="content_heading" class="form-label fw-semibold">Main Heading</label>
+        <input type="text" id="content_heading" name="heading"
+               value="{{ old('heading', $currentHeading) }}"
+               class="form-control @error('heading') is-invalid @enderror"
+               placeholder="e.g. Work That Creates Impact">
+        <small class="text-muted">
+            <i class="fas fa-heading me-1"></i>
+            The primary large heading shown in this section.
+        </small>
         @error('heading')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 
+    {{-- Sub Heading / Button --}}
     <div class="col-md-6">
-        <label class="form-label">Sub Heading</label>
-        <input type="text" id="content_sub_heading" name="sub_heading" value="{{ old('sub_heading', $currentSubHeading) }}" class="form-control @error('sub_heading') is-invalid @enderror" placeholder="Get in Touch">
+        <label for="content_sub_heading" class="form-label fw-semibold">Sub Heading / Button Label</label>
+        <input type="text" id="content_sub_heading" name="sub_heading"
+               value="{{ old('sub_heading', $currentSubHeading) }}"
+               class="form-control @error('sub_heading') is-invalid @enderror"
+               placeholder="e.g. View All Projects">
+        <small class="text-muted" id="sub_heading_hint">
+            <i class="fas fa-info-circle me-1"></i>
+            Used as a button label or secondary line — depends on the section.
+        </small>
         @error('sub_heading')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 
+    {{-- Highlighted Word / Extra --}}
     <div class="col-md-6">
-        <label class="form-label">Design Word</label>
-        <input type="text" id="content_design_word" name="design_word" value="{{ old('design_word', $currentDesignWord) }}" class="form-control @error('design_word') is-invalid @enderror" placeholder="that lasts.">
+        <label for="content_design_word" class="form-label fw-semibold">Highlighted Word / Extra Data</label>
+        <input type="text" id="content_design_word" name="design_word"
+               value="{{ old('design_word', $currentDesignWord) }}"
+               class="form-control @error('design_word') is-invalid @enderror"
+               placeholder="e.g. Impact  OR  Governance|Reform|Policy">
+        <small class="text-muted" id="design_word_hint">
+            <i class="fas fa-paint-brush me-1"></i>
+            <strong>Two uses:</strong>
+            (1) A word from the heading that will be shown in a different color —
+            (2) Pipe-separated list for bullet/pillar items (e.g. <code>Governance|Reform|Policy</code>).
+            See field guide above for this block's specific use.
+        </small>
         @error('design_word')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 
+    {{-- Block Type --}}
     <div class="col-md-6">
-        <label class="form-label">Type</label>
-        <input type="text" id="content_type" name="type" value="{{ old('type', $currentType) }}" class="form-control @error('type') is-invalid @enderror" placeholder="Hero / CTA / Service Hero">
+        <label for="content_type" class="form-label fw-semibold">Block Type</label>
+        <input type="text" id="content_type" name="type"
+               value="{{ old('type', $currentType) }}"
+               class="form-control @error('type') is-invalid @enderror"
+               placeholder="e.g. Hero / Section / CTA / List Item">
+        <small class="text-muted">
+            <i class="fas fa-layer-group me-1"></i>
+            Internal category label — helps organize blocks. Common values: Hero, Section, CTA, List Item, Badge.
+        </small>
         @error('type')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 
+    {{-- Body Text --}}
     <div class="col-12">
-        <label class="form-label">Description</label>
-        <textarea id="content_description" name="description" rows="6" class="form-control @error('description') is-invalid @enderror">{{ old('description', $currentDescription) }}</textarea>
+        <label for="content_description" class="form-label fw-semibold">Body Text / Paragraph</label>
+        <textarea id="content_description" name="description" rows="6"
+                  class="form-control @error('description') is-invalid @enderror">{{ old('description', $currentDescription) }}</textarea>
+        <small class="text-muted" id="description_hint">
+            <i class="fas fa-align-left me-1"></i>
+            The main paragraph text shown in this section. Supports rich formatting (bold, lists, etc.).
+        </small>
         @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
     </div>
 
-   <div class="col-md-6">
-    <label class="form-label">Icon Image</label>
-    <input type="file" name="icon" class="form-control @error('icon') is-invalid @enderror" accept="image/*" data-max-size="2048" data-max-width="64" data-max-height="64">
-    <small class="text-muted"><i class="fas fa-info-circle"></i> Recommended: 64×64px square (max 2MB)</small>
-    @error('icon')<div class="invalid-feedback">{{ $message }}</div>@enderror
-    @if($currentIconUrl)
+    {{-- Icon Image --}}
+    <div class="col-md-6">
+        <label for="content_icon" class="form-label fw-semibold">Icon / Small Image</label>
+        <input type="file" id="content_icon" name="icon" class="form-control @error('icon') is-invalid @enderror"
+               accept="image/*" data-max-size="2048">
+        <small class="text-muted">
+            <i class="fas fa-image me-1"></i>
+            Small icon (recommended 64×64px square, max 2MB). Used for feature/card icons.
+        </small>
+        @error('icon')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        @if($currentIconUrl)
         <div class="mt-2 d-flex align-items-center gap-2">
-            <img id="icon-preview" src="{{ $currentIconUrl }}" alt="icon" style="width: 56px; height: 56px; object-fit: contain; border-radius: 6px; border: 1px solid #dee2e6;">
+            <img id="icon-preview" src="{{ $currentIconUrl }}" alt="Current icon preview"
+                 style="width:56px;height:56px;object-fit:contain;border-radius:6px;border:1px solid #dee2e6;">
             <div>
                 <button type="button" class="btn btn-sm btn-outline-danger" id="remove-icon-btn">
                     <i class="fas fa-trash-alt me-1"></i> Remove
@@ -221,17 +389,23 @@
                 <input type="hidden" name="remove_icon" id="remove_icon_input" value="0">
             </div>
         </div>
-    @endif
-</div>
+        @endif
+    </div>
 
+    {{-- Main Image --}}
     <div class="col-md-6">
-    <label class="form-label">Main Image</label>
-    <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*" data-max-size="4096" data-max-width="1200" data-max-height="800">
-    <small class="text-muted"><i class="fas fa-info-circle"></i> Recommended: 1200×800px (max 4MB)</small>
-    @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
-    @if($currentImageUrl)
+        <label for="content_image" class="form-label fw-semibold">Main Image / Banner</label>
+        <input type="file" id="content_image" name="image" class="form-control @error('image') is-invalid @enderror"
+               accept="image/*" data-max-size="4096">
+        <small class="text-muted">
+            <i class="fas fa-image me-1"></i>
+            Large banner/section image (recommended 1200×800px, max 4MB).
+        </small>
+        @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        @if($currentImageUrl)
         <div class="mt-2 d-flex align-items-center gap-3">
-            <img id="image-preview" src="{{ $currentImageUrl }}" alt="image" style="width: 140px; height: 90px; object-fit: cover; border-radius: 8px; border: 1px solid #dee2e6;">
+            <img id="image-preview" src="{{ $currentImageUrl }}" alt="Current banner"
+                 style="width:140px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #dee2e6;">
             <div>
                 <button type="button" class="btn btn-sm btn-outline-danger" id="remove-image-btn">
                     <i class="fas fa-trash-alt me-1"></i> Remove
@@ -239,601 +413,926 @@
                 <input type="hidden" name="remove_image" id="remove_image_input" value="0">
             </div>
         </div>
-    @endif
-</div>
-</div>
+        @endif
+    </div>
+
+</div>{{-- /row --}}
 
 @push('custome-js')
 <style>
-    .preset-chevron { transition: transform .2s ease; }
-    .preset-group-label[aria-expanded="false"] .preset-chevron { transform: rotate(-90deg); }
-
-    .preset-group-label { user-select: none; }
-    .preset-group-label::after {
-        content: "\f068";
-        font-family: "Font Awesome 6 Free";
-        font-weight: 900;
-        margin-left: auto;
-        font-size: .7rem;
-        opacity: .5;
-        transition: opacity .2s;
-    }
-    .preset-group-label[aria-expanded="false"]::after { content: "\f067"; }
-    .preset-group-label:hover::after { opacity: 1; }
+.preset-chevron { transition: transform .2s ease; }
+.preset-group-label[aria-expanded="false"] .preset-chevron { transform: rotate(-90deg); }
+.preset-group-label { user-select: none; }
+.preset-btn.active { background-color: #0d6efd !important; color: #fff !important; border-color: #0d6efd !important; }
+#field-guide-wrapper .field-guide-table td:first-child { font-weight: 600; white-space: nowrap; padding-right: 12px; }
+#field-guide-wrapper .field-guide-table td { padding: 2px 4px; font-size: 13px; }
 </style>
+
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-        const field = document.getElementById('content_description');
-        const teamPagePresetBtn = document.getElementById('applyTeamPagePreset');
-        const servicesPagePresetBtn = document.getElementById('applyServicesPagePreset');
-        const teamLeadershipPresetBtn = document.getElementById('applyTeamLeadershipPreset');
-        const teamCorePresetBtn       = document.getElementById('applyTeamCorePreset');
-        const teamExpertsPresetBtn    = document.getElementById('applyTeamExpertsPreset');
-        const insightsPagePresetBtn = document.getElementById('applyInsightsPagePreset');
-        const projectsPagePresetBtn = document.getElementById('applyProjectsPagePreset');
-        const careerPagePresetBtn   = document.getElementById('applyCareerPagePreset');
-        const projectLocationPresetBtn = document.getElementById('applyProjectLocationPreset');
-        const projectPhasePresetBtn = document.getElementById('applyProjectPhasePreset');
-        const projectOutcomePresetBtn = document.getElementById('applyProjectOutcomePreset');
-        const projectsWorkWithUsPresetBtn = document.getElementById('applyProjectsWorkWithUsPreset');
-        const presetBtn = document.getElementById('applyWorkWithUsPreset');
-        const aboutCommitmentPresetBtn = document.getElementById('applyAboutCommitmentPreset');
-        const aboutFrameworkPresetBtn = document.getElementById('applyAboutFrameworkPreset');
-        const aboutInsightPresetBtn = document.getElementById('applyAboutInsightPreset');
-        const aboutStrategyPresetBtn = document.getElementById('applyAboutStrategyPreset');
-        const aboutImpactPresetBtn = document.getElementById('applyAboutImpactPreset');
-        const aboutUniqueFeaturesPresetBtn = document.getElementById('applyAboutUniqueFeaturesPreset');
-        const aboutIndustryNetworkPresetBtn = document.getElementById('applyAboutIndustryNetworkPreset');
-        const aboutSustainablePresetBtn = document.getElementById('applyAboutSustainablePreset');
-        const aboutTailoredPresetBtn = document.getElementById('applyAboutTailoredPreset');
-        const aboutEndToEndPresetBtn = document.getElementById('applyAboutEndToEndPreset');
-        const slugField = document.getElementById('content_slug');
-        const sectionField = document.getElementById('content_section');
-        const headingField = document.getElementById('content_heading');
-        const subHeadingField = document.getElementById('content_sub_heading');
-        const designWordField = document.getElementById('content_design_word');
-        const typeField = document.getElementById('content_type');
-        const descriptionField = document.getElementById('content_description');
-        const homeAboutTracePresetBtn      = document.getElementById('applyHomeAboutTracePreset');
-const homeAboutTraceOnePresetBtn   = document.getElementById('applyHomeAboutTraceOnePreset');
-const homeAboutTraceTwoPresetBtn   = document.getElementById('applyHomeAboutTraceTwoPreset');
-const homeAboutTraceThreePresetBtn = document.getElementById('applyHomeAboutTraceThreePreset');
-const homeYearsPresetBtn           = document.getElementById('applyHomeYearsPreset');
 
-        let contentEditor = null;
+    /* ============================================================
+       ELEMENT REFERENCES
+    ============================================================ */
+    const slugField        = document.getElementById('content_slug');
+    const sectionField     = document.getElementById('content_section');
+    const headingField     = document.getElementById('content_heading');
+    const subHeadingField  = document.getElementById('content_sub_heading');
+    const designWordField  = document.getElementById('content_design_word');
+    const typeField        = document.getElementById('content_type');
+    const descriptionField = document.getElementById('content_description');
+    const guideWrapper     = document.getElementById('field-guide-wrapper');
+    const guideContent     = document.getElementById('field-guide-content');
 
-        function setDescriptionValue(value) {
-            const nextValue = value || '';
-            if (descriptionField) {
-                descriptionField.value = nextValue;
+    let contentEditor = null;
+
+    /* ============================================================
+       CKEDITOR INIT
+    ============================================================ */
+    if (descriptionField) {
+        ClassicEditor.create(descriptionField)
+            .then(editor => { contentEditor = editor; })
+            .catch(console.error);
+    }
+
+    function setDescriptionValue(value) {
+        const v = value || '';
+        if (descriptionField) descriptionField.value = v;
+        if (contentEditor) contentEditor.setData(v);
+    }
+
+    /* ============================================================
+       REMOVE IMAGE / ICON
+    ============================================================ */
+    const removeIconBtn   = document.getElementById('remove-icon-btn');
+    const removeIconInput = document.getElementById('remove_icon_input');
+    const iconPreview     = document.getElementById('icon-preview');
+    if (removeIconBtn) {
+        removeIconBtn.onclick = function () {
+            if (removeIconInput.value === '0') {
+                iconPreview.style.opacity = '0.3';
+                iconPreview.style.filter  = 'grayscale(100%)';
+                removeIconInput.value     = '1';
+                removeIconBtn.innerHTML   = '<i class="fas fa-undo me-1"></i> Undo';
+                removeIconBtn.classList.replace('btn-outline-danger', 'btn-outline-secondary');
+            } else {
+                iconPreview.style.opacity = '1';
+                iconPreview.style.filter  = 'none';
+                removeIconInput.value     = '0';
+                removeIconBtn.innerHTML   = '<i class="fas fa-trash-alt me-1"></i> Remove';
+                removeIconBtn.classList.replace('btn-outline-secondary', 'btn-outline-danger');
             }
-            if (contentEditor) {
-                contentEditor.setData(nextValue);
+        };
+    }
+
+    const removeImageBtn   = document.getElementById('remove-image-btn');
+    const removeImageInput = document.getElementById('remove_image_input');
+    const imagePreview     = document.getElementById('image-preview');
+    if (removeImageBtn) {
+        removeImageBtn.onclick = function () {
+            if (removeImageInput.value === '0') {
+                imagePreview.style.opacity = '0.3';
+                imagePreview.style.filter  = 'grayscale(100%)';
+                removeImageInput.value     = '1';
+                removeImageBtn.innerHTML   = '<i class="fas fa-undo me-1"></i> Undo';
+                removeImageBtn.classList.replace('btn-outline-danger', 'btn-outline-secondary');
+            } else {
+                imagePreview.style.opacity = '1';
+                imagePreview.style.filter  = 'none';
+                removeImageInput.value     = '0';
+                removeImageBtn.innerHTML   = '<i class="fas fa-trash-alt me-1"></i> Remove';
+                removeImageBtn.classList.replace('btn-outline-secondary', 'btn-outline-danger');
             }
-        }
+        };
+    }
 
-        // ── Remove Icon ──
-const removeIconBtn   = document.getElementById('remove-icon-btn');
-const removeIconInput = document.getElementById('remove_icon_input');
-const iconPreview     = document.getElementById('icon-preview');
-
-if (removeIconBtn) {
-    removeIconBtn.addEventListener('click', function () {
-        iconPreview.style.opacity     = '0.3';
-        iconPreview.style.filter      = 'grayscale(100%)';
-        removeIconInput.value         = '1';
-        removeIconBtn.innerHTML       = '<i class="fas fa-undo me-1"></i> Undo';
-        removeIconBtn.classList.replace('btn-outline-danger', 'btn-outline-secondary');
-        removeIconBtn.dataset.removed = 'true';
-    });
-
-    // Undo support
-    removeIconBtn.addEventListener('click', function () {
-        if (removeIconBtn.dataset.removed === 'true') {
-            // already handled above — but swap to undo logic on second click
-        }
-    });
-}
-
-// ── Remove Main Image ──
-const removeImageBtn   = document.getElementById('remove-image-btn');
-const removeImageInput = document.getElementById('remove_image_input');
-const imagePreview     = document.getElementById('image-preview');
-
-if (removeImageBtn) {
-    removeImageBtn.addEventListener('click', function () {
-        if (removeImageInput.value === '0') {
-            // Mark for removal
-            imagePreview.style.opacity      = '0.3';
-            imagePreview.style.filter       = 'grayscale(100%)';
-            removeImageInput.value          = '1';
-            removeImageBtn.innerHTML        = '<i class="fas fa-undo me-1"></i> Undo';
-            removeImageBtn.classList.replace('btn-outline-danger', 'btn-outline-secondary');
-        } else {
-            // Undo
-            imagePreview.style.opacity      = '1';
-            imagePreview.style.filter       = 'none';
-            removeImageInput.value          = '0';
-            removeImageBtn.innerHTML        = '<i class="fas fa-trash-alt me-1"></i> Remove';
-            removeImageBtn.classList.replace('btn-outline-secondary', 'btn-outline-danger');
-        }
-    });
-}
-
-// Same undo toggle for icon
-if (removeIconBtn) {
-    removeIconBtn.onclick = function () {
-        if (removeIconInput.value === '0') {
-            iconPreview.style.opacity  = '0.3';
-            iconPreview.style.filter   = 'grayscale(100%)';
-            removeIconInput.value      = '1';
-            removeIconBtn.innerHTML    = '<i class="fas fa-undo me-1"></i> Undo';
-            removeIconBtn.classList.replace('btn-outline-danger', 'btn-outline-secondary');
-        } else {
-            iconPreview.style.opacity  = '1';
-            iconPreview.style.filter   = 'none';
-            removeIconInput.value      = '0';
-            removeIconBtn.innerHTML    = '<i class="fas fa-trash-alt me-1"></i> Remove';
-            removeIconBtn.classList.replace('btn-outline-secondary', 'btn-outline-danger');
-        }
+    /* ============================================================
+       FIELD GUIDES — what each field means per content block
+    ============================================================ */
+    const fieldGuides = {
+        'home_about_trace': {
+            title: '🏠 Home Page — About GIET Section',
+            rows: [
+                ['Section Label',          '"ABOUT GIET" — small teal tag above the heading'],
+                ['Main Heading',           'Large heading text (e.g. "Transforming Challenges Into Strategic Opportunities")'],
+                ['Highlighted Word',       'One word from the heading that will appear in teal color'],
+                ['Sub Heading / Button',   'Button label (e.g. "Learn About Us")'],
+                ['Body Text',              'Paragraph text describing GIET shown below the heading'],
+            ]
+        },
+        'home_about_trace_one': {
+            title: '🏠 Home Page — About Item 1 (numbered list)',
+            rows: [
+                ['Main Heading',   'Title of this numbered point'],
+                ['Body Text',      'Short description for this point'],
+            ]
+        },
+        'home_about_trace_two': {
+            title: '🏠 Home Page — About Item 2 (numbered list)',
+            rows: [
+                ['Main Heading',   'Title of this numbered point'],
+                ['Body Text',      'Short description for this point'],
+            ]
+        },
+        'home_about_trace_three': {
+            title: '🏠 Home Page — About Item 3 (numbered list)',
+            rows: [
+                ['Main Heading',   'Title of this numbered point'],
+                ['Body Text',      'Short description for this point'],
+            ]
+        },
+        'home_focus_areas': {
+            title: '🏠 Home Page — Focus Areas Section Header',
+            rows: [
+                ['Section Label',        '"Our Focus Areas" — small label above heading'],
+                ['Main Heading',         'Section heading (e.g. "Where We Direct Our Work")'],
+                ['Sub Heading / Button', 'Top-right button label (e.g. "See All")'],
+                ['Highlighted Word',     'Bottom-center full button label (e.g. "See All Focus Areas")'],
+                ['Body Text',            '(Not used in this section)'],
+            ]
+        },
+        'home_mission': {
+            title: '🏠 Home Page — Mission Section',
+            rows: [
+                ['Section Label',        '"Our Mission" — small teal label on the right column'],
+                ['Main Heading',         'The large quote shown on the left (do not add quotation marks)'],
+                ['Sub Heading / Button', 'Attribution line below the quote (e.g. "Dr. X, Founding Director, GIET")'],
+                ['Highlighted Word',     'Pillar list separated by | (e.g. "Governance|Reform|Policy|Innovation")'],
+                ['Body Text',            'Mission paragraph text shown on the right column'],
+            ]
+        },
+        'home_projects': {
+            title: '🏠 Home Page — Projects Section Header',
+            rows: [
+                ['Section Label',        '"Our Projects" — small label above heading'],
+                ['Main Heading',         'Section heading (e.g. "Work That Creates Impact")'],
+                ['Sub Heading / Button', 'Bottom "View All" button label (e.g. "View All Projects")'],
+                ['Body Text',            'Paragraph text shown below the heading'],
+            ]
+        },
+        'home_partners': {
+            title: '🏠 Home Page — Partners Section',
+            rows: [
+                ['Main Heading',  'Section heading (e.g. "Our Partners")'],
+                ['Body Text',     '(Not used — partner logos come from Partners Manager)'],
+            ]
+        },
+        'home_years_of_expertise': {
+            title: '🏠 Home Page — Years of Expertise Badge',
+            rows: [
+                ['Main Heading',   'Number shown in the badge (e.g. "8+")'],
+                ['Body Text',      'Label below the number (e.g. "Years of Expertise")'],
+            ]
+        },
+        'work_key_focus_areas': {
+            title: '💼 Work Page — Key Focus Areas Heading',
+            rows: [
+                ['Section Label', 'Small teal tag above heading (e.g. "WHAT WE DO")'],
+                ['Main Heading',  'Section heading shown above the service cards (e.g. "Key Focus Areas")'],
+            ]
+        },
+        'services-page': {
+            title: '💼 Work/Services Page — Hero Section',
+            rows: [
+                ['Section Label',      'Small tag (e.g. "WHAT WE DO")'],
+                ['Main Heading',       'Page hero heading'],
+                ['Highlighted Word',   'Word in heading shown in color'],
+                ['Body Text',          'Hero paragraph text'],
+            ]
+        },
+        'work-with-us': {
+            title: '📣 CTA Section — Work With Us',
+            rows: [
+                ['Section Label',        'Small tag (e.g. "WORK WITH US")'],
+                ['Main Heading',         'CTA heading (e.g. "Have a project in mind?")'],
+                ['Sub Heading / Button', 'Button label (e.g. "Get in Touch")'],
+                ['Highlighted Word',     'Colored word in heading'],
+                ['Body Text',            'CTA paragraph text'],
+            ]
+        },
+        'contact-page': {
+            title: '📧 Contact Page — Hero Section',
+            rows: [
+                ['Section Label',   'Small tag (e.g. "CONTACT US")'],
+                ['Main Heading',    'Hero heading (e.g. "Get In Touch")'],
+                ['Body Text',       'Hero paragraph text'],
+            ]
+        },
+        'about_us_header': {
+            title: 'ℹ️ About Page — Page Header',
+            rows: [
+                ['Section Label',      'Small tag (e.g. "ABOUT US")'],
+                ['Main Heading',       'Page hero heading'],
+                ['Highlighted Word',   'Word in heading shown in color'],
+                ['Body Text',          'Hero paragraph text'],
+            ]
+        },
+        'about_us_our_mission': {
+            title: 'ℹ️ About Page — Mission/Vision/Goals Section Header',
+            rows: [
+                ['Section Label',  '"Our Institution" — small teal tag above heading'],
+                ['Main Heading',   'Section heading (e.g. "Mission, Vision & Goals")'],
+                ['Body Text',      '(Not used here — content comes from the 3 cards below)'],
+            ]
+        },
+        'about_us_mission': {
+            title: 'ℹ️ About Page — Mission Card',
+            rows: [
+                ['Section Label',  '"Mission" — small teal label at top of the card'],
+                ['Body Text',      'The mission statement text shown in the card'],
+            ]
+        },
+        'about_us_vision': {
+            title: 'ℹ️ About Page — Vision Card',
+            rows: [
+                ['Section Label',  '"Vision" — small label at top of the card'],
+                ['Body Text',      'The vision statement text shown in the card'],
+            ]
+        },
+        'about_us_goals': {
+            title: 'ℹ️ About Page — Goals Card',
+            rows: [
+                ['Section Label',  '"Goals" — small label at top of the card'],
+                ['Body Text',      'The goals statement text shown in the card'],
+            ]
+        },
+        'about_trace': {
+            title: 'ℹ️ About Page — Our Story Section (Left Panel)',
+            rows: [
+                ['Section Label',  '"Our Story" — small teal tag above heading'],
+                ['Main Heading',   'Left panel heading (e.g. "Built on a Belief that Better Governance is Possible")'],
+                ['Body Text',      'Short intro paragraph in the left panel'],
+            ]
+        },
+        'about_us_we_make_trace_different': {
+            title: 'ℹ️ About Page — What Sets GIET Apart (Approach Section Header)',
+            rows: [
+                ['Section Label',  '"Our Approach" — small tag above heading'],
+                ['Main Heading',   'Section heading (e.g. "What Sets GIET Apart")'],
+                ['Body Text',      '(Not used — content comes from the 3 approach cards)'],
+            ]
+        },
+        'about_us_insight': {
+            title: 'ℹ️ About Page — Approach Card 1',
+            rows: [
+                ['Main Heading',  'Card title (e.g. "Evidence-Based Research")'],
+                ['Body Text',     'Card description text'],
+            ]
+        },
+        'about_us_strategy': {
+            title: 'ℹ️ About Page — Approach Card 2',
+            rows: [
+                ['Main Heading',  'Card title (e.g. "Multi-Stakeholder Dialogue")'],
+                ['Body Text',     'Card description text'],
+            ]
+        },
+        'about_us_impact': {
+            title: 'ℹ️ About Page — Approach Card 3',
+            rows: [
+                ['Main Heading',  'Card title (e.g. "Integrated Implementation Support")'],
+                ['Body Text',     'Card description text'],
+            ]
+        },
+        'about_us_how_we_work': {
+            title: 'ℹ️ About Page — Values Section Header',
+            rows: [
+                ['Section Label',  '"Our Values" — small tag above heading'],
+                ['Main Heading',   'Section heading (e.g. "The Principles That Guide Our Work")'],
+                ['Body Text',      '(Not used — content comes from the 4 values cards)'],
+            ]
+        },
+        'about_us_industry_wide_network': {
+            title: 'ℹ️ About Page — Values Card 1',
+            rows: [
+                ['Main Heading',  'Card title (e.g. "Integrity")'],
+                ['Body Text',     'Card description text'],
+                ['Icon',          'Small icon shown in the teal box (optional)'],
+            ]
+        },
+        'about_us_sustainable_approach': {
+            title: 'ℹ️ About Page — Values Card 2',
+            rows: [
+                ['Main Heading',  'Card title (e.g. "Independence")'],
+                ['Body Text',     'Card description text'],
+                ['Icon',          'Small icon shown in the teal box (optional)'],
+            ]
+        },
+        'about_us_tailored_innovation': {
+            title: 'ℹ️ About Page — Values Card 3',
+            rows: [
+                ['Main Heading',  'Card title (e.g. "Inclusion")'],
+                ['Body Text',     'Card description text'],
+                ['Icon',          'Small icon shown in the teal box (optional)'],
+            ]
+        },
+        'about_us_end_to_end_integrated_solutions': {
+            title: 'ℹ️ About Page — Values Card 4',
+            rows: [
+                ['Main Heading',  'Card title (e.g. "Impact")'],
+                ['Body Text',     'Card description text'],
+                ['Icon',          'Small icon shown in the teal box (optional)'],
+            ]
+        },
+        'about_story_template': {
+            title: 'ℹ️ About Page — Story / Timeline Item',
+            rows: [
+                ['Slug',          'Use about_story_1, about_story_2, about_story_3 … (up to about_story_10)'],
+                ['Section Label', 'The YEAR shown on the left (e.g. "2021", "2022", "2023")'],
+                ['Main Heading',  'Event title (e.g. "Foundation Established")'],
+                ['Body Text',     'Event description — what happened that year'],
+            ]
+        },
+        'about_us_partners': {
+            title: 'ℹ️ About Page — Partners Section',
+            rows: [
+                ['Main Heading',     'Section heading (e.g. "Our Partners")'],
+                ['Highlighted Word', 'Word in heading shown in color'],
+                ['Body Text',        'Short description below the heading'],
+            ]
+        },
+        'projects_portfolio': {
+            title: '📁 Projects Page — Portfolio Section Header',
+            rows: [
+                ['Section Label', 'Small teal tag above heading (e.g. "Project Portfolio")'],
+                ['Main Heading',  'Section heading (e.g. "Work That Creates Impact")'],
+            ]
+        },
+        'projects_impact': {
+            title: '📁 Projects Page — Impact Section Header',
+            rows: [
+                ['Section Label', 'Small teal tag above heading (e.g. "Our Impact")'],
+                ['Main Heading',  'Section heading (e.g. "Measurable Outcomes Across Our Portfolio")'],
+            ]
+        },
+        'projects_stat_1': {
+            title: '📁 Projects Page — Impact Stat Card 1',
+            rows: [
+                ['Main Heading',  'The number shown large in red (e.g. "24+", "6K+", "38")'],
+                ['Section Label', 'The label shown below the number (e.g. "Projects Delivered")'],
+            ]
+        },
+        'projects_stat_2': {
+            title: '📁 Projects Page — Impact Stat Card 2',
+            rows: [
+                ['Main Heading',  'The number shown large in red (e.g. "6K+")'],
+                ['Section Label', 'The label shown below the number (e.g. "Officials Trained")'],
+            ]
+        },
+        'projects_stat_3': {
+            title: '📁 Projects Page — Impact Stat Card 3',
+            rows: [
+                ['Main Heading',  'The number shown large in red (e.g. "38")'],
+                ['Section Label', 'The label shown below the number (e.g. "Policy Recommendations Adopted")'],
+            ]
+        },
+        'projects_stat_4': {
+            title: '📁 Projects Page — Impact Stat Card 4',
+            rows: [
+                ['Main Heading',  'The number shown large in red (e.g. "12+")'],
+                ['Section Label', 'The label shown below the number (e.g. "Partner Organizations")'],
+            ]
+        },
+        'projects_work_with_us': {
+            title: '📁 Projects Page — Work With Us / CTA Section',
+            rows: [
+                ['Section Label',        'Small teal tag above heading (e.g. "Collaborate")'],
+                ['Main Heading',         'CTA heading (e.g. "Ready to Commission a Project?")'],
+                ['Body Text',            'Paragraph text below the heading'],
+                ['Sub Heading / Button', 'Primary button label (e.g. "Get In Touch") — links to Contact page'],
+                ['Highlighted Word',     'Secondary button label (e.g. "About GIET") — links to About page'],
+            ]
+        },
+        'projectdetails_sidebar': {
+            title: '📄 Project Details Page — Sidebar "Work With Us" Card',
+            rows: [
+                ['Section Label',        'Eyebrow label above description (e.g. "Work With Us")'],
+                ['Body Text',            'Short description inside the card'],
+                ['Sub Heading / Button', 'Button text (e.g. "Commission a Similar Project") — links to Contact page'],
+            ]
+        },
+        'projectdetails_team': {
+            title: '📄 Project Details Page — Team Section Header',
+            rows: [
+                ['Section Label',    'Small teal eyebrow tag (e.g. "Project Team")'],
+                ['Main Heading',     'Section heading (e.g. "Team Members")'],
+                ['Highlighted Word', 'Link text for "All Experts →" (e.g. "All Experts") — links to Team page'],
+            ]
+        },
+        'projectdetails_actions': {
+            title: '📄 Project Details Page — Bottom Action Buttons',
+            rows: [
+                ['Main Heading',         'Primary button label (e.g. "Commission a Similar Project") — links to Contact page'],
+                ['Sub Heading / Button', 'Secondary button label (e.g. "All Projects") — links back to Projects list'],
+            ]
+        },
+        'events_page_header': {
+            title: '📅 Events Page — Page Hero',
+            rows: [
+                ['Section Label', 'Small tag above heading (e.g. "EVENTS")'],
+                ['Main Heading',  'Hero heading (e.g. "Events & Dialogues")'],
+                ['Body Text',     'Hero paragraph text'],
+            ]
+        },
+        'events_upcoming': {
+            title: '📅 Events Page — Upcoming Events Section',
+            rows: [
+                ['Section Label', 'Small teal tag (e.g. "Upcoming Events")'],
+                ['Main Heading',  'Section heading (e.g. "Open Events")'],
+            ]
+        },
+        'events_past': {
+            title: '📅 Events Page — Past Events Section',
+            rows: [
+                ['Section Label', 'Small teal tag (e.g. "Archive")'],
+                ['Main Heading',  'Section heading (e.g. "Past Events")'],
+            ]
+        },
+        'workdetails_overview': {
+            title: '💼 Work Details Page — Overview Section Label',
+            rows: [
+                ['Main Heading', 'Section heading shown above the overview text (e.g. "Overview")'],
+            ]
+        },
+        'workdetails_services_include': {
+            title: '💼 Work Details Page — Services Include Label',
+            rows: [
+                ['Main Heading', 'Section heading for the services list (e.g. "Our Services Include")'],
+            ]
+        },
+        'workdetails_solutions': {
+            title: '💼 Work Details Page — Products & Solutions Label',
+            rows: [
+                ['Main Heading', 'Title shown in the Products & Solutions strip (e.g. "Products & Solutions")'],
+            ]
+        },
+        'workdetails_related_projects': {
+            title: '💼 Work Details Page — Related Projects Section',
+            rows: [
+                ['Section Label', 'Small teal tag above heading (e.g. "Related Projects")'],
+                ['Main Heading',  'Section heading (e.g. "Work We Have Delivered")'],
+                ['Sub Heading',   'Link text for "All Projects" button (e.g. "All Projects")'],
+            ]
+        },
+        'workdetails_experts': {
+            title: '💼 Work Details Page — Experts Section',
+            rows: [
+                ['Section Label', 'Small teal tag above heading (e.g. "Our People")'],
+                ['Main Heading',  'Section heading (e.g. "Experts in This Area")'],
+                ['Sub Heading',   'Link text for "All Experts" button (e.g. "All Experts")'],
+            ]
+        },
+        'events_cta': {
+            title: '📅 Events Page — Co-host CTA Section',
+            rows: [
+                ['Section Label',        'Small tag on the left panel (e.g. "Partner With Us")'],
+                ['Main Heading',         'Left panel heading (e.g. "Interested in Co-hosting an Event?")'],
+                ['Body Text',            'Left panel paragraph text'],
+                ['Sub Heading / Button', 'Form title shown above the proposal form (e.g. "Submit an Event Proposal")'],
+            ]
+        },
+        'about_us_who_we_are': {
+            title: 'ℹ️ About Page — Who We Are',
+            rows: [
+                ['Section Label',        '"WHO WE ARE" — small teal tag'],
+                ['Main Heading',         'Main heading (e.g. "Transforming Challenges into Strategic Opportunities")'],
+                ['Sub Heading / Button', 'Button label (e.g. "Our Areas of Work")'],
+                ['Body Text',            'Paragraph text — supports rich formatting (bold, lists, etc.)'],
+                ['Main Image',           'Photo shown on the left side'],
+            ]
+        },
     };
-}
 
-        if (field) {
-            ClassicEditor.create(field)
-                .then(function (editor) {
-                    contentEditor = editor;
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
-        }
-
-        const contactPagePresetBtn = document.getElementById('applyContactPagePreset');
-
-        if (servicesPagePresetBtn) {
-            servicesPagePresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'services-page';
-                if (sectionField) sectionField.value = 'WHAT WE DO';
-                if (headingField) headingField.value = 'Our Services';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = 'Services';
-                if (typeField) typeField.value = 'Hero';
-                setDescriptionValue('TRACE provides consultancy, research, and advocacy services that help government agencies and businesses reform policies, advance trade facilitation, and strengthen market systems.');
-            });
-        }
-
-        if (contactPagePresetBtn) {
-            contactPagePresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'contact-page';
-                if (sectionField) sectionField.value = 'REACH OUT';
-                if (headingField) headingField.value = "Let's start a";
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = 'conversation.';
-                if (typeField) typeField.value = 'Hero';
-                setDescriptionValue('');
-            });
-        }
-
-        if (teamPagePresetBtn) {
-            teamPagePresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'team-page';
-                if (sectionField) sectionField.value = 'THE PEOPLE BEHIND THE WORK';
-                if (headingField) headingField.value = 'Experts who';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = 'drive change.';
-                if (typeField) typeField.value = 'Hero';
-                setDescriptionValue('TRACE brings together a permanent core team of trade specialists, researchers, and technologists - supported by a network of domain experts engaged on specific projects and engagements.');
-            });
-        }
-
-        if (teamLeadershipPresetBtn) {
-            teamLeadershipPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'team-leadership';
-                if (sectionField) sectionField.value = 'LEADERSHIP';
-                if (headingField) headingField.value = 'Managing';
-                if (subHeadingField) subHeadingField.value = 'MD & CEO';
-                if (designWordField) designWordField.value = 'Director';
-                if (typeField) typeField.value = 'Section';
-                setDescriptionValue("Leading TRACE's vision of practical, high-impact consulting for governments and development partners.");
-            });
-        }
-
-        if (teamCorePresetBtn) {
-            teamCorePresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'team-core';
-                if (sectionField) sectionField.value = 'CORE TEAM';
-                if (headingField) headingField.value = 'Our';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = 'in-house specialists';
-                if (typeField) typeField.value = 'Section';
-                setDescriptionValue('Full-time TRACE staff with deep expertise across our nine service areas — the engine that runs every project.');
-            });
-        }
-
-        if (teamExpertsPresetBtn) {
-            teamExpertsPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'team-experts';
-                if (sectionField) sectionField.value = 'OUR EXPERTS';
-                if (headingField) headingField.value = 'The right expert,';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = 'for the right problem';
-                if (typeField) typeField.value = 'Section';
-                setDescriptionValue('TRACE works with a network of senior domain experts — professors, former government officials, international trade lawyers, and sector specialists — who we bring in their knowledge when a project demands their specific depth.');
-            });
-        }
-
-        if (insightsPagePresetBtn) {
-            insightsPagePresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'insights-page';
-                if (sectionField) sectionField.value = 'KNOWLEDGE & RESEARCH';
-                if (headingField) headingField.value = 'Ideas that';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = 'move trade forward.';
-                if (typeField) typeField.value = 'Hero';
-                setDescriptionValue('Op-eds in national newspapers, in-house research, policy publications, and expert videos - TRACE\'s full body of published work.');
-            });
-        }
-
-        if (projectsPagePresetBtn) {
-            projectsPagePresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'projects-page';
-                if (sectionField) sectionField.value = 'OUR PROJECTS';
-                if (headingField) headingField.value = 'Work that';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = 'changes systems.';
-                if (typeField) typeField.value = 'Hero';
-                setDescriptionValue('TRACE has delivered trade facilitation reform, laboratory accreditation, digital systems, and policy advisory projects across South Asia — for governments, development banks, and regulatory bodies.');
-            });
-        }
-
-        if (careerPagePresetBtn) {
-            careerPagePresetBtn.addEventListener('click', function () {
-                if (slugField)      slugField.value      = 'career-heading';
-                if (sectionField)   sectionField.value   = 'CAREER AT TRACE';
-                if (headingField)   headingField.value   = 'Join Our Growing';
-                if (subHeadingField) subHeadingField.value = 'View Open Positions';
-                if (designWordField) designWordField.value = 'Team';
-                if (typeField)      typeField.value      = 'Hero';
-                setDescriptionValue('We are looking for curious, driven professionals to help us reshape trade policy, regulatory reform, and economic development across South Asia.');
-            });
-        }
-
-        if (projectLocationPresetBtn) {
-            projectLocationPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'project-location-section';
-                if (sectionField) sectionField.value = 'PROJECT DETAILS';
-                if (headingField) headingField.value = 'Project Locations';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Section';
-                setDescriptionValue('Locations where this project has been implemented or delivered.');
-            });
-        }
-
-        if (projectPhasePresetBtn) {
-            projectPhasePresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'project-phase-section';
-                if (sectionField) sectionField.value = 'PROJECT DETAILS';
-                if (headingField) headingField.value = 'Project Phases';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Section';
-                setDescriptionValue('Phase-wise implementation milestones and downloadable documents.');
-            });
-        }
-
-        if (projectOutcomePresetBtn) {
-            projectOutcomePresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'project-outcome-section';
-                if (sectionField) sectionField.value = 'PROJECT DETAILS';
-                if (headingField) headingField.value = 'Key Outcomes';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Section';
-                setDescriptionValue('Measurable results and outcomes delivered through this project.');
-            });
-        }
-
-        if (projectsWorkWithUsPresetBtn) {
-            projectsWorkWithUsPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'projects-work-with-us';
-                if (sectionField) sectionField.value = 'PROJECT CTA TOGGLE';
-                if (headingField) headingField.value = 'Projects Work With Us';
-                if (subHeadingField) subHeadingField.value = 'Set type to show or hide';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'show';
-                setDescriptionValue('Use type=show to display CTA on project details page; type=hide to hide CTA.');
-            });
-        }
-
-        if (aboutCommitmentPresetBtn) {
-            aboutCommitmentPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_section_3';
-                if (sectionField) sectionField.value = 'OUR COMMITMENT';
-                if (headingField) headingField.value = 'OUR COMMITMENT';
-                if (subHeadingField) subHeadingField.value = 'We are committed to';
-                if (designWordField) designWordField.value = 'At Trace Consulting, we do not just advise, we collaborate to create lasting change.';
-                if (typeField) typeField.value = 'Section';
-                setDescriptionValue('<ul><li>Integrity and transparency in every engagement</li><li>Delivering measurable outcomes, not just recommendations</li><li>Building local capacity and ownership</li><li>Promoting innovation and sustainability in every project</li></ul>');
-            });
-        }
-
-        if (aboutFrameworkPresetBtn) {
-            aboutFrameworkPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_how_we_work';
-                if (sectionField) sectionField.value = 'OUR FRAMEWORK';
-                if (headingField) headingField.value = 'How We\nWork';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Section';
-                setDescriptionValue('Our proven three-stage framework turns complex trade and policy challenges into measurable, lasting outcomes for every client we serve.');
-            });
-        }
-
-        if (aboutInsightPresetBtn) {
-            aboutInsightPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_insight';
-                if (sectionField) sectionField.value = 'ABOUT FRAMEWORK ITEM';
-                if (headingField) headingField.value = 'Insight';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Framework Item';
-                setDescriptionValue('We turn complex trade and policy issues into clear insights using research, data, and deep expertise to transform challenges and risks into well-defined opportunities ready for action.');
-            });
-        }
-
-        if (aboutStrategyPresetBtn) {
-            aboutStrategyPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_strategy';
-                if (sectionField) sectionField.value = 'ABOUT FRAMEWORK ITEM';
-                if (headingField) headingField.value = 'Strategy';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Framework Item';
-                setDescriptionValue('We formulate insights into strategies, devising evidence and technology-driven solutions that meet global standards, align with institutional realities, and drive sustainable growth.');
-            });
-        }
-
-        if (aboutImpactPresetBtn) {
-            aboutImpactPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_impact';
-                if (sectionField) sectionField.value = 'ABOUT FRAMEWORK ITEM';
-                if (headingField) headingField.value = 'Impact';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Framework Item';
-                setDescriptionValue('We deliver measurable and lasting results by reducing barriers, enhancing competitiveness, driving reforms, and embedding the tools clients need to sustain change independently.');
-            });
-        }
-
-        if (aboutUniqueFeaturesPresetBtn) {
-            aboutUniqueFeaturesPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_we_make_trace_different';
-                if (sectionField) sectionField.value = 'OUR UNIQUE FEATURES';
-                if (headingField) headingField.value = 'What Makes TRACE\nDifferent';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Section';
-                setDescriptionValue('TRACE delivers connected, sustainable, and tailored solutions from policy to practice that streamline processes, strengthen institutions, and empower growth.');
-            });
-        }
-
-        if (aboutIndustryNetworkPresetBtn) {
-            aboutIndustryNetworkPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_industry_wide_network';
-                if (sectionField) sectionField.value = 'ABOUT UNIQUE FEATURE ITEM';
-                if (headingField) headingField.value = 'Industry-wide Network';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Feature Item';
-                setDescriptionValue("With proven networks across government agencies and private sector stakeholders, TRACE consistently bridges policy leadership and business realities, enabling reforms prioritising client's need.");
-            });
-        }
-
-        if (aboutSustainablePresetBtn) {
-            aboutSustainablePresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_sustainable_approach';
-                if (sectionField) sectionField.value = 'ABOUT UNIQUE FEATURE ITEM';
-                if (headingField) headingField.value = 'Sustainable Approach';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Feature Item';
-                setDescriptionValue('TRACE works with partners to build sustainable solutions, embedding facilitation tools into legislation, training mechanisms, and digital systems that outlast the engagement.');
-            });
-        }
-
-        if (aboutTailoredPresetBtn) {
-            aboutTailoredPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_tailored_innovation';
-                if (sectionField) sectionField.value = 'ABOUT UNIQUE FEATURE ITEM';
-                if (headingField) headingField.value = 'Tailored Innovation';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Feature Item';
-                setDescriptionValue('From tech-driven trade systems, lab-accreditation roadmaps, or temperature-controlled logistics, TRACE designs solutions customised to sectoral realities and institutional capacity.');
-            });
-        }
-
-        if (aboutEndToEndPresetBtn) {
-            aboutEndToEndPresetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'about_us_end_to_end_integrated_solutions';
-                if (sectionField) sectionField.value = 'ABOUT UNIQUE FEATURE ITEM';
-                if (headingField) headingField.value = 'End-to-End Integrated Solutions';
-                if (subHeadingField) subHeadingField.value = '';
-                if (designWordField) designWordField.value = '';
-                if (typeField) typeField.value = 'Feature Item';
-                setDescriptionValue('TRACE provides fully integrated support from strategic design through implementation and evaluation, ensuring every solution works as a connected, coherent whole.');
-            });
-        }
-
-        if (presetBtn) {
-            presetBtn.addEventListener('click', function () {
-                if (slugField) slugField.value = 'work-with-us';
-                if (sectionField) sectionField.value = 'WORK WITH US';
-                if (headingField) headingField.value = 'Have a project in mind?';
-                if (subHeadingField) subHeadingField.value = 'Get in Touch';
-                if (designWordField) designWordField.value = 'that lasts.';
-                if (typeField) typeField.value = 'CTA';
-                setDescriptionValue(descriptionField ? descriptionField.value : '');
-            });
-        }
-
-        if (homeAboutTracePresetBtn) {
-    homeAboutTracePresetBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'home_about_trace';
-        if (sectionField) sectionField.value = 'ABOUT TRACE';
-        if (headingField) headingField.value = 'Transforming Challenges into Opportunities';
-        if (subHeadingField) subHeadingField.value = '';
-        if (designWordField) designWordField.value = 'Opportunities';
-        if (typeField) typeField.value = 'About Section';
-        setDescriptionValue('TRACE focuses on international trade, policy reform, and development, working with governments, business groups, and the private sector to strengthen market systems.');
-    });
-}
-
-if (homeAboutTraceOnePresetBtn) {
-    homeAboutTraceOnePresetBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'home_about_trace_one';
-        if (sectionField) sectionField.value = 'HOME ABOUT ITEM';
-        if (headingField) headingField.value = 'Multi-Sector Expertise & Global Reach';
-        if (subHeadingField) subHeadingField.value = '';
-        if (designWordField) designWordField.value = '';
-        if (typeField) typeField.value = 'List Item';
-        setDescriptionValue('Deep knowledge across industries, backed by an objective perspective and access to global networks.');
-    });
-}
-
-if (homeAboutTraceTwoPresetBtn) {
-    homeAboutTraceTwoPresetBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'home_about_trace_two';
-        if (sectionField) sectionField.value = 'HOME ABOUT ITEM';
-        if (headingField) headingField.value = 'Proven Methodologies, Policy to Practice';
-        if (subHeadingField) subHeadingField.value = '';
-        if (designWordField) designWordField.value = '';
-        if (typeField) typeField.value = 'List Item';
-        setDescriptionValue('Rigorous, scalable approaches that translate evidence into implementable reforms.');
-    });
-}
-
-if (homeAboutTraceThreePresetBtn) {
-    homeAboutTraceThreePresetBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'home_about_trace_three';
-        if (sectionField) sectionField.value = 'HOME ABOUT ITEM';
-        if (headingField) headingField.value = 'Change Management & Creative Innovation';
-        if (subHeadingField) subHeadingField.value = '';
-        if (designWordField) designWordField.value = '';
-        if (typeField) typeField.value = 'List Item';
-        setDescriptionValue('Combining structured change management with innovative, context-driven solutions.');
-    });
-}
-
-if (homeYearsPresetBtn) {
-    homeYearsPresetBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'home_years_of_expertise';
-        if (sectionField) sectionField.value = 'HOME BADGE';
-        if (headingField) headingField.value = '8+';
-        if (subHeadingField) subHeadingField.value = '';
-        if (designWordField) designWordField.value = '';
-        if (typeField) typeField.value = 'Badge';
-        setDescriptionValue('Years of Expertise');
-    });
-}
-
-        // About Header Preset
-const aboutHeaderBtn = document.getElementById('applyAboutHeaderPreset');
-if (aboutHeaderBtn) {
-    aboutHeaderBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'about_us_header';
-        if (sectionField) sectionField.value = 'ABOUT US';
-        if (headingField) headingField.value = 'Empowering Change through Insightful Consulting';
-        if (designWordField) designWordField.value = 'Insightful';
-        if (typeField) typeField.value = 'Hero Section';
-        setDescriptionValue('We deliver evidence-based policy recommendations and advocacy that help governments design actionable, impactful reforms from the ground up.');
-    });
-}
-
-// About Trace Preset
-const aboutTraceBtn = document.getElementById('applyAboutTracePreset');
-if (aboutTraceBtn) {
-    aboutTraceBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'about_trace';
-        if (sectionField) sectionField.value = 'ABOUT TRACE';
-        if (headingField) headingField.value = 'A firm built on insight, strategy, and lasting impact.';
-        if (designWordField) designWordField.value = 'insight, strategy,';
-        if (typeField) typeField.value = 'About Section';
-        setDescriptionValue('A firm built on insight, strategy, and lasting impact.');
-    });
-}
-
-// Who We Are Preset
-const whoWeAreBtn = document.getElementById('applyWhoWeArePreset');
-if (whoWeAreBtn) {
-    whoWeAreBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'about_us_who_we_are';
-        if (sectionField) sectionField.value = 'ABOUT US DETAILS';
-        if (headingField) headingField.value = 'Who We Are';
-        if (designWordField) designWordField.value = '';
-        if (typeField) typeField.value = 'Detail Item';
-        setDescriptionValue('We work at the intersection of research, innovation, and implementation— empowering institutions with data-driven insights.');
-    });
-}
-
-// Our Mission Preset
-const ourMissionBtn = document.getElementById('applyOurMissionPreset');
-if (ourMissionBtn) {
-    ourMissionBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'about_us_our_mission';
-        if (sectionField) sectionField.value = 'ABOUT US DETAILS';
-        if (headingField) headingField.value = 'Our Mission';
-        if (designWordField) designWordField.value = '';
-        if (typeField) typeField.value = 'Detail Item';
-        setDescriptionValue('Our mission is to provide high-quality, evidence-based consulting services.');
-    });
-}
-
-// Partners Section Preset
-const partnersBtn = document.getElementById('applyPartnersPreset');
-if (partnersBtn) {
-    partnersBtn.addEventListener('click', function () {
-        if (slugField) slugField.value = 'about_us_partners';
-        if (sectionField) sectionField.value = 'ABOUT US DETAILS';
-        if (headingField) headingField.value = 'Trusted by Leading Institutions';
-        if (subHeadingField) subHeadingField.value = '';
-        if (designWordField) designWordField.value = 'Institutions';
-        if (typeField) typeField.value = 'Partners Section';
-        
-        // Description value set kora
-        if (typeof setDescriptionValue === "function") {
-            setDescriptionValue('We work with governments, multilateral development organisations, regulatory bodies, and private sector leaders across the region — building long-term partnerships grounded in trust and results.');
-        }
-        
-        toastr.success('Partners preset applied!');
-    });
-}
-
-        // Sync chevron with Bootstrap collapse state
-        document.querySelectorAll('.preset-group-label').forEach(function (label) {
-            var targetId = label.getAttribute('data-bs-target');
-            var target = document.querySelector(targetId);
-            if (!target) return;
-            target.addEventListener('show.bs.collapse', function () {
-                label.setAttribute('aria-expanded', 'true');
-            });
-            target.addEventListener('hide.bs.collapse', function () {
-                label.setAttribute('aria-expanded', 'false');
-            });
+    function showFieldGuide(slug) {
+        const guide = fieldGuides[slug];
+        if (!guide || !guideWrapper || !guideContent) return;
+        let html = `<div class="fw-semibold mb-2"><i class="fas fa-lightbulb me-1"></i> ${guide.title} — Field Guide</div>`;
+        html += '<table class="field-guide-table w-100">';
+        guide.rows.forEach(function(row) {
+            html += `<tr><td><i class="fas fa-arrow-right text-info me-1" style="font-size:11px;"></i>${row[0]}</td><td class="text-muted">→ ${row[1]}</td></tr>`;
         });
+        html += '</table>';
+        guideContent.innerHTML = html;
+        guideWrapper.style.display = '';
+    }
 
-        // Highlight active preset button
-        document.querySelectorAll('.preset-btn').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                document.querySelectorAll('.preset-btn').forEach(function (b) {
-                    b.classList.remove('active');
-                });
-                btn.classList.add('active');
-            });
+    function hideFieldGuide() {
+        if (guideWrapper) guideWrapper.style.display = 'none';
+    }
+
+    /* ============================================================
+       PRESET DATA
+    ============================================================ */
+    const presets = {
+        'home_about_trace': {
+            slug: 'home_about_trace', section: 'ABOUT GIET',
+            heading: 'Transforming Challenges Into Strategic Opportunities',
+            sub_heading: 'Learn About Us', design_word: 'Opportunities', type: 'About Section',
+            description: 'GIET is a non-political, non-profit organization focused on governance reform, economic transformation, and evidence-based policy advocacy in Bangladesh.',
+        },
+        'home_about_trace_one': {
+            slug: 'home_about_trace_one', section: 'HOME ABOUT ITEM',
+            heading: 'Multi-Sector Expertise & Wide Reach',
+            sub_heading: '', design_word: '', type: 'List Item',
+            description: 'Deep knowledge across governance, economics, and digital development — backed by global networks and local expertise.',
+        },
+        'home_about_trace_two': {
+            slug: 'home_about_trace_two', section: 'HOME ABOUT ITEM',
+            heading: 'Evidence-Based Policy to Practice',
+            sub_heading: '', design_word: '', type: 'List Item',
+            description: 'Rigorous, scalable methodologies that translate research evidence into actionable and implementable policy reforms.',
+        },
+        'home_about_trace_three': {
+            slug: 'home_about_trace_three', section: 'HOME ABOUT ITEM',
+            heading: 'Institutional Reform & Innovation',
+            sub_heading: '', design_word: '', type: 'List Item',
+            description: 'Combining structured change management with innovative, context-driven solutions for lasting institutional impact.',
+        },
+        'home_focus_areas': {
+            slug: 'home_focus_areas', section: 'Our Focus Areas',
+            heading: 'Where We Direct Our Work',
+            sub_heading: 'See All', design_word: 'See All Focus Areas', type: 'Section Header',
+            description: '',
+        },
+        'home_mission': {
+            slug: 'home_mission', section: 'Our Mission',
+            heading: 'Evidence-based reform is not optional — it is the only path to governance that truly serves citizens.',
+            sub_heading: 'Dr. Rafiqul Islam, Founding Director, GIET',
+            design_word: 'Transparent Governance|Economic Competitiveness|Institutional Reform|Digital Transformation|Social Inclusion|Evidence-Based Policy',
+            type: 'Mission Section',
+            description: 'GIET is a non-political, non-profit organization dedicated to promoting transparent, accountable governance and sustainable economic transformation in Bangladesh. We perform in-depth research, encourage multi-stakeholder dialogue, and convert evidence into practical policy recommendations.',
+        },
+        'home_projects': {
+            slug: 'home_projects', section: 'Our Projects',
+            heading: 'Work That Creates Impact',
+            sub_heading: 'View All Projects', design_word: '', type: 'Section Header',
+            description: 'GIET delivers governance reform, policy advisory, digital transformation, and research projects across Bangladesh for governments, development institutions, and regulatory bodies.',
+        },
+        'home_partners': {
+            slug: 'home_partners', section: '',
+            heading: 'Our Partners',
+            sub_heading: '', design_word: '', type: 'Partners Section',
+            description: '',
+        },
+        'home_years_of_expertise': {
+            slug: 'home_years_of_expertise', section: 'HOME BADGE',
+            heading: '8+', sub_heading: '', design_word: '', type: 'Badge',
+            description: 'Years of Expertise',
+        },
+        'work_key_focus_areas': {
+            slug: 'work_key_focus_areas', section: 'WHAT WE DO',
+            heading: 'Key Focus Areas',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'services-page': {
+            slug: 'services-page', section: 'WHAT WE DO',
+            heading: 'Areas of Work', sub_heading: '', design_word: 'Areas of Work', type: 'Hero',
+            description: 'GIET works across thematic areas spanning governance reform, economic transformation, digital development, social inclusion, and sustainable development — always grounded in evidence, always oriented toward measurable impact.',
+        },
+        'team-page': {
+            slug: 'team-page', section: 'THE PEOPLE BEHIND THE WORK',
+            heading: 'Experts who drive change.',
+            sub_heading: '', design_word: 'drive change.', type: 'Hero',
+            description: 'GIET brings together a permanent core team of researchers, policy specialists, and development practitioners — supported by a network of domain experts engaged on specific projects.',
+        },
+        'team-leadership': {
+            slug: 'team-leadership', section: 'LEADERSHIP',
+            heading: 'Managing Director', sub_heading: 'MD & CEO', design_word: 'Director', type: 'Section',
+            description: "Leading GIET's vision of practical, high-impact policy research and governance reform.",
+        },
+        'team-core': {
+            slug: 'team-core', section: 'CORE TEAM',
+            heading: 'Our in-house specialists',
+            sub_heading: '', design_word: 'in-house specialists', type: 'Section',
+            description: 'Full-time GIET staff with deep expertise across our thematic areas — the engine that runs every research project.',
+        },
+        'team-experts': {
+            slug: 'team-experts', section: 'OUR EXPERTS',
+            heading: 'The right expert, for the right problem',
+            sub_heading: '', design_word: 'for the right problem', type: 'Section',
+            description: 'GIET works with a network of senior domain experts — academics, former government officials, international specialists — brought in when a project demands specific depth.',
+        },
+        'insights-page': {
+            slug: 'insights-page', section: 'KNOWLEDGE & RESEARCH',
+            heading: 'Ideas that inform policy.',
+            sub_heading: '', design_word: 'inform policy.', type: 'Hero',
+            description: 'Policy briefs, research publications, expert commentary, and video content — GIET\'s full body of published work.',
+        },
+        'resources_hero': {
+            slug: 'resources_hero', section: 'KNOWLEDGE & RESEARCH',
+            heading: 'Resources',
+            sub_heading: '', design_word: '', type: 'Hero',
+            description: 'Policy briefs, issue analyses, expert commentaries, research reports, videos, and podcasts from GIET\'s research team and contributing practitioners.',
+        },
+        'resources_research_cta': {
+            slug: 'resources_research_cta', section: 'Research With Us',
+            heading: 'Interested in Submitting a Research Idea?',
+            sub_heading: 'Submit a Research Idea', design_word: '', type: 'CTA',
+            description: 'GIET welcomes research ideas from government agencies, development partners, universities, and civil society organizations. We provide funding, mentorship, and publication support.',
+        },
+        'projects-page': {
+            slug: 'projects-page', section: 'OUR PROJECTS',
+            heading: 'Work that changes systems.',
+            sub_heading: '', design_word: 'changes systems.', type: 'Hero',
+            description: 'GIET has delivered governance reform, policy advisory, digital transformation, and capacity-building projects across Bangladesh — for governments, development banks, and regulatory bodies.',
+        },
+        'career-heading': {
+            slug: 'career-heading', section: 'CAREER AT GIET',
+            heading: 'Join Our Growing Team',
+            sub_heading: 'View Open Positions', design_word: 'Team', type: 'Hero',
+            description: 'We are looking for curious, driven professionals to help us reshape governance policy, regulatory reform, and economic development in Bangladesh.',
+        },
+        'work-with-us': {
+            slug: 'work-with-us', section: 'WORK WITH US',
+            heading: 'Have a project in mind?',
+            sub_heading: 'Get in Touch', design_word: 'that lasts.', type: 'CTA',
+            description: '',
+        },
+        'contact-page': {
+            slug: 'contact-page', section: 'Contact Us',
+            heading: 'Get In Touch',
+            sub_heading: '', design_word: '', type: 'Hero',
+            description: "Whether you're interested in collaborating on a project, commissioning research, attending an event, or just learning more about GIET — we'd love to hear from you.",
+        },
+        'contact-faq-section': {
+            slug: 'contact-faq-section', section: 'FAQs',
+            heading: 'Frequently Asked Questions',
+            sub_heading: '', design_word: '', type: 'FAQ Section',
+            description: "Can't find the answer you're looking for? Send us a message using the form above.",
+        },
+        'about_us_header': {
+            slug: 'about_us_header', section: 'ABOUT US',
+            heading: 'Empowering Change through Evidence and Action',
+            sub_heading: '', design_word: 'Evidence', type: 'Hero Section',
+            description: 'We deliver evidence-based policy recommendations and advocacy that help governments design actionable, impactful reforms from the ground up.',
+        },
+        'about_trace': {
+            slug: 'about_trace', section: 'ABOUT GIET',
+            heading: 'A foundation built on research, strategy, and lasting impact.',
+            sub_heading: '', design_word: 'research, strategy,', type: 'About Section',
+            description: '',
+        },
+        'about_us_who_we_are': {
+            slug: 'about_us_who_we_are', section: 'ABOUT US DETAILS',
+            heading: 'Who We Are', sub_heading: '', design_word: '', type: 'Detail Item',
+            description: 'We work at the intersection of research, innovation, and implementation — empowering institutions with data-driven insights and practical policy solutions.',
+        },
+        'about_us_our_mission': {
+            slug: 'about_us_our_mission', section: 'Our Institution',
+            heading: 'Mission, Vision & Goals',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'about_us_mission': {
+            slug: 'about_us_mission', section: 'Mission',
+            heading: '',
+            sub_heading: '', design_word: '', type: 'MVG Card',
+            description: 'To advance transparent, accountable governance and sustainable economic transformation through rigorous research, policy advocacy, and implementation support.',
+        },
+        'about_us_vision': {
+            slug: 'about_us_vision', section: 'Vision',
+            heading: '',
+            sub_heading: '', design_word: '', type: 'MVG Card',
+            description: 'A Bangladesh where institutions are transparent, economies are competitive, and citizens are empowered through evidence-based policy and good governance.',
+        },
+        'about_us_goals': {
+            slug: 'about_us_goals', section: 'Goals',
+            heading: '',
+            sub_heading: '', design_word: '', type: 'MVG Card',
+            description: 'To produce actionable research, influence policy, build institutional capacity, and foster partnerships that drive lasting governance and economic reform in Bangladesh.',
+        },
+        'about_us_we_make_trace_different': {
+            slug: 'about_us_we_make_trace_different', section: 'Our Approach',
+            heading: 'What Sets GIET Apart',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'about_us_insight': {
+            slug: 'about_us_insight', section: 'Approach Card',
+            heading: 'Evidence-Based Research',
+            sub_heading: '', design_word: '', type: 'Approach Card',
+            description: 'We integrate rigorous field research with institutional knowledge to produce policy recommendations grounded in real-world evidence and measurable data.',
+        },
+        'about_us_strategy': {
+            slug: 'about_us_strategy', section: 'Approach Card',
+            heading: 'Multi-Stakeholder Dialogue',
+            sub_heading: '', design_word: '', type: 'Approach Card',
+            description: 'We convene governments, civil society, development partners, and the private sector to build consensus and co-design solutions that reflect diverse perspectives.',
+        },
+        'about_us_impact': {
+            slug: 'about_us_impact', section: 'Approach Card',
+            heading: 'Integrated Implementation Support',
+            sub_heading: '', design_word: '', type: 'Approach Card',
+            description: 'We go beyond advisory — providing on-the-ground implementation support, monitoring, and adaptive management to ensure reforms deliver tangible results.',
+        },
+        'about_us_how_we_work': {
+            slug: 'about_us_how_we_work', section: 'Our Values',
+            heading: 'The Principles That Guide Our Work',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'about_us_industry_wide_network': {
+            slug: 'about_us_industry_wide_network', section: 'Value',
+            heading: 'Integrity',
+            sub_heading: '', design_word: '', type: 'Values Card',
+            description: 'We uphold the highest standards of professional and intellectual honesty. Our research processes, partnerships, and governance practices reflect a commitment to transparency and accountability.',
+        },
+        'about_us_sustainable_approach': {
+            slug: 'about_us_sustainable_approach', section: 'Value',
+            heading: 'Independence',
+            sub_heading: '', design_word: '', type: 'Values Card',
+            description: 'Our analysis is free from political influence, donor pressure, or institutional bias. We are structured to protect the independence of our research conclusions at all times.',
+        },
+        'about_us_tailored_innovation': {
+            slug: 'about_us_tailored_innovation', section: 'Value',
+            heading: 'Inclusion',
+            sub_heading: '', design_word: '', type: 'Values Card',
+            description: 'We believe that sustainable reform must include the voices of women, youth, persons with disabilities, and marginalized communities.',
+        },
+        'about_us_end_to_end_integrated_solutions': {
+            slug: 'about_us_end_to_end_integrated_solutions', section: 'Value',
+            heading: 'Impact',
+            sub_heading: '', design_word: '', type: 'Values Card',
+            description: 'We define success not by publications produced or events held, but by measurable changes in policy, institutional practice, and the lives of citizens we ultimately serve.',
+        },
+        'about_story_template': {
+            slug: 'about_story_1', section: '2021',
+            heading: 'Foundation Established',
+            sub_heading: '', design_word: '', type: 'Story Item',
+            description: 'GIET was incorporated in Dhaka as a non-profit, non-governmental organization by founding members drawn from government, academia, and the development sector.',
+        },
+        'about_us_partners': {
+            slug: 'about_us_partners', section: 'PARTNERS',
+            heading: 'Our Partners',
+            sub_heading: '', design_word: 'Partners', type: 'Partners Section',
+            description: 'We work with governments, multilateral development organisations, regulatory bodies, and private sector leaders across the region — building long-term partnerships grounded in trust and results.',
+        },
+        'projects_portfolio': {
+            slug: 'projects_portfolio', section: 'Project Portfolio',
+            heading: 'Work That Creates Impact',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'projects_impact': {
+            slug: 'projects_impact', section: 'Our Impact',
+            heading: 'Measurable Outcomes Across Our Portfolio',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'projects_stat_1': {
+            slug: 'projects_stat_1', section: 'Projects Delivered',
+            heading: '24+',
+            sub_heading: '', design_word: '', type: 'Stat Card',
+            description: '',
+        },
+        'projects_stat_2': {
+            slug: 'projects_stat_2', section: 'Officials Trained',
+            heading: '6K+',
+            sub_heading: '', design_word: '', type: 'Stat Card',
+            description: '',
+        },
+        'projects_stat_3': {
+            slug: 'projects_stat_3', section: 'Policy Recommendations Adopted',
+            heading: '38',
+            sub_heading: '', design_word: '', type: 'Stat Card',
+            description: '',
+        },
+        'projects_stat_4': {
+            slug: 'projects_stat_4', section: 'Partner Organizations',
+            heading: '12+',
+            sub_heading: '', design_word: '', type: 'Stat Card',
+            description: '',
+        },
+        'projects_work_with_us': {
+            slug: 'projects_work_with_us', section: 'Collaborate',
+            heading: 'Ready to Commission a Project?',
+            sub_heading: 'Get In Touch', design_word: 'About GIET', type: 'CTA',
+            description: 'GIET works with governments, international development organisations, NGOs, and private sector partners. We welcome project proposals and co-design partnerships.',
+        },
+        'project-location-section': {
+            slug: 'project-location-section', section: 'PROJECT DETAILS',
+            heading: 'Project Locations', sub_heading: '', design_word: '', type: 'Section',
+            description: 'Locations where this project has been implemented or delivered.',
+        },
+        'project-phase-section': {
+            slug: 'project-phase-section', section: 'PROJECT DETAILS',
+            heading: 'Project Phases', sub_heading: '', design_word: '', type: 'Section',
+            description: 'Phase-wise implementation milestones and downloadable documents.',
+        },
+        'project-outcome-section': {
+            slug: 'project-outcome-section', section: 'PROJECT DETAILS',
+            heading: 'Key Outcomes', sub_heading: '', design_word: '', type: 'Section',
+            description: 'Measurable results and outcomes delivered through this project.',
+        },
+        'projectdetails_sidebar': {
+            slug: 'projectdetails_sidebar', section: 'Work With Us',
+            heading: '', sub_heading: 'Commission a Similar Project', design_word: '', type: 'Sidebar Widget',
+            description: 'Get in touch and our team will walk you through our solutions.',
+        },
+        'projectdetails_team': {
+            slug: 'projectdetails_team', section: 'Project Team',
+            heading: 'Team Members', sub_heading: '', design_word: 'All Experts', type: 'Section Header',
+            description: '',
+        },
+        'projectdetails_actions': {
+            slug: 'projectdetails_actions', section: '',
+            heading: 'Commission a Similar Project', sub_heading: 'All Projects', design_word: '', type: 'CTA',
+            description: '',
+        },
+        'events_page_header': {
+            slug: 'events_page_header', section: 'EVENTS',
+            heading: 'Events & Dialogues',
+            sub_heading: '', design_word: '', type: 'Hero',
+            description: 'GIET convenes policymakers, development professionals, and civil society through roundtables, policy dialogues, training workshops, and public conferences.',
+        },
+        'events_upcoming': {
+            slug: 'events_upcoming', section: 'Upcoming Events',
+            heading: 'Open Events',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'events_past': {
+            slug: 'events_past', section: 'Archive',
+            heading: 'Past Events',
+            sub_heading: '', design_word: '', type: 'Section Header',
+            description: '',
+        },
+        'events_cta': {
+            slug: 'events_cta', section: 'Partner With Us',
+            heading: 'Interested in Co-hosting an Event?',
+            sub_heading: 'Submit an Event Proposal', design_word: '', type: 'CTA',
+            description: 'GIET welcomes co-hosting proposals from government agencies, development partners, universities, and civil society organizations. We manage logistics, speakers, and documentation.',
+        },
+        'workdetails_overview': {
+            slug: 'workdetails_overview', section: '', type: 'Label',
+            heading: 'Overview', sub_heading: '', design_word: '', description: '',
+        },
+        'workdetails_services_include': {
+            slug: 'workdetails_services_include', section: '', type: 'Label',
+            heading: 'Our Services Include', sub_heading: '', design_word: '', description: '',
+        },
+        'workdetails_solutions': {
+            slug: 'workdetails_solutions', section: '', type: 'Label',
+            heading: 'Products & Solutions', sub_heading: '', design_word: '', description: '',
+        },
+        'workdetails_related_projects': {
+            slug: 'workdetails_related_projects', section: 'Related Projects', type: 'Section Header',
+            heading: 'Work We Have Delivered', sub_heading: 'All Projects', design_word: '', description: '',
+        },
+        'workdetails_experts': {
+            slug: 'workdetails_experts', section: 'Our People', type: 'Section Header',
+            heading: 'Experts in This Area', sub_heading: 'All Experts', design_word: '', description: '',
+        },
+    };
+
+    /* ============================================================
+       APPLY PRESET
+    ============================================================ */
+    function applyPreset(key) {
+        const p = presets[key];
+        if (!p) return;
+        const isEditing = slugField && slugField.readOnly;
+        if (!isEditing) {
+            if (slugField)       slugField.value    = p.slug;
+            if (sectionField)    sectionField.value = p.section;
+        }
+        if (headingField)    headingField.value    = p.heading;
+        if (subHeadingField) subHeadingField.value = p.sub_heading;
+        if (designWordField) designWordField.value = p.design_word;
+        if (typeField)       typeField.value       = p.type;
+        setDescriptionValue(p.description);
+        showFieldGuide(p.slug);
+    }
+
+    /* ============================================================
+       PRESET BUTTONS
+    ============================================================ */
+    document.querySelectorAll('.preset-btn[data-preset]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyPreset(btn.dataset.preset);
         });
+    });
+
+    /* ============================================================
+       AUTO-SHOW GUIDE ON PAGE LOAD (edit mode)
+    ============================================================ */
+    if (slugField && slugField.value) {
+        showFieldGuide(slugField.value);
+    }
+
+    /* ============================================================
+       COLLAPSE CHEVRON SYNC
+    ============================================================ */
+    document.querySelectorAll('.preset-group-label').forEach(function (label) {
+        const targetId = label.getAttribute('data-bs-target');
+        const target   = document.querySelector(targetId);
+        if (!target) return;
+        target.addEventListener('show.bs.collapse',  () => label.setAttribute('aria-expanded', 'true'));
+        target.addEventListener('hide.bs.collapse',  () => label.setAttribute('aria-expanded', 'false'));
+    });
 
 });
 </script>

@@ -5,12 +5,12 @@
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-sm-6">
-                <h3 class="mb-0">Insight Types Manager</h3>
+                <h3 class="mb-0">Resource Types Manager</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Insight Types</li>
+                    <li class="breadcrumb-item active" aria-current="page">Resource Types</li>
                 </ol>
             </div>
         </div>
@@ -24,7 +24,7 @@
                 <div class="card card-outline card-primary">
                     <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center gap-2">
-                            <h3 class="card-title mb-0">All Insight Types ({{ $insights->total() }})</h3>
+                            <h3 class="card-title mb-0">All Resource Types ({{ $insights->total() }})</h3>
                             <div class="d-flex gap-2 align-items-center">
                                 <input type="text" id="typeSearch" class="form-control form-control-sm" placeholder="Search by type or category..." style="width: 240px;">
                                 <a href="{{ route('admin.insight-types.create') }}" class="btn btn-primary btn-sm">

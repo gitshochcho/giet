@@ -22,8 +22,10 @@ class SettingsController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'logo_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
-            'logo_text' => ['required', 'string', 'max:255'],
+            'logo_image'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'favicon'      => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg,ico', 'max:512'],
+            'footer_icon'  => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'logo_text' => ['nullable', 'string', 'max:255'],
             'logo_tagline' => ['nullable', 'string', 'max:255'],
             'social_links' => ['nullable', 'array'],
             'social_links.*.title' => ['nullable', 'string', 'max:255'],
@@ -34,7 +36,16 @@ class SettingsController extends Controller
             'footer_contact_mobile' => ['nullable', 'string', 'max:255'],
             'footer_contact_email' => ['nullable', 'email', 'max:255'],
             'footer_contact_location' => ['nullable', 'string'],
-            'footer_description' => ['nullable', 'string'],
+            'footer_description'  => ['nullable', 'string'],
+            'show_about_story'    => ['nullable', 'boolean'],
+            'project_client_icon'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'project_duration_icon'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'project_location_icon'     => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'project_sector_icon'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'project_status_icon'       => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'event_date_icon'           => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'event_venue_icon'          => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
+            'event_registration_icon'   => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
         ]);
 
         $setting = Setting::with('media')->first() ?? new Setting();
@@ -63,8 +74,8 @@ class SettingsController extends Controller
             }
 
             $preparedSocialLinks[] = [
-                'title' => $title,
-                'link' => $link,
+                'title'     => $title,
+                'link'      => $link,
                 'media_key' => $mediaKey,
             ];
 
@@ -76,7 +87,7 @@ class SettingsController extends Controller
             }
         }
 
-        DB::transaction(function () use ($setting, $validated, $preparedSocialLinks) {
+        DB::transaction(function () use ($setting, $validated, $preparedSocialLinks, $request) {
             $setting->fill([
                 'logo_text' => $validated['logo_text'],
                 'logo_tagline' => $validated['logo_tagline'] ?? null,
@@ -85,6 +96,7 @@ class SettingsController extends Controller
                 'footer_contact_email' => $validated['footer_contact_email'] ?? null,
                 'footer_contact_location' => $validated['footer_contact_location'] ?? null,
                 'footer_description' => $validated['footer_description'] ?? null,
+                'show_about_story'   => $request->boolean('show_about_story'),
             ]);
             $setting->save();
         });
@@ -92,6 +104,23 @@ class SettingsController extends Controller
         if ($request->hasFile('logo_image')) {
             $setting->clearMediaCollection('logo_image');
             $setting->addMedia($request->file('logo_image'))->toMediaCollection('logo_image');
+        }
+
+        if ($request->hasFile('favicon')) {
+            $setting->clearMediaCollection('favicon');
+            $setting->addMedia($request->file('favicon'))->toMediaCollection('favicon');
+        }
+
+        if ($request->hasFile('footer_icon')) {
+            $setting->clearMediaCollection('footer_icon');
+            $setting->addMedia($request->file('footer_icon'))->toMediaCollection('footer_icon');
+        }
+
+        foreach (['project_client_icon', 'project_duration_icon', 'project_location_icon', 'project_sector_icon', 'project_status_icon', 'event_date_icon', 'event_venue_icon', 'event_registration_icon'] as $col) {
+            if ($request->hasFile($col)) {
+                $setting->clearMediaCollection($col);
+                $setting->addMedia($request->file($col))->toMediaCollection($col);
+            }
         }
 
         $setting->refresh();

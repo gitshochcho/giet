@@ -1,574 +1,368 @@
-@extends('frontend.layout.app')
-
+﻿@extends('frontend.layout.app')
 
 @push('custome-css')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous"><!-- jsvectormap -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 <style>
-.custom-container-inner,
-.custom-container {
-    max-width: 1072px;
-    margin: 0 auto;
-    width: 100%;
-    padding: 0 15px;
+/*
+ * style.css  : a{color:white}  h1-h6{font-family:Poppins}  — unlayered, beats Tailwind @layer
+ * Bootstrap  : h2{font-weight:500; margin-bottom:.5rem; line-height:1.2} — unlayered, beats Tailwind @layer
+ *
+ * Scoped rules below use class+element specificity (0,1,1) which beats
+ * bare element rules (0,0,1) from both style.css and Bootstrap, without !important.
+ */
+
+/* ── Main content section ── */
+.pd-body h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 36px;
+    color: #0F172A;
 }
+.pd-body h2.mb-\[18px\] { margin-bottom: 18px; }
+.pd-body h2.mb-\[16px\] { margin-bottom: 16px; }
+.pd-body h2.mb-\[20px\] { margin-bottom: 20px; }
 
-.breadcrumb-container {
-    background: #F8F9FB;
-    min-height: 43px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #E5E9ED;
+/* ── Team section ── */
+.pd-team h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 38px;
+    color: #0F172A;
+    margin: 0;
 }
-
-.breadcrumb-links { font-size: 13px; color: #64748B; }
-.breadcrumb-links a { color: #64748B; text-decoration: none; }
-.breadcrumb-links .sep { margin: 0 10px; color: #CBD5E1; }
-.breadcrumb-links .active { color: #01354B; font-weight: 600; }
-
-.hero-details-section {
-    position: relative;
-    background-color: #01354B;
-    background-size: cover;
-    background-position: center;
-    padding: 80px 0 60px;
-    color: #fff;
-    min-height: 520px;
-}
-
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(1, 53, 75, 0.55);
-    z-index: 1;
-}
-
-.z-index-2 { position: relative; z-index: 2; }
-.back-link { font-size: 14px; color: rgba(255,255,255,0.75); }
-.back-link:hover { color: #4CC3C3; }
-
-.badge-custom {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 6px 12px;
-    border-radius: 4px;
-    letter-spacing: .5px;
-}
-
-.badge-teal { background: #008080; color: #fff; }
-.badge-outline-green {
-    background: rgba(76,195,195,.1);
-    border: 1px solid #4CC3C3;
-    color: #4CC3C3;
-}
-
-.sub-heading { font-size: 32px; font-weight: 700; color: #fff; }
-.main-heading { font-size: 56px; font-weight: 700; line-height: 1.1; }
-
-.project-meta-footer { border-top: 1px solid rgba(255,255,255,.15); }
-.meta-item {
-    font-size: 14px;
-    color: rgba(255,255,255,.86);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.section-title-accent {
-    font-size: 20px;
-    font-weight: 700;
-    color: #01354B;
-    position: relative;
-    padding-left: 15px;
-}
-
-.section-title-accent::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 4px;
-    width: 3px;
-    height: 20px;
-    background: #F47735;
-}
-
-.project-gallery-wrapper { display: flex; gap: 12px; }
-.col-gallery-main { width: 442px; max-width: 100%; }
-.col-gallery-side { width: 221px; max-width: 100%; }
-.gap-custom { gap: 12px; }
-
-.gallery-img-main,
-.gallery-img-side {
-    width: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-}
-
-.gallery-img-main { height: 372px; }
-.gallery-img-side { height: 180px; }
-
-.overview-content p,
-.outcomes-list li {
-    font-size: 15px;
-    line-height: 1.6;
-    color: #4B5563;
-}
-
-.outcomes-list li {
-    margin-bottom: 15px;
-    display: flex;
-    align-items: flex-start;
-}
-
-.outcomes-list i { color: #4CC3C3; margin-top: 4px; }
-
-.project-sidebar {
-    gap: 20px;
-    display: flex;
-    flex-direction: column;
-    position: sticky;
-    top: 20px;
-    align-self: flex-start;
-}
-
-.facts-card {
-    border: 1px solid #E5E9ED;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #fff;
-    width: 340px;
-    max-width: 100%;
-}
-
-.facts-header { background: #01354B; padding: 16px 20px; }
-.extra-small { font-size: 11px; }
-.facts-body { padding: 8px 20px 20px; }
-
-.fact-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 12px 0;
-    border-bottom: 1px solid #F1F4F7;
-    font-size: 13px;
-}
-
-.fact-row .label { color: #64748B; }
-.fact-row .value { color: #01354B; font-weight: 600; text-align: right; }
-
-.status-badge {
-    color: #10B981;
-    font-weight: 600;
-    font-size: 13px;
-}
-
-.status-badge .dot {
-    height: 8px;
-    width: 8px;
-    background: #10B981;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
-}
-
-.cta-sidebar-dark {
-    width: 340px;
-    max-width: 100%;
-    border-radius: 16px;
-    background: linear-gradient(133.37deg, #01354B 0%, #014D6A 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
-
-.btn-expert-orange {
-    width: 243px;
-    max-width: 100%;
-    height: 41px;
-    background: #F55F1A;
-    color: #fff;
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* "All Experts →" link — style.css a{color:white} makes it invisible on light bg */
+.pd-team a.pd-experts-link {
+    color: #003054;
     text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    transition: .3s;
 }
-
-.btn-expert-orange:hover { background: #d44d15; color: #fff; }
-
-.more-projects-section {
-    width: 100%;
-    background: #F8F9FB;
-    border-top: 1px solid #E5E9ED;
-    padding: 72px 0;
+.pd-team a.pd-experts-link:hover {
+    color: #003054;
+    opacity: 0.7;
 }
-
-.custom-container-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 60px;
-}
-
-.section-title { font-size: 24px; font-weight: 700; color: #01354B; }
-.view-all-link { font-size: 14px; font-weight: 600; color: #008080; }
-
-.project-mini-card {
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    height: 100%;
-    border: 1px solid #E5E9ED;
-    carsor: pointer;
-    transition: .3s;
-}
-
-.project-mini-card:hover {
-    border-color: #4CC3C3;
-}
-
-.card-img-wrapper { height: 180px; overflow: hidden; }
-.card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-.card-content { padding: 20px; }
-.client-name { font-size: 11px; font-weight: 700; color: #008080; display: block; margin-bottom: 8px; }
-.project-mini-title { font-size: 15px; font-weight: 700; color: #01354B; line-height: 1.4; margin-bottom: 12px; }
-.project-mini-meta { font-size: 12px; color: #64748B; margin-bottom: 0; }
-
-@media (max-width: 991px) {
-    .main-heading { font-size: 36px; }
-    .hero-details-section { padding-top: 60px; }
-    .project-sidebar { position: static; }
-}
-
-@media (max-width: 768px) {
-    .custom-container-content { padding: 0 20px; }
-    .project-gallery-wrapper { flex-direction: column; width: 100% !important; }
-    .col-gallery-main, .col-gallery-side { width: 100%; }
-    .gallery-img-main, .gallery-img-side { height: auto; }
-    .more-projects-section { padding: 40px 0; }
+/* Team card <a> wrappers */
+.pd-team a.pd-team-card {
+    text-decoration: none;
 }
 </style>
 @endpush
 
-
 @section('content')
-@php
-    $heroImage = $project->heroImageUrl() ?? '';
-    $firstService = $project->services->first();
-    $heroBadge = $firstService?->section ?? $firstService?->service_name ?? $project->project_standard ?? '';
-    $galleryImages = $project->galleryImageUrls();
-    $galleryCount = count($galleryImages);
-    $galleryMain    = $galleryImages[0]['url'] ?? null;
-    $gallerySideOne = $galleryImages[1]['url'] ?? null;
-    $gallerySideTwo = $galleryImages[2]['url'] ?? null;
-    $locationSummary = $project->locations->first()?->location;
-    $locationSummary = $locationSummary ? strip_tags($locationSummary) : 'Location available inside the project brief';
-    $serviceNames = $project->services->map(fn($s) => $s->section ?: $s->service_name)->filter()->values();
+<!-- ========================================================================= -->
+<!-- 1. HERO SECTION -->
+<!-- ========================================================================= -->
+<section class="w-full min-h-[400px] md:h-[342.78px] relative select-none flex flex-col justify-between overflow-hidden text-white px-4 md:px-8 bg-cover bg-center"
+         style="background-image: linear-gradient(0deg, rgba(0,20,48,0.96) 0%, rgba(0,20,48,0.65) 55%, rgba(0,20,48,0.15) 100%), url('{{ $project->heroImageUrl() ?? asset('images/Governance Innovation.png') }}');">
 
-    $locationSectionContent = contentBlock('project-location-section');
-    $phaseSectionContent = contentBlock('project-phase-section');
-    $outcomeSectionContent = contentBlock('project-outcome-section');
+  <div class="absolute -top-[100px] -right-[100px] pointer-events-none bg-[rgba(24,144,156,0.07)] w-[400px] h-[400px] rounded-full z-0"></div>
 
-    $locationHeading     = $locationSectionContent?->heading     ?? '';
-    $locationDescription = $locationSectionContent?->description ?? '';
-    $phaseHeading        = $phaseSectionContent?->heading        ?? '';
-    $phaseDescription    = $phaseSectionContent?->description    ?? '';
-    $outcomeHeading      = $outcomeSectionContent?->heading      ?? '';
-    $outcomeDescription  = $outcomeSectionContent?->description  ?? '';
+  <div class="w-full max-w-[1204px] mx-auto pt-[100px] pb-[32px] md:pt-0 md:pb-[48px] mt-auto flex flex-col justify-end items-start text-left gap-[14px] z-10 relative">
 
-    $projectWorkWithUsControl = contentBlock('projects-work-with-us');
-    $showWorkWithUs = ! in_array(
-        strtolower(trim((string) ($projectWorkWithUsControl?->type ?? 'show'))),
-        ['hide', '0', 'false', 'off'],
-        true
-    );
-@endphp
-
-<nav class="breadcrumb-container">
-    <div class="custom-container-inner">
-        <div class="breadcrumb-links">
-            <a href="{{ route('home') }}">Home</a>
-            <span class="sep">›</span>
-            <a href="/projects">Projects</a>
-            <span class="sep">›</span>
-            <span class="active">{{ $project->project_title }}</span>
+    <div class="w-full flex justify-between items-start">
+        <div style="font-family:'Inter',sans-serif;font-size:12px;line-height:19.8px;"
+             class="text-[#FFFFFF]/[0.45] tracking-normal flex items-center gap-1.5">
+            <a href="{{ url('/') }}" class="hover:text-white transition-colors duration-150" style="color:rgba(255,255,255,0.45);">Home</a>
+            <span class="text-white/20">/</span>
+            <a href="{{ route('projects') }}" class="hover:text-white transition-colors duration-150" style="color:rgba(255,255,255,0.45);">Projects</a>
+            <span class="text-white/20">/</span>
+            <span class="text-[#FFFFFF]/[0.30]">{{ Str::limit($project->project_title, 50) }}</span>
         </div>
     </div>
-</nav>
 
-<section class="hero-details-section" style="background-image: url('{{ $heroImage }}');">
-    <div class="hero-overlay"></div>
-    
-    <div class="custom-container-inner position-relative z-index-2">
-        <a href="{{ route('projects') }}" class="back-link mb-5 d-inline-block text-decoration-none">
-            <i class="fas fa-arrow-left me-2"></i> Back to All Projects
-        </a>
-
-        <div class="d-flex gap-2 mb-4">
-            <span class="badge-custom badge-teal">{{ $heroBadge }}</span>
-            <span class="badge-custom badge-outline-green"><i class="fas fa-check me-1"></i> {{ $project->project_status }}</span>
-        </div>
-
-        <div class="project-title-wrapper">
-            <h2 class="sub-heading mb-0">{{ $project->project_standard ?? '' }}</h2>
-            <h1 class="main-heading">{{ $project->project_title }}</h1>
-        </div>
-
-        <div class="client-meta mb-5">
-            <p class="mb-0 text-white-50">Client: <span class="text-white fw-medium">{{ abbreviateClientName($project->client) ?? '' }}</span></p>
-        </div>
-
-        <div class="project-meta-footer d-flex flex-wrap gap-4 pt-4 border-top border-white-5">
-            <div class="meta-item">
-                <i class="far fa-calendar-alt"></i> {{ $project->durationLabel() ?? '' }}
-            </div>
-            <div class="meta-item">
-                <i class="fas fa-map-marker-alt"></i> {{ $locationSummary }}
-            </div>
-            <div class="meta-item">
-                <i class="fas fa-briefcase"></i> {{ $serviceNames->isNotEmpty() ? $serviceNames->take(2)->join(' / ') : 'Project Services' }}
-            </div>
-            <div class="meta-item">
-                <i class="fas fa-layer-group"></i> {{ $project->phaseDetails->count() }} Deliverable Phases
-            </div>
-        </div>
+    <!-- STATUS BADGE -->
+    <div class="flex items-center">
+        @php
+            $statusColor = match(strtolower($project->project_status)) {
+                'completed'  => ['bg' => '#0E606B', 'border' => '#00A896', 'text' => '#00A896', 'dot' => '#00C49F'],
+                'ongoing'    => ['bg' => '#1d4ed8', 'border' => '#60a5fa', 'text' => '#93c5fd', 'dot' => '#60a5fa'],
+                'planned'    => ['bg' => '#92400e', 'border' => '#fbbf24', 'text' => '#fcd34d', 'dot' => '#fbbf24'],
+                'on hold'    => ['bg' => '#7f1d1d', 'border' => '#f87171', 'text' => '#fca5a5', 'dot' => '#f87171'],
+                default      => ['bg' => '#0E606B', 'border' => '#00A896', 'text' => '#00A896', 'dot' => '#00C49F'],
+            };
+        @endphp
+        <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11px; line-height: 100%; background-color: {{ $statusColor['bg'] }}1a; border-color: {{ $statusColor['border'] }}; color: {{ $statusColor['text'] }};"
+              class="inline-flex items-center gap-1.5 px-[12px] py-[6px] rounded-full border">
+            <span class="w-1.5 h-1.5 rounded-full" style="background-color: {{ $statusColor['dot'] }};"></span>
+            {{ $project->project_status }}
+        </span>
     </div>
+
+    <!-- MAIN TITLE -->
+    <h1 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: clamp(26px,4vw,42px); line-height: 1.2; letter-spacing: -0.5px;"
+        class="text-white max-w-[920px] drop-shadow-sm m-0">
+        {{ $project->project_title }}
+    </h1>
+
+    <!-- FOOTER META ROW -->
+    @if($project->client || $project->partner)
+    <div style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 13px; line-height: 22px;"
+         class="text-[#FFFFFF]/[0.60] flex flex-wrap items-center gap-1.5">
+        @if($project->client)
+        <span>Client: <strong class="text-white font-semibold">{{ cleanText($project->client) }}</strong></span>
+        @endif
+        @if($project->client && $project->partner)
+        <span class="text-white/30 mx-1">·</span>
+        @endif
+        @if($project->partner)
+        <span>Partner: <strong class="text-white font-semibold">{{ cleanText($project->partner) }}</strong></span>
+        @endif
+    </div>
+    @endif
+
+  </div>
 </section>
 
-<section class="project-details-body py-5">
-    <div class="custom-container">
-        <div class="row gx-lg-5">
-            <div class="col-lg-8">
-                <div class="overview-content mb-5">
-                    <h3 class="section-title-accent">Project Overview</h3>
-                    <p class="mt-4">{{ stripPTags($project->overview) ?? '' }}</p>
-                </div>
+<!-- PROJECT META BAR SECTION -->
+<section class="w-full bg-[#003054] border-b border-[#FFFFFF14] py-8 md:h-[115px] md:py-0 flex items-center justify-center px-4 md:px-8 select-none">
 
-                {{-- <div class="mb-5">
-                    <h3 class="section-title-accent">{{ $locationHeading }}</h3>
-                    @if(!empty($locationDescription))
-                        <p class="mt-3">{{ strip_tags($locationDescription) }}</p>
-                    @endif
-                    <div class="row g-3 mt-4">
-                        @forelse($project->locations as $location)
-                            <div class="col-md-6">
-                                <div class="border rounded-3 bg-white p-4 h-100 shadow-sm">
-                                    {!! nl2br(e(strip_tags($location->location))) !!}
-                                </div>
-                            </div>
-                        @empty
-                            <div class="col-12">
-                                <div class="border rounded-3 bg-white p-4 text-muted">
-                                    No project locations have been added yet.
-                                </div>
-                            </div>
-                        @endforelse
-                    </div>
-                </div> --}}
+    <div class="w-full max-w-[1204px] mx-auto grid grid-cols-2 md:grid-cols-5 h-full items-center gap-y-4 md:gap-y-0">
 
-                @if($galleryCount >= 1)
-                <div class="mb-5 project-gallery-wrapper" style="width:676px;max-width:100%;">
-
-                    @if($galleryCount === 1)
-                    {{-- 1 image: full width --}}
-                    <img src="{{ $galleryMain }}"
-                         class="gallery-img-main"
-                         style="width:100%;height:372px;object-fit:cover;border-radius:12px;"
-                         alt="{{ $project->project_title }}">
-
-                    @elseif($galleryCount === 2)
-                    {{-- 2 images: direct flex children so the outer gap:12px splits them evenly --}}
-                    <img src="{{ $galleryMain }}"
-                         style="flex:1;min-width:0;height:372px;object-fit:cover;border-radius:12px;"
-                         alt="{{ $project->project_title }}">
-                    <img src="{{ $gallerySideOne }}"
-                         style="flex:1;min-width:0;height:372px;object-fit:cover;border-radius:12px;"
-                         alt="{{ $project->project_title }}">
-
+        <!-- ITEM 1: CLIENT -->
+        <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
+            <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
+                <img src="{{ $siteSettings?->projectClientIconUrl() ?? asset('icons/SVG (50).png') }}" alt="Client Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
+            </div>
+            <div class="text-left flex flex-col gap-[4px]">
+                <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
+                    Client
+                </span>
+                <div class="flex flex-wrap gap-[5px]">
+                    @if($project->client)
+                    <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11.5px;" class="bg-white/10 text-white px-[8px] py-[3px] rounded-[4px]">{{ cleanText($project->client) }}</span>
                     @else
-                    {{-- 3 images: 1 big left + 2 small stacked right --}}
-                    <div class="col-gallery-main">
-                        <img src="{{ $galleryMain }}"
-                             class="img-fluid gallery-img-main"
-                             alt="{{ $project->project_title }}">
-                    </div>
-                    <div class="col-gallery-side">
-                        <div class="d-flex flex-column gap-custom">
-                            <img src="{{ $gallerySideOne }}"
-                                 class="img-fluid gallery-img-side"
-                                 alt="{{ $project->project_title }}">
-                            <img src="{{ $gallerySideTwo }}"
-                                 class="img-fluid gallery-img-side"
-                                 alt="{{ $project->project_title }}">
-                        </div>
-                    </div>
+                    <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11.5px;" class="text-white/40">—</span>
                     @endif
-
-                </div>
-                @endif
-
-                 <div class="mb-5">
-                    <h3 class="section-title-accent">{{ $phaseHeading }}</h3>
-                   
-                    @if(!empty($phaseDescription))
-                        <p class="mt-3">{!! $phaseDescription !!}</p>
-                    @endif
-                    <div class="d-grid gap-3 mt-4">
-                        @forelse($project->phaseDetails as $phase)
-                            <div class="border rounded-3 bg-white p-4 shadow-sm">
-                                <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
-                                    <div class="flex-grow-1">
-                                        <div>{!! $phase->phase_description !!}</div>
-                                    </div>
-                                    @if($phase->attachmentUrl())
-                                        <a href="{{ $phase->attachmentUrl() }}" target="_blank" class="view-link text-decoration-none text-primary">
-                                            PDF Attachment <i class="fas fa-file-pdf"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        @empty
-                            <div class="border rounded-3 bg-white p-4 text-muted">
-                                No phase details have been added yet.
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-
-                <div class="outcomes-content">
-                    <h3 class="section-title-accent">{{ $outcomeHeading }}Key Outcomes</h3>
-                    @if(!empty($outcomeDescription))
-                        <p class="mt-3">{{ strip_tags($outcomeDescription) }}</p>
-                    @endif
-                    <ul class="outcomes-list list-unstyled mt-4">
-                        @forelse($project->outcomes as $outcome)
-                            <li>
-                                @if(!empty($outcome->icon) && str_starts_with($outcome->icon, 'projects/'))
-                                    <img src="{{ Storage::url($outcome->icon) }}"
-                                         alt="outcome icon"
-                                         class="me-2 flex-shrink-0"
-                                         style="width:22px;height:22px;object-fit:contain;margin-top:2px;">
-                                @elseif(!empty($outcome->icon))
-                                    <i class="{{ $outcome->icon }} me-2"></i>
-                                @else
-                                    <i class="fas fa-check-circle me-2"></i>
-                                @endif
-                                <span>{!! nl2br(e(strip_tags($outcome->text))) !!}</span>
-                            </li>
-                        @empty
-                            <li><i class="fas fa-check-circle me-2"></i> No outcomes have been added yet.</li>
-                        @endforelse
-                    </ul>
                 </div>
             </div>
-<aside class="project-sidebar" style="width: 340px;">
-    <div class="facts-card mb-4 shadow-sm">
-        <div class="facts-header">
-            <h6 class="mb-1 fw-bold text-white">Project Facts</h6>
-            <p class="mb-0 extra-small text-white-50">{{ $project->project_standard ?? '' }}{{ $project->project_standard && $project->client ? ' — ' : '' }}{{ abbreviateClientName($project->client) ?? '' }}</p>
         </div>
-        <div class="facts-body">
-            <div class="fact-row">
-                <span class="label">Client</span>
-                <span class="value text-end">{{ abbreviateClientName($project->client) ?? '' }}</span>
+
+        <!-- ITEM 2: DURATION -->
+        <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
+            <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
+                <img src="{{ $siteSettings?->projectDurationIconUrl() ?? asset('icons/SVG (51).png') }}" alt="Duration Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
             </div>
-            @if($project->project_standard)
-            <div class="fact-row">
-                <span class="label">Project Code</span>
-                <span class="value text-end" style="font-family: monospace; font-size: 12px;">{{ $project->project_standard }}</span>
-            </div>
-            @endif
-            <div class="fact-row">
-                <span class="label">Sector</span>
-                <span class="value text-end">{{ $heroBadge }}</span>
-            </div>
-            <div class="fact-row">
-                <span class="label">Standard</span>
-                <span class="value text-end">{{ $project->project_standard ?? '' }}</span>
-            </div>
-            <div class="fact-row">
-                <span class="label">Location</span>
-                <span class="value text-end">{{ \Illuminate\Support\Str::limit($locationSummary, 45) }}</span>
-            </div>
-            <div class="fact-row">
-                <span class="label">Duration</span>
-                <span class="value text-end">{{ $project->durationLabel() ?? '' }}</span>
-            </div>
-            <div class="fact-row border-0">
-                <span class="label">Phases</span>
-                <span class="value text-end">{{ $project->phaseDetails->count() }} Deliverable Phases</span>
-            </div>
-            <div class="status-row pt-3 mt-2 border-top">
-                <span class="label text-muted">Status</span>
-                <span class="status-badge">
-                    <span class="dot"></span> {{ $project->project_status }}
+            <div class="text-left flex flex-col gap-[4px]">
+                <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
+                    Duration
+                </span>
+                <span style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; line-height: 130%;" class="text-white">
+                    @if($project->durationLabel())
+                        {{ $project->durationLabel() }}
+                    @else
+                        <span class="text-white/40">—</span>
+                    @endif
                 </span>
             </div>
         </div>
-    </div>
 
-    <div class="cta-sidebar-dark text-center">
-        <h5 class="fw-bold text-white mb-2">Need accreditation support for your laboratory?</h5>
-        <p class="small text-white-50 mb-4 px-3">Get in touch and our team will walk you through our solutions.</p>
-        
-        <a href="/contact" class="btn-expert-orange">
-            Talk to Our Experts <i class="fas fa-arrow-right ms-2"></i>
-        </a>
+        <!-- ITEM 3: LOCATION -->
+        <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
+            <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
+                <img src="{{ $siteSettings?->projectLocationIconUrl() ?? asset('icons/SVG (52).png') }}" alt="Location Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
+            </div>
+            <div class="text-left flex flex-col gap-[4px]">
+                <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
+                    Location
+                </span>
+                <span style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; line-height: 130%;" class="text-white">
+                    @if($project->locations->isNotEmpty())
+                        {{ cleanText($project->locations->first()->location) }}
+                        @if($project->locations->count() > 1)
+                        <br><span style="font-weight: 500;" class="text-white/70 text-[13px]">+ {{ $project->locations->count() - 1 }} more</span>
+                        @endif
+                    @else
+                        <span class="text-white/40">—</span>
+                    @endif
+                </span>
+            </div>
+        </div>
+
+        <!-- ITEM 4: SECTOR -->
+        <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px] border-r border-white/[0.08]">
+            <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
+                <img src="{{ $siteSettings?->projectSectorIconUrl() ?? asset('icons/SVG (53).png') }}" alt="Sector Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
+            </div>
+            <div class="text-left flex flex-col gap-[4px]">
+                <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
+                    Sector
+                </span>
+                <div class="flex flex-wrap gap-[5px]">
+                    @forelse($project->services->take(2) as $svc)
+                    <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11.5px;" class="bg-white/10 text-white px-[8px] py-[3px] rounded-[4px]">{{ $svc->service_name }}</span>
+                    @empty
+                    <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11.5px;" class="text-white/40">—</span>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        <!-- ITEM 5: STATUS -->
+        <div class="h-full pt-[32px] pb-[32px] pl-[20px] pr-[16px] flex items-start gap-[14px]">
+            <div class="bg-[rgba(24,144,156,0.12)] w-[44px] h-[44px] rounded-[8px] flex items-center justify-center shrink-0 border border-white/[0.05] overflow-hidden mt-[12px]">
+                <img src="{{ $siteSettings?->projectStatusIconUrl() ?? asset('icons/SVG (54).png') }}" alt="Status Icon" class="w-[20px] h-[20px] object-contain" loading="lazy" decoding="async">
+            </div>
+            <div class="text-left flex flex-col gap-[4px]">
+                <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 100%; letter-spacing: 0.8px;" class="text-white/45 uppercase">
+                    Status
+                </span>
+                <span style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; line-height: 130%;" class="text-[#00C49F] flex flex-col gap-0.5">
+                    <span class="flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#00C49F]"></span> {{ $project->project_status }}
+                    </span>
+                    @if($project->end_date)
+                    <span style="font-weight: 500;" class="text-white/70 text-[13px] pl-3.5">{{ $project->end_date->format('F Y') }}</span>
+                    @endif
+                </span>
+            </div>
+        </div>
+
     </div>
-</aside>
 </section>
 
-<section class="more-projects-section">
-    <div class="custom-container-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="section-title mb-0">More Projects</h2>
-            <a href="/projects" class="view-all-link text-decoration-none">
-                View all projects <i class="fas fa-arrow-right ms-1"></i>
+<!-- MAIN BODY SECTION -->
+<section class="pd-body w-full py-[48px] md:py-[72px] px-4 md:px-8 bg-white select-none flex items-start justify-center">
+
+    <div class="w-full max-w-[1204px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_360px] gap-[40px] md:gap-[48px] items-start">
+
+        <div class="w-full flex flex-col text-left">
+
+            <!-- PROJECT OVERVIEW -->
+            <h2 class="font-['Newsreader'] font-extrabold text-[26px] leading-[36px] text-[#0F172A] mb-[18px]">
+                Project Overview
+            </h2>
+            <div class="font-['Newsreader'] font-normal text-[14.5px] leading-[24px] text-[#334155] space-y-[16px] mb-[32px]">
+                @if($project->overview)
+                    {!! $project->overview !!}
+                @else
+                <p class="font-['Newsreader'] text-[#94A3B8]">No overview available.</p>
+                @endif
+            </div>
+
+            <!-- OUTCOMES & IMPACT -->
+            @if($project->outcomes->isNotEmpty())
+            <h2 class="font-['Newsreader'] font-extrabold text-[26px] leading-[36px] text-[#0F172A] mb-[20px]">
+                Outcomes & Impact
+            </h2>
+            <ul class="space-y-[14px] mb-[44px]">
+                @foreach($project->outcomes as $outcome)
+                <li class="flex items-start gap-[10px]">
+                    <span class="w-[6px] h-[6px] rounded-full bg-[#0E606B] mt-[9px] shrink-0"></span>
+                    <p class="font-['Newsreader'] font-normal text-[14px] leading-[22px] text-[#334155]">
+                        {{ cleanText($outcome->text) }}
+                    </p>
+                </li>
+                @endforeach
+            </ul>
+            @endif
+
+            <!-- DELIVERABLES -->
+            @if($project->phaseDetails->isNotEmpty())
+            <h2 class="font-['Newsreader'] font-extrabold text-[26px] leading-[36px] text-[#0F172A] mt-20px mb-[20px]">
+                Deliverables
+            </h2>
+            <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-[12px] mb-[48px]">
+                @foreach($project->phaseDetails as $phase)
+                <div class="w-full bg-[#F7F9FB] border border-[#E4EAF0] rounded-[10px] p-[14px] flex items-center gap-[10px] hover:bg-slate-50 transition-colors text-left">
+                    <div class="w-[32px] h-[32px] bg-[#E8F6F7] rounded-[6px] flex items-center justify-center shrink-0 overflow-hidden">
+                        <img src="{{ $phase->iconUrl() ?? asset('icons/deliverable-icon.svg') }}" alt="Icon" class="w-[16px] h-[16px] object-contain" loading="lazy" decoding="async">
+                    </div>
+                    <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 12.5px; line-height: 16px;" class="text-[#1E293B] line-clamp-2">
+                        {{ cleanText($phase->phase_description) }}
+                    </span>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            <!-- ACTION BUTTONS -->
+            <div class="flex flex-col md:flex-row items-stretch md:items-center gap-[12px] pt-[10px] border-t border-gray-100">
+                <a href="{{ route('contact') }}"
+                        style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;background:#A80C18;color:#fff;padding:13px 24px 16px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background 0.15s;"
+                        onmouseover="this.style.background='#8e0a13';" onmouseout="this.style.background='#A80C18';">
+                    {{ $pdActions?->heading ?: 'Contact Us' }} <span style="font-size:14px;">→</span>
+                </a>
+
+                <a href="{{ route('projects') }}"
+                        style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;text-decoration:none;background:#fff;color:#003054;border:2px solid #003054;padding:11px 24px 14px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:background 0.15s;"
+                        onmouseover="this.style.background='#f1f5f9';" onmouseout="this.style.background='#fff';">
+                    <span style="font-size:14px;">←</span> {{ $pdActions?->sub_heading ?: 'View All Projects' }}
+                </a>
+            </div>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="w-full md:w-[360px] flex flex-col gap-[20px] md:sticky md:top-[112px]">
+
+            <div class="w-full bg-[#00203F] text-white p-[24px] text-left flex flex-col gap-[14px]">
+                <div class="flex flex-col gap-[6px]">
+                    <span class="font-['Newsreader'] font-bold text-[10px] tracking-[1px] uppercase text-[#02D9EF]">
+                        {{ $pdSidebar?->section }}
+                    </span>
+                    <p class="font-['Newsreader'] text-white/85" style="font-family: 'Newsreader',serif; font-weight: 400; font-size: 13px; line-height: 19px;">
+                        {{ cleanText($pdSidebar?->description) }}
+                    </p>
+                </div>
+                <a href="{{ route('contact') }}" style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px; text-decoration:none;"
+                   class="w-full bg-[#A80C18] text-white py-[11px] rounded-[4px] hover:bg-[#8e0a13] transition-colors flex items-center justify-center gap-1.5">
+                    {{ $pdSidebar?->sub_heading }} <span class="text-[12px]">→</span>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+
+<!-- TEAM SECTION -->
+@if($project->teams->isNotEmpty())
+<section class="pd-team w-full py-[56px] md:py-[72px] px-4 md:px-8 bg-[#F7F9FB] select-none flex items-center justify-center">
+    <div class="w-full max-w-[1204px] mx-auto px-0 md:px-0 flex flex-col gap-[36px]">
+
+        <div class="w-full flex justify-between items-end">
+            <div class="text-left">
+                <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11px;letter-spacing:1.76px;" class="text-[#0E606B] uppercase block mb-[6px]">{{ $pdTeam?->section }}</span>
+                <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:32px;line-height:38px;" class="text-[#0F172A]">{{ $pdTeam?->heading }}</h2>
+            </div>
+            <a href="{{ route('team') }}" style="font-family:'Inter',sans-serif;font-weight:600;font-size:13px;" class="pd-experts-link text-[#003054] border-b-2 border-[#003054] pb-[3px] hover:opacity-70 transition-opacity">
+                {{ $pdTeam?->sub_heading }} →
             </a>
         </div>
 
-        <div class="row g-4">
-            @forelse($relatedProjects as $item)
-                @php
-                    $itemImage     = $item->heroImageUrl() ?? '';
-                    $itemSvc       = $item->services->first();
-                    $itemSector    = $itemSvc?->section ?? $itemSvc?->service_name ?? $item->project_standard ?? '';
-                    $itemYear      = $item->start_date?->format('Y');
-                    $itemYearEnd   = $item->end_date?->format('Y');
-                    $itemYearLabel = $itemYear && $itemYearEnd ? $itemYear . '–' . $itemYearEnd : ($itemYear ?? $itemYearEnd ?? '');
-                @endphp
-                <div class="col-lg-4 col-md-6">
-                    <a href="{{ route('projectdetails', $item) }}" class="text-decoration-none">
-                        <div class="project-mini-card">
-                            <div class="card-img-wrapper">
-                                <img src="{{ $itemImage }}" alt="{{ $item->project_title }}" class="img-fluid">
-                            </div>
-                            <div class="card-content">
-                                <span class="client-name text-uppercase">{{ $item->client ?? '' }}</span>
-                                <h4 class="project-mini-title">{{ $item->project_title }}</h4>
-                                <p class="project-mini-meta">{{ $itemSector }} · {{ $itemYearLabel ?: ($item->project_status ?? '') }}</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            @empty
-                <div class="col-12">
-                    <div class="border rounded-3 bg-white p-4 text-muted">
-                        No related projects found.
+        <div class="w-full grid grid-cols-1 md:grid-cols-4 gap-[16px]">
+            @foreach($project->teams as $member)
+            <a href="{{ route('teamdetails', $member->id) }}" class="pd-team-card group w-full bg-white border border-[#E8EEF4] rounded-[14px] overflow-hidden flex flex-col hover:shadow-[0px_8px_28px_0px_rgba(0,48,84,0.10)] transition-shadow duration-300">
+                <div class="w-full h-[180px] bg-[#E8F0F6] overflow-hidden">
+                    @if($member->imageUrl())
+                    <img src="{{ $member->imageUrl() }}" alt="{{ $member->fullName() }}" class="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-300" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy" decoding="async" />
+                    @endif
+                    <div class="{{ $member->imageUrl() ? 'hidden' : '' }} w-full h-full bg-[#E8F0F6] items-center justify-center" style="{{ $member->imageUrl() ? '' : 'display:flex;' }}">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="18" r="10" fill="#CBD5E1"/><ellipse cx="24" cy="38" rx="16" ry="9" fill="#CBD5E1"/></svg>
                     </div>
                 </div>
-            @endforelse
+                <div class="p-[16px] flex flex-col gap-[4px] flex-grow">
+                    @if($member->headtitle)
+                    <span style="font-family:'Inter',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;" class="text-[#0E606B]">{{ $member->headtitle }}</span>
+                    @endif
+                    <h4 style="font-family:'Merriweather',serif;font-weight:700;font-size:14px;line-height:20px;color:#0F172A;">{{ $member->fullName() }}</h4>
+                    @if($member->designation)
+                    <p style="font-family:'Newsreader',serif;font-weight:400;font-size:12px;line-height:18px;color:#64748B;">{{ $member->designation }}</p>
+                    @endif
+                    <div class="mt-auto pt-[10px] border-t border-[#EEF3F8] flex justify-between items-center">
+                        @if($member->expertise_label)
+                        <span style="font-family:'Inter',sans-serif;font-weight:500;font-size:11px;color:#94A3B8;">{{ $member->expertise_label }}</span>
+                        @else
+                        <span></span>
+                        @endif
+                        <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:12px;color:#A80C18;" class="group-hover:opacity-75">View →</span>
+                    </div>
+                </div>
+            </a>
+            @endforeach
         </div>
     </div>
 </section>
-
-@if($showWorkWithUs)
-@include('frontend.layout.cta')
 @endif
+
 @endsection
