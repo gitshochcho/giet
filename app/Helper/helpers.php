@@ -200,6 +200,16 @@ if (! function_exists('contentBlock')) {
     }
 }
 
+if (! function_exists('cleanText')) {
+    function cleanText(?string $html): string {
+        if (empty($html)) return '';
+        $text = strip_tags($html);
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = preg_replace('/\s+/', ' ', $text);
+        return trim($text);
+    }
+}
+
 if (! function_exists('stripPTags')) {
     /**
      * Strip <p> tags from HTML content while preserving other formatting

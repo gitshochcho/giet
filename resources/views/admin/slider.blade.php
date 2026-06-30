@@ -80,6 +80,13 @@
                                                       id="itemDesc_{{ $index }}"
                                                       rows="3">{{ old("items.$index.description", $item->description) }}</textarea>
                                         </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Explore Button URL</label>
+                                            <input type="text" name="items[{{ $index }}][url]"
+                                                   value="{{ old("items.$index.url", $item->url) }}"
+                                                   class="form-control" placeholder="https://example.com/page">
+                                            <small class="text-muted">Link for the "Explore" button on this slide. Leave empty to use the default.</small>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -143,6 +150,11 @@
                         <label class="form-label">Description</label>
                         <textarea name="items[__INDEX__][description]" class="form-control item-description-editor"
                                   id="itemDesc___INDEX__" rows="3"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Explore Button URL</label>
+                        <input type="text" name="items[__INDEX__][url]" class="form-control" placeholder="https://example.com/page">
+                        <small class="text-muted">Link for the "Explore" button on this slide. Leave empty to use the default.</small>
                     </div>
                 </div>
             </div>

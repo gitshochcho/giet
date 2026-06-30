@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectCategory;
 use App\Models\ProjectLocation;
 use App\Models\ProjectOutcome;
 use App\Models\ProjectPhaseDetail;
@@ -31,11 +32,10 @@ class ProjectController extends Controller
 
     public function create()
     {
-        $services = Service::withCount('projects')
-            ->orderBy('service_name')
-            ->get();
+        $services   = Service::withCount('projects')->orderBy('service_name')->get();
+        $categories = ProjectCategory::orderBy('sort_order')->orderBy('name')->get();
 
-        return view('admin.project.create', compact('services'));
+        return view('admin.project.create', compact('services', 'categories'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -43,12 +43,14 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'project_title' => ['required', 'string', 'max:255'],
             'client' => ['nullable', 'string', 'max:255'],
+            'partner' => ['nullable', 'string', 'max:255'],
             'project_standard' => ['nullable', 'string', 'max:255'],
             'overview' => ['nullable', 'string'],
             'start_date' => ['nullable', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'project_status' => ['required', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
+            'project_category_id' => ['nullable', 'integer', 'exists:project_categories,id'],
             'services' => ['nullable', 'array'],
             'services.*' => ['nullable', 'integer', 'exists:services,id'],
             'hero_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'],
@@ -60,6 +62,7 @@ class ProjectController extends Controller
             'phases' => ['nullable', 'array'],
             'phases.*.id' => ['nullable', 'integer'],
             'phases.*.phase_description' => ['nullable', 'string'],
+            'phases.*.icon' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1024'],
             'phases.*.attachment' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
             'outcomes' => ['nullable', 'array'],
             'outcomes.*.id' => ['nullable', 'integer'],
@@ -68,14 +71,16 @@ class ProjectController extends Controller
         ]);
 
         $project = Project::create([
-            'project_title' => $validated['project_title'],
-            'client' => $validated['client'] ?? null,
-            'project_standard' => $validated['project_standard'] ?? null,
-            'overview' => $validated['overview'] ?? null,
-            'start_date' => $validated['start_date'] ?? null,
-            'end_date' => $validated['end_date'] ?? null,
-            'project_status' => $validated['project_status'],
-            'sort_order' => $validated['sort_order'] ?? 0,
+            'project_title'       => $validated['project_title'],
+            'client'              => $validated['client'] ?? null,
+            'partner'             => $validated['partner'] ?? null,
+            'project_standard'    => $validated['project_standard'] ?? null,
+            'overview'            => $validated['overview'] ?? null,
+            'start_date'          => $validated['start_date'] ?? null,
+            'end_date'            => $validated['end_date'] ?? null,
+            'project_status'      => $validated['project_status'],
+            'sort_order'          => $validated['sort_order'] ?? 0,
+            'project_category_id' => $validated['project_category_id'] ?? null,
         ]);
 
         $this->syncServices($project, $validated['services'] ?? []);
@@ -96,10 +101,11 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $project->load(['services', 'locations', 'phaseDetails', 'outcomes', 'media']);
-        $projects = Project::with(['services', 'media'])->orderBy('sort_order')->latest('id')->get();
-        $services = Service::withCount('projects')->orderBy('service_name')->get();
+        $projects   = Project::with(['services', 'media'])->orderBy('sort_order')->latest('id')->get();
+        $services   = Service::withCount('projects')->orderBy('service_name')->get();
+        $categories = ProjectCategory::orderBy('sort_order')->orderBy('name')->get();
 
-        return view('admin.project.edit', compact('project', 'projects', 'services'));
+        return view('admin.project.edit', compact('project', 'projects', 'services', 'categories'));
     }
 
     public function update(Request $request, Project $project): RedirectResponse
@@ -107,12 +113,14 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'project_title' => ['required', 'string', 'max:255'],
             'client' => ['nullable', 'string', 'max:255'],
+            'partner' => ['nullable', 'string', 'max:255'],
             'project_standard' => ['nullable', 'string', 'max:255'],
             'overview' => ['nullable', 'string'],
             'start_date' => ['nullable', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'project_status' => ['required', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
+            'project_category_id' => ['nullable', 'integer', 'exists:project_categories,id'],
             'services' => ['nullable', 'array'],
             'services.*' => ['nullable', 'integer', 'exists:services,id'],
             'hero_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:4096'],
@@ -124,6 +132,7 @@ class ProjectController extends Controller
             'phases' => ['nullable', 'array'],
             'phases.*.id' => ['nullable', 'integer'],
             'phases.*.phase_description' => ['nullable', 'string'],
+            'phases.*.icon' => ['nullable', 'file', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1024'],
             'phases.*.attachment' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
             'outcomes' => ['nullable', 'array'],
             'outcomes.*.id' => ['nullable', 'integer'],
@@ -132,14 +141,16 @@ class ProjectController extends Controller
         ]);
 
         $project->fill([
-            'project_title' => $validated['project_title'],
-            'client' => $validated['client'] ?? null,
-            'project_standard' => $validated['project_standard'] ?? null,
-            'overview' => $validated['overview'] ?? null,
-            'start_date' => $validated['start_date'] ?? null,
-            'end_date' => $validated['end_date'] ?? null,
-            'project_status' => $validated['project_status'],
-            'sort_order' => $validated['sort_order'] ?? 0,
+            'project_title'       => $validated['project_title'],
+            'client'              => $validated['client'] ?? null,
+            'partner'             => $validated['partner'] ?? null,
+            'project_standard'    => $validated['project_standard'] ?? null,
+            'overview'            => $validated['overview'] ?? null,
+            'start_date'          => $validated['start_date'] ?? null,
+            'end_date'            => $validated['end_date'] ?? null,
+            'project_status'      => $validated['project_status'],
+            'sort_order'          => $validated['sort_order'] ?? 0,
+            'project_category_id' => $validated['project_category_id'] ?? null,
         ]);
         $project->save();
 
@@ -167,6 +178,9 @@ class ProjectController extends Controller
         $project->locations()->delete();
 
         $project->phaseDetails->each(function (ProjectPhaseDetail $phase) {
+            if ($phase->icon) {
+                Storage::disk('public')->delete($phase->icon);
+            }
             if ($phase->attachment) {
                 Storage::disk('public')->delete($phase->attachment);
             }
@@ -275,10 +289,11 @@ class ProjectController extends Controller
 
         foreach (array_values($phases) as $index => $item) {
             $description = $item['phase_description'] ?? null;
-            $phaseId = ! empty($item['id']) ? (int) $item['id'] : null;
-            $attachment = $phaseFiles[$index]['attachment'] ?? null;
+            $phaseId     = ! empty($item['id']) ? (int) $item['id'] : null;
+            $iconFile    = $phaseFiles[$index]['icon'] ?? null;
+            $attachment  = $phaseFiles[$index]['attachment'] ?? null;
 
-            if ($description === '' && ! $attachment && $phaseId === null) {
+            if ($description === '' && ! $attachment && ! $iconFile && $phaseId === null) {
                 continue;
             }
 
@@ -286,16 +301,23 @@ class ProjectController extends Controller
                 ? ProjectPhaseDetail::firstOrNew(['id' => $phaseId, 'project_id' => $project->id])
                 : new ProjectPhaseDetail(['project_id' => $project->id]);
 
-            $record->project_id = $project->id;
+            $record->project_id        = $project->id;
             $record->phase_description = $description;
-            $record->sort_order = $index;
+            $record->sort_order        = $index;
             $record->save();
+
+            if ($iconFile) {
+                if ($record->icon) {
+                    Storage::disk('public')->delete($record->icon);
+                }
+                $record->icon = $iconFile->store('projects/phases/icons', 'public');
+                $record->save();
+            }
 
             if ($attachment) {
                 if ($record->attachment) {
                     Storage::disk('public')->delete($record->attachment);
                 }
-
                 $record->attachment = $attachment->store('projects/phases', 'public');
                 $record->save();
             }
@@ -307,6 +329,9 @@ class ProjectController extends Controller
             ->whereNotIn('id', $keptIds)
             ->get()
             ->each(function (ProjectPhaseDetail $phase) {
+                if ($phase->icon) {
+                    Storage::disk('public')->delete($phase->icon);
+                }
                 if ($phase->attachment) {
                     Storage::disk('public')->delete($phase->attachment);
                 }

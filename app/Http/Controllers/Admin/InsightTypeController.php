@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Models\InsightType;
 
 class InsightTypeController extends Controller
@@ -27,8 +28,10 @@ class InsightTypeController extends Controller
         ]);
 
         $validated['status'] = $request->has('status') ? 1 : 0;
+        $validated['show_featured'] = $request->has('show_featured') ? 1 : 0;
 
         InsightType::create($validated);
+        Cache::forget('nav_insight_types');
 
         return redirect()->route('admin.insight-types.index')->with('message', 'Insight type created successfully');
     }
@@ -46,8 +49,10 @@ class InsightTypeController extends Controller
         ]);
 
         $validated['status'] = $request->has('status') ? 1 : 0;
+        $validated['show_featured'] = $request->has('show_featured') ? 1 : 0;
 
         $insightType->update($validated);
+        Cache::forget('nav_insight_types');
 
         return redirect()->route('admin.insight-types.index')->with('message', 'Insight type updated successfully');
     }
@@ -59,6 +64,7 @@ class InsightTypeController extends Controller
         }
 
         $insightType->delete();
+        Cache::forget('nav_insight_types');
 
         return redirect()->route('admin.insight-types.index')->with('message', 'Insight type deleted successfully');
     }

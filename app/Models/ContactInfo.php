@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class ContactInfo extends Model
+class ContactInfo extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+
     protected $fillable = [
         'type',
         'icon_class',
@@ -34,5 +38,11 @@ class ContactInfo extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('order')->orderBy('id');
+    }
+
+    public function iconUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('icon');
+        return $url !== '' ? $url : null;
     }
 }

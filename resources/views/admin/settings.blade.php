@@ -54,6 +54,30 @@
                                     </div>
 
                                     <div class="col-md-6">
+                                        <label class="form-label">Favicon</label>
+                                        <input type="file" name="favicon" class="form-control @error('favicon') is-invalid @enderror" accept="image/*,.ico">
+                                        @error('favicon')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        <small class="text-muted"><i class="fas fa-info-circle"></i> Browser tab icon — recommended 32×32px (ICO/PNG, max 512KB)</small>
+                                        @if($setting?->faviconUrl())
+                                        <div class="mt-2">
+                                            <img src="{{ $setting->faviconUrl() }}" alt="Favicon" style="width:32px;height:32px;object-fit:contain;border:1px solid #dee2e6;border-radius:4px;">
+                                        </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Footer Icon</label>
+                                        <input type="file" name="footer_icon" class="form-control @error('footer_icon') is-invalid @enderror" accept="image/*">
+                                        @error('footer_icon')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        <small class="text-muted"><i class="fas fa-info-circle"></i> Icon shown in the website footer — recommended 80×80px (PNG/SVG, max 2MB)</small>
+                                        @if($setting?->footerIconUrl())
+                                        <div class="mt-2">
+                                            <img src="{{ $setting->footerIconUrl() }}" alt="Footer Icon" style="height:50px;object-fit:contain;border:1px solid #dee2e6;border-radius:4px;padding:4px;">
+                                        </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="col-md-6">
                                         <label class="form-label">Logo Text</label>
                                         <input type="text" name="logo_text" value="{{ old('logo_text', $setting->logo_text ?? '') }}" class="form-control @error('logo_text') is-invalid @enderror" placeholder="TRACE">
                                         @error('logo_text')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -97,28 +121,31 @@
 
                                         <div id="socialLinksWrapper" class="d-grid gap-3">
                                             @foreach($socialLinks as $index => $socialLink)
+                                            @php
+                                                $mediaKey   = $socialLink['media_key'] ?? '';
+                                                $currentIcon = ($mediaKey && $setting)
+                                                    ? $setting->getFirstMediaUrl('social_icon_' . $mediaKey)
+                                                    : '';
+                                            @endphp
                                                 <div class="row g-2 social-link-row align-items-end">
-                                                    <div class="col-md-4">
-                                                        <label class="form-label">Title</label>
-                                                        <input type="text" name="social_links[{{ $index }}][title]" value="{{ $socialLink['title'] ?? '' }}" class="form-control" placeholder="Facebook">
-                                                        <input type="hidden" name="social_links[{{ $index }}][media_key]" value="{{ $socialLink['media_key'] ?? '' }}">
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <label class="form-label">Link</label>
-                                                        <input type="text" name="social_links[{{ $index }}][link]" value="{{ $socialLink['link'] ?? '' }}" class="form-control" placeholder="https://...">
-                                                    </div>
                                                     <div class="col-md-3">
+                                                        <label class="form-label">Title</label>
+                                                        <input type="text" name="social_links[{{ $index }}][title]" value="{{ $socialLink['title'] ?? '' }}" class="form-control" placeholder="LinkedIn">
+                                                        <input type="hidden" name="social_links[{{ $index }}][media_key]" value="{{ $mediaKey }}">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="form-label">Link (URL)</label>
+                                                        <input type="text" name="social_links[{{ $index }}][link]" value="{{ $socialLink['link'] ?? '' }}" class="form-control" placeholder="https://linkedin.com/...">
+                                                    </div>
+                                                    <div class="col-md-4">
                                                         <label class="form-label">Icon Image</label>
-                                                        <input type="file" name="social_links_icons[{{ $index }}]" class="form-control" accept="image/*" data-max-size="512" data-max-width="32" data-max-height="32">
-                                                        <small class="text-muted"><i class="fas fa-info-circle"></i> 32×32px square</small>
-                                                        @php
-                                                            $existingIcon = null;
-                                                            if (! empty($socialLink['media_key'])) {
-                                                                $existingIcon = $setting?->getFirstMediaUrl('social_icon_' . $socialLink['media_key']);
-                                                            }
-                                                        @endphp
-                                                        @if($existingIcon)
-                                                            <img src="{{ $existingIcon }}" alt="Icon" style="height: 22px; width: 22px; object-fit: contain; margin-top: 8px;">
+                                                        <input type="file" name="social_links_icons[{{ $index }}]" class="form-control form-control-sm" accept="image/*">
+                                                        @if($currentIcon)
+                                                        <div class="mt-1 d-flex align-items-center gap-2">
+                                                            <img src="{{ $currentIcon }}" alt="{{ $socialLink['title'] ?? '' }}"
+                                                                 style="width:28px;height:28px;object-fit:contain;border:1px solid #dee2e6;border-radius:6px;padding:3px;background:#f8f9fa;">
+                                                            <small class="text-muted">Current icon</small>
+                                                        </div>
                                                         @endif
                                                     </div>
                                                     <div class="col-md-1 d-grid">
@@ -127,7 +154,78 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <div class="form-text">Each social item supports title + link + uploaded icon image.</div>
+                                        <div class="form-text">Icon upload করলে সেটি footer এ দেখাবে। Upload না করলে title এর প্রথম ২ অক্ষর দেখাবে।</div>
+                                    </div>
+
+                                    {{-- Project Detail Page Icons --}}
+                                    <div class="col-12">
+                                        <hr class="my-2">
+                                        <label class="form-label fw-bold">Project Detail Page Icons</label>
+                                        <p class="text-muted small mb-3">These icons appear in the project meta bar (Client / Duration / Location / Sector / Status) — same icon used for all projects.</p>
+                                        <div class="row g-3">
+                                            @foreach([
+                                                ['name' => 'project_client_icon',   'label' => 'Client Icon',   'method' => 'projectClientIconUrl'],
+                                                ['name' => 'project_duration_icon', 'label' => 'Duration Icon', 'method' => 'projectDurationIconUrl'],
+                                                ['name' => 'project_location_icon', 'label' => 'Location Icon', 'method' => 'projectLocationIconUrl'],
+                                                ['name' => 'project_sector_icon',   'label' => 'Sector Icon',   'method' => 'projectSectorIconUrl'],
+                                                ['name' => 'project_status_icon',   'label' => 'Status Icon',   'method' => 'projectStatusIconUrl'],
+                                            ] as $icon)
+                                            <div class="col-md-4 col-lg-2">
+                                                <label class="form-label">{{ $icon['label'] }}</label>
+                                                <input type="file" name="{{ $icon['name'] }}" class="form-control form-control-sm @error($icon['name']) is-invalid @enderror" accept="image/*">
+                                                @error($icon['name'])<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                                @if($setting && method_exists($setting, $icon['method']) && $setting->{$icon['method']}())
+                                                <div class="mt-2 d-flex align-items-center gap-2">
+                                                    <img src="{{ $setting->{$icon['method']}() }}" alt="{{ $icon['label'] }}" style="width:36px;height:36px;object-fit:contain;border:1px solid #dee2e6;border-radius:6px;padding:4px;background:#f8f9fa;">
+                                                    <small class="text-muted">Current</small>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    {{-- Event Detail Page Icons --}}
+                                    <div class="col-12">
+                                        <hr class="my-2">
+                                        <label class="form-label fw-bold">Event Detail Page Icons</label>
+                                        <p class="text-muted small mb-3">These icons appear in the event metadata strip (Date &amp; Time / Venue / Registration) — same icon used for all events.</p>
+                                        <div class="row g-3">
+                                            @foreach([
+                                                ['name' => 'event_date_icon',         'label' => 'Date & Time Icon',   'method' => 'eventDateIconUrl'],
+                                                ['name' => 'event_venue_icon',        'label' => 'Venue Icon',         'method' => 'eventVenueIconUrl'],
+                                                ['name' => 'event_registration_icon', 'label' => 'Registration Icon',  'method' => 'eventRegistrationIconUrl'],
+                                            ] as $icon)
+                                            <div class="col-md-4 col-lg-2">
+                                                <label class="form-label">{{ $icon['label'] }}</label>
+                                                <input type="file" name="{{ $icon['name'] }}" class="form-control form-control-sm @error($icon['name']) is-invalid @enderror" accept="image/*">
+                                                @error($icon['name'])<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                                @if($setting && method_exists($setting, $icon['method']) && $setting->{$icon['method']}())
+                                                <div class="mt-2 d-flex align-items-center gap-2">
+                                                    <img src="{{ $setting->{$icon['method']}() }}" alt="{{ $icon['label'] }}" style="width:36px;height:36px;object-fit:contain;border:1px solid #dee2e6;border-radius:6px;padding:4px;background:#f8f9fa;">
+                                                    <small class="text-muted">Current</small>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    {{-- Page Visibility Toggles --}}
+                                    <div class="col-12">
+                                        <hr class="my-2">
+                                        <label class="form-label fw-bold">Page Section Visibility</label>
+                                        <div class="d-flex align-items-center gap-3 mt-2 p-3 border rounded-3 bg-light">
+                                            <div class="form-check form-switch mb-0">
+                                                <input class="form-check-input" type="checkbox" role="switch"
+                                                       id="show_about_story" name="show_about_story" value="1"
+                                                       {{ old('show_about_story', $setting->show_about_story ?? true) ? 'checked' : '' }}>
+                                                <label class="form-check-label fw-semibold" for="show_about_story">
+                                                    About Page — Our Story Section
+                                                </label>
+                                            </div>
+                                            <small class="text-muted">Switch off করলে About page এ "Our Story" section টি লুকিয়ে যাবে।</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -143,19 +241,19 @@
 
     <template id="socialLinkTemplate">
         <div class="row g-2 social-link-row align-items-end">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="form-label">Title</label>
-                <input type="text" name="__NAME__[title]" class="form-control" placeholder="Facebook">
+                <input type="text" name="__NAME__[title]" class="form-control" placeholder="LinkedIn">
                 <input type="hidden" name="__NAME__[media_key]" value="">
             </div>
             <div class="col-md-4">
-                <label class="form-label">Link</label>
-                <input type="text" name="__NAME__[link]" class="form-control" placeholder="https://...">
+                <label class="form-label">Link (URL)</label>
+                <input type="text" name="__NAME__[link]" class="form-control" placeholder="https://linkedin.com/...">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label">Icon Image</label>
-                <input type="file" name="__ICON_NAME__" class="form-control" accept="image/*" data-max-size="512" data-max-width="32" data-max-height="32">
-                <small class="text-muted"><i class="fas fa-info-circle"></i> 32×32px square</small>
+                <input type="file" name="__ICON_NAME__" class="form-control form-control-sm" accept="image/*">
+                <small class="text-muted">PNG, SVG, JPG — recommended 32×32px</small>
             </div>
             <div class="col-md-1 d-grid">
                 <button type="button" class="btn btn-outline-danger remove-social-link">&times;</button>

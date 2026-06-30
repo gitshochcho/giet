@@ -14,7 +14,6 @@ class Insight extends Model implements HasMedia
 
     protected $fillable = [
         'type',
-        // 'type_id',
         'video_link',
         'heading',
         'sub_heading',
@@ -26,14 +25,26 @@ class Insight extends Model implements HasMedia
         'author_team_ids',
         'outside_authors',
         'publish_links',
+        'topics',
+        'page_count',
+        'read_minutes',
+        'language',
+        'is_featured',
+        'duration',
+        'attendee_count',
     ];
 
     protected $casts = [
-        'active' => 'boolean',
-        'published_at' => 'datetime',
-        'author_team_ids' => 'array',
-        'outside_authors' => 'array',
-        'publish_links' => 'array',
+        'active'         => 'boolean',
+        'published_at'   => 'datetime',
+        'author_team_ids'=> 'array',
+        'outside_authors'=> 'array',
+        'publish_links'  => 'array',
+        'topics'         => 'array',
+        'is_featured'    => 'boolean',
+        'page_count'     => 'integer',
+        'read_minutes'   => 'integer',
+        'attendee_count' => 'integer',
     ];
 
     public function videoUrl(): ?string
@@ -59,16 +70,16 @@ class Insight extends Model implements HasMedia
 
     public function imageUrl(): ?string
     {
-        $url = $this->getFirstMediaUrl('image');
-
-        return $url !== '' ? $url : null;
+        $media = $this->getFirstMedia('image');
+        if (!$media) return null;
+        return asset('storage/' . $media->id . '/' . $media->file_name);
     }
 
     public function attachmentUrl(): ?string
     {
-        $url = $this->getFirstMediaUrl('attachment');
-
-        return $url !== '' ? $url : null;
+        $media = $this->getFirstMedia('attachment');
+        if (!$media) return null;
+        return asset('storage/' . $media->id . '/' . $media->file_name);
     }
 
 public function actionLabel(): string
@@ -93,7 +104,8 @@ public function actionLabel(): string
 
 public function articleImageUrl(): ?string
 {
-    $url = $this->getFirstMediaUrl('article_image');
-    return $url !== '' ? $url : null;
+    $media = $this->getFirstMedia('article_image');
+    if (!$media) return null;
+    return asset('storage/' . $media->id . '/' . $media->file_name);
 }
 }

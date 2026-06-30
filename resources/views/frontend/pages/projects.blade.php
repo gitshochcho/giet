@@ -1,482 +1,343 @@
-@extends('frontend.layout.app')
-
+﻿@extends('frontend.layout.app')
 
 @push('custome-css')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" integrity="sha256-4MX+61mt9NVvvuPjUWdUdyfZfxSB1/Rf9WtqRHgG5S0=" crossorigin="anonymous"><!-- jsvectormap -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" integrity="sha256-+uGLJmmTKOqBr+2E6KDYs/NRsHxSkONXFHUL0fy2O/4=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 <style>
-    /* Layout Constants */
-:root {
-    --bg-dark: #01354B;
-    --text-teal: #4CC3C3;
-    --accent-orange: #F47735;
-    --border-color: #E5E9ED;
-    --max-content-width: 1072px;
+/*
+ * style.css  : a{color:white}  h1-h6{font-family:Poppins}  — unlayered, beats Tailwind @layer
+ * Bootstrap  : h2{font-weight:500} — unlayered
+ * Scoped rules below use class+element specificity (0,1,1) which beats bare element (0,0,1).
+ */
+.proj-hero h1 {
+    font-family: 'Newsreader', serif;
+    font-weight: 800;
+    color: #ffffff;
 }
-
-/* Centering Container */
-.container-custom {
-    max-width: var(--max-content-width);
-    margin: 0 auto;
-    padding: 0 15px; 
-    
+.proj-portfolio h2 {
+    font-family: 'Merriweather', serif;
+    font-weight: 800;
+    font-size: 38px;
+    line-height: 44.84px;
+    letter-spacing: -0.38px;
+    color: #0F172A;
 }
-
-/* Breadcrumb */
-.projects-breadcrumb {
-    background: #F8F9FB;
-    border-bottom: 1px solid #E5E9ED;
-    padding: 12px 0;
+.proj-impact h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 800;
+    font-size: 38px;
+    line-height: 44.84px;
+    letter-spacing: -0.38px;
+    color: #0F172A;
 }
-.breadcrumb-links { font-size: 13px; color: #94A3B8; }
-.breadcrumb-links a { color: #64748B; text-decoration: none; }
-.breadcrumb-links .sep { margin: 0 8px; }
-.breadcrumb-links .active { color: #01354B; font-weight: 600; }
-
-
-/* Hero Section Adjustments */
-.hero-dark {
-    background: var(--bg-dark);
-    height: 400px;
-    padding-top: 60px; 
-    color: white;
-    position: relative;
-    background-image: radial-gradient(circle at 100% 50%, rgba(255,255,255,0.05) 0%, transparent 60%); /* ডানদিকের হালকা সার্কেল ইফেক্ট */
+.proj-wwu h2 {
+    font-family: 'Newsreader', serif;
+    font-weight: 800;
+    font-size: 38px;
+    line-height: 45.6px;
+    color: #003054;
 }
-
-.accent-line {
-    width: 24px;
-    height: 2px;
-    background: var(--accent-orange);
-    margin-right: 12px;
+.proj-card h3 {
+    font-family: 'Merriweather', serif;
+    font-weight: 800;
+    font-size: 24px;
+    line-height: 31.2px;
+    color: #0F172A;
 }
-
-.small-tracking {
-    letter-spacing: 1.5px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #4DC0C4;
+.proj-card h4 {
+    font-family: 'Merriweather', serif;
+    font-weight: 800;
+    font-size: 15.5px;
+    line-height: 21.7px;
+    color: #0F172A;
 }
-
-.hero-title {
-    font-size: 48px; /* বড় এবং বোল্ড টাইটেল */
-    line-height: 1.1;
-    letter-spacing: -1px;
-}
-
-.text-teal {
-    color: var(--text-teal) !important;
-}
-
-.hero-description {
-    font-size: 16px;
-    line-height: 1.6;
-    max-width: 650px;
-    color: rgba(255, 255, 255, 0.7); /* হালকা সাদা টেক্সট */
-}
-
-/* Filter Nav Adjustments */
-.filter-nav {
-    background: #FFFFFF;
-    height: 60px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.filter-nav-container {
-    max-width: var(--max-content-width);
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 15px;
-}
-
-.filter-tabs-wrapper {
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-}
-
-.filter-tabs {
-    display: flex;
-    white-space: nowrap;
-    flex-wrap: nowrap;
-    transition: transform 0.3s ease;
-    gap: 0;
-}
-
-.filter-tabs .nav-item {
-    flex-shrink: 0;
-}
-
-.filter-tabs .nav-link {
-    color: #6c757d;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 18px 20px;
-    transition: all 0.3s;
-    display: block;
-    white-space: nowrap;
-    position: relative;
-}
-
-.scroll-btn {
-    background: #F47735;
-    color: white;
-    border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-    flex-shrink: 0;
-}
-
-.scroll-btn:hover {
-    background: #d9622a;
-    transform: scale(1.05);
-}
-
-.scroll-btn:disabled {
-    background: #cccccc;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.project-count {
-    flex-shrink: 0;
-    white-space: nowrap;
-    font-size: 13px;
-}
-
-.filter-tabs .nav-link.active {
-    color: #01354B !important;
-    font-weight: 700;
-}
-
-.filter-tabs .nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; /* বর্ডারের সাথে মিশে থাকবে */
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--accent-orange);
-}
-
-.badge-count {
-    background: #F0F2F5;
-    color: #888;
-    font-size: 11px;
-    padding: 2px 6px;
-    border-radius: 10px;
-    margin-left: 6px;
-    font-weight: normal;
-}
-
-/* Responsive adjustments */
-@media (max-width: 992px) {
-    .hero-dark { height: auto; padding: 60px 0; }
-}
-
-/* Card Styling */
-.project-card {
-    background: #fff;
-    border: 1px solid #E5E9ED;
-    border-radius: 16px; /* Image er moto ektu beshi round */
-    overflow: hidden;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-}
-
-.project-img-box {
-    position: relative;
-    height: 220px;
-    overflow: hidden;
-}
-
-.project-img-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.category-tag {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background: rgba(1, 53, 75, 0.9);
-    color: #fff;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 4px 10px;
-    border-radius: 4px;
-}
-
-.year-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #FF8A5B;
-    color: #fff;
-    font-size: 10px;
-    font-weight: bold;
-    padding: 4px 10px;
-    border-radius: 4px;
-}
-
-.project-content {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1; /* Eta empty space consume kore footer ke niche thakbe */
-}
-
-.client-name {
-    color: #4CC3C3;
-    font-size: 11px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
-}
-
-.project-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #01354B;
-    margin-bottom: 12px;
-    line-height: 1.4;
-}
-.project-standard{
-    font-size: 18px;
-    font-weight: 700;
-    color: #01354B;
-    /* margin-bottom: 12px; */
-    line-height: 1.4;
-}
-.project-footer {
-    width: 100%; /* Apnar dewa width (approx) container onusare auto nibe */
-    min-height: 31px;
-    padding-top: 14px;
-    margin-top: 20px; /* Magic: footer ke ekbare niche niye jabe */
-    border-top: 1px solid #E5E9ED; /* Border-top visible kora */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.project-bio {
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    flex-grow: 1; /* Content choto holeo footer niche thakbe */
-}
-
-.project-tags span {
-    display: inline-block;
-    background: #F1F4F7;
-    color: #6c757d;
-    font-size: 11px;
-    padding: 3px 12px;
-    border-radius: 20px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-}
-
-
-
-.view-link {
-    font-weight: 700;
-    font-size: 13px;
-    color: #00898e; /* Photo er teal color er moto */
+.proj-card a {
+    color: #A80C18;
     text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 5px;
 }
-
-.view-link:hover {
-    color: #4CC3C3;
+.proj-card a:hover {
+    color: #8e0a14;
 }
-
-.status {
-    font-size: 13px;
-    color: #adb5bd; /* Photo er moto light gray */
+.proj-wwu a {
+    text-decoration: none;
 }
-
-
+.proj-wwu a.btn-primary-wwu {
+    color: #ffffff;
+}
+.proj-wwu a.btn-primary-wwu:hover {
+    color: #ffffff;
+}
+.proj-wwu a.btn-outline-wwu {
+    color: #003054;
+}
+.proj-wwu a.btn-outline-wwu:hover {
+    color: #003054;
+}
 </style>
 @endpush
 
-
 @section('content')
-@php
-    $projectsHero = $projectsHero ?? contentBlock('projects-page');
-    $heroSection     = $projectsHero?->section     ?? '';
-    $heroHeading     = $projectsHero?->heading     ?? '';
-    $heroHighlight   = $projectsHero?->design_word ?? '';
-    $heroDescription = $projectsHero?->description ?? '';
-    $projectCount = is_countable($projects ?? null) ? count($projects) : 0;
-@endphp
+<!-- PAGE HERO SECTION -->
+<section class="proj-hero w-full h-auto md:h-[342.2px] bg-[#003054] overflow-hidden relative pt-[72px] pb-[72px] px-4 md:px-8">
 
-<nav class="projects-breadcrumb">
-    <div class="container-custom">
-        <div class="breadcrumb-links">
-            <a href="{{ route('home') }}">Home</a>
-            <span class="sep">›</span>
-            <span class="active">Our Projects</span>
-        </div>
+  <!-- BACKGROUND DECORATION SHAPE -->
+  <div class="absolute -top-[100px] -right-[100px] pointer-events-none bg-[rgba(24,144,156,0.07)] w-[400px] h-[400px] rounded-full"></div>
+
+  <!-- INNER CONTAINER (1200px Layout Engine) -->
+  <div class="w-full max-w-[1204px] mx-auto h-auto px-4 md:px-0 flex flex-col justify-center items-start z-10 relative" style="gap: 15.2px;">
+
+    <!-- BREADCRUMBS -->
+    <div class="flex items-center gap-1.5 text-[12px] text-white/45 font-['Newsreader'] leading-[19.8px]">
+      <a href="{{ url('/') }}" class="hover:text-white transition-colors" style="color:rgba(255,255,255,0.45);">Home</a>
+      <span>/</span>
+      <span class="text-white/45">Projects</span>
     </div>
-</nav>
 
-<section class="hero-dark">
-    <div class="container-custom">
-        <div class="hero-content">
-            <div class="d-flex align-items-center mb-2">
-                <div class="accent-line"></div>
-                <p class="text-uppercase small-tracking mb-0">{{ $heroSection }}</p>
+    <!-- ACCENT LINE -->
+    <div class="bg-[#18909C] w-[40px] h-[3px] rounded-[2px]"></div>
+
+    <!-- MAIN TITLE -->
+    <h1 class="text-white font-['Newsreader'] font-extrabold leading-tight drop-shadow-sm m-0" style="font-size:clamp(28px,5vw,52px);">
+      {{ $projectsHero?->heading }}
+    </h1>
+
+  </div>
+</section>
+
+
+<!-- PROJECT PORTFOLIO SECTION -->
+<section class="proj-portfolio w-full pt-[48px] pb-[48px] md:pt-[80px] md:pb-[80px] bg-white select-none flex flex-col items-center justify-center">
+    <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col gap-[44px]">
+
+        <!-- HEADER ROW -->
+        <div class="w-full text-left">
+            @if($projectsPortfolio?->section)
+            <span style="font-family:'Inter',sans-serif;font-weight:600;font-size:11px;line-height:18.15px;letter-spacing:1.54px;text-transform:uppercase;"
+                  class="text-[#0E606B] uppercase block mb-2">
+                {{ $projectsPortfolio->section }}
+            </span>
+            @endif
+            <h2 style="font-family:'Merriweather',serif;font-weight:800;font-size:38px;line-height:44.84px;letter-spacing:-0.38px;"
+                class="text-[#0F172A]">
+                {{ $projectsPortfolio?->heading }}
+            </h2>
+        </div>
+
+        <!-- FILTER NAVIGATION TABS -->
+        @if($categories->isNotEmpty())
+        <div class="w-full max-w-[1204px] mx-auto h-auto flex flex-wrap items-center border-b-2 border-[#EEF3F8] gap-y-2">
+            <a href="{{ route('projects') }}"
+               style="font-family:'Inter',sans-serif;font-weight:{{ !$selectedCategory ? '600' : '500' }};font-size:13px;text-decoration:none;color:{{ !$selectedCategory ? '#0F172A' : '#6B7280' }};"
+               class="pt-[13px] pb-[14.44px] px-[28px] border-b-[3px] {{ !$selectedCategory ? 'border-[#A80C18]' : 'border-transparent' }} text-center transition-all">
+                All Projects
+            </a>
+            @foreach($categories as $category)
+            <a href="{{ route('projects', ['category' => $category->id]) }}"
+               style="font-family:'Inter',sans-serif;font-weight:{{ $selectedCategory == $category->id ? '600' : '500' }};font-size:13px;text-decoration:none;color:{{ $selectedCategory == $category->id ? '#0F172A' : '#6B7280' }};"
+               class="pt-[13px] pb-[14.44px] px-[28px] border-b-[3px] {{ $selectedCategory == $category->id ? 'border-[#A80C18]' : 'border-transparent' }} text-center transition-all">
+                {{ $category->name }}
+            </a>
+            @endforeach
+        </div>
+        @endif
+
+        @php $featuredProject = $projects->first(); $gridProjects = $projects->skip(1); @endphp
+
+        @if($featuredProject)
+        <!-- FEATURED PROJECT CARD -->
+        <div class="proj-card w-full border border-[#EEF3F8] rounded-[20px] overflow-hidden flex flex-col md:flex-row bg-white hover:shadow-md transition-all text-left">
+            <!-- Left Side Image -->
+            <div class="w-full md:w-[560px] md:h-[403.81px] overflow-hidden bg-[#EEF3F8] md:shrink-0 relative">
+                @if($featuredProject->heroImageUrl())
+                <img src="{{ $featuredProject->heroImageUrl() }}" alt="{{ $featuredProject->project_title }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
+                @else
+                <div class="w-full h-full bg-[#EEF3F8] flex items-center justify-center">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="8" fill="#CBD5E1"/><path d="M20 44L28 32L34 40L40 28L50 44H20Z" fill="#94A3B8"/></svg>
+                </div>
+                @endif
+                <div class="absolute left-4 top-4 bg-[#003054] w-[144px] h-[29px] flex items-center justify-center rounded-[2px] px-[14px] py-[6px]">
+                    <span class="text-white text-[9.5px] font-bold uppercase tracking-[1px] whitespace-nowrap">Featured Project</span>
+                </div>
             </div>
-
-            <h1 class="hero-title fw-bold">{{ $heroHeading }} <br><span class="text-teal">{{ $heroHighlight }}</span></h1>
-
-            <p class="hero-description mt-4">
-                {!! nl2br(e(strip_tags($heroDescription))) !!}
-            </p>
+            <!-- Right Side Content -->
+            <div class="w-full pt-[28px] pr-[24px] pb-[28px] pl-[24px] md:pt-[44px] md:pr-[40px] md:pb-[44px] md:pl-[40px] flex flex-col justify-between">
+                <div class="flex flex-col gap-2.5">
+                    <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11px; line-height: 18.15px; letter-spacing: 1.1px;" class="text-[#0E606B] uppercase">
+                        @php
+                            $fMeta = array_filter([
+                                cleanText($featuredProject->client),
+                                $featuredProject->durationLabel(),
+                                
+                            ]);
+                        @endphp
+                        {{ implode(' · ', $fMeta) }}
+                    </span>
+                    <h3 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 24px; line-height: 31.2px;" class="text-[#0F172A]">
+                        {{ $featuredProject->project_title }}
+                    </h3>
+                    @if($featuredProject->overview)
+                    <p class="font-['Newsreader'] text-[#1A1A1A] mt-[20px]" style="font-family: 'Newsreader',serif; font-weight: 400; font-size: 14.5px; line-height: 25.38px;">
+                        {{ Str::limit(cleanText($featuredProject->overview), 300) }}
+                    </p>
+                    @endif
+                </div>
+                <div class="flex flex-col gap-4">
+                    <div class="flex flex-wrap items-center gap-[10px]" style="font-family:'Inter',sans-serif;font-size:12px;line-height:19.8px;color:#6B7280;">
+                        @foreach($featuredProject->services->take(2) as $svc)
+                            <span>{{ $svc->service_name }}</span>@if(!$loop->last)<span>·</span>@endif
+                        @endforeach
+                        @if($featuredProject->locations->isNotEmpty())
+                            <span>·</span>
+                            <span>{{ cleanText($featuredProject->locations->pluck('location')->implode(', ')) }}</span>
+                        @endif
+                    </div>
+                    <a href="{{ route('projectdetails', $featuredProject->id) }}" style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12.5px; line-height: 20.63px;" class="text-[#A80C18] hover:text-[#8e0a14] transition-colors flex items-center gap-1">
+                        Read Project Brief <span class="text-[11px]">→</span>
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+        @endif
 
-<section class="filter-nav">
-    <div class="filter-nav-container">
-        <button class="scroll-btn scroll-left" id="scrollLeft" onclick="scrollTabs('left')" title="Scroll left">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="filter-tabs-wrapper">
-            <ul class="nav filter-tabs" id="filterTabs">
-                <li class="nav-item">
-                    <a class="nav-link {{ empty($selectedService) ? 'active' : '' }}" href="{{ route('projects') }}">All Projects <span class="badge-count">{{ $projectCount }}</span></a>
-                </li>
-                @foreach($services as $service)
-                    <li class="nav-item">
-                        <a class="nav-link {{ (int) $selectedService === (int) $service->id ? 'active' : '' }}" href="{{ route('projects', ['service' => $service->id]) }}">
-                            {{ $service->section ?: $service->service_name }} <span class="badge-count">{{ $service->projects_count }}</span>
+        @if($gridProjects->isNotEmpty())
+        <!-- PROJECT CARDS GRID -->
+        <div class="proj-card w-full max-w-[1204px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-[20px]">
+            @foreach($gridProjects as $project)
+            <div class="w-full border border-[#EEF3F8] rounded-[14px] overflow-hidden bg-white hover:shadow-md transition-all flex flex-col text-left pb-[21.68px]">
+                <div class="w-full h-[180px] bg-[#EEF3F8] relative overflow-hidden shrink-0">
+                    @if($project->heroImageUrl())
+                    <img src="{{ $project->heroImageUrl() }}" alt="{{ $project->project_title }}" class="w-full h-full object-cover" loading="lazy" decoding="async">
+                    @else
+                    <div class="w-full h-full bg-[#EEF3F8] flex items-center justify-center">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="6" fill="#CBD5E1"/><path d="M12 36L20 24L26 32L32 20L40 36H12Z" fill="#94A3B8"/></svg>
+                    </div>
+                    @endif
+                    @if($project->services->isNotEmpty())
+                    <div class="absolute left-0 bottom-0 bg-[#003054] w-[145px] h-[26px] flex items-center justify-center rounded-[2px] px-[12px] py-[5px]">
+                        <span class="text-white text-[9.5px] font-bold uppercase tracking-[0.5px] whitespace-nowrap truncate px-1">
+                            {{ $project->services->first()->service_name }}
+                        </span>
+                    </div>
+                    @endif
+                </div>
+                <div class="p-[20px] flex flex-col justify-between flex-grow">
+                    <div class="flex flex-col gap-2">
+                        <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 10.5px; line-height: 17.33px; letter-spacing: 1.05px;" class="text-[#0E606B] uppercase">
+                            @php
+                                $gMeta = array_filter([
+                                    cleanText($project->client),
+                                    $project->durationLabel(),
+                                    
+                                ]);
+                            @endphp
+                            {{ implode(' · ', $gMeta) }}
+                        </span>
+                        <h4 style="font-family: 'Merriweather', serif; font-weight: 800; font-size: 15.5px; line-height: 21.7px;" class="text-[#0F172A] line-clamp-2">
+                            {{ $project->project_title }}
+                        </h4>
+                        @if($project->overview)
+                        <p class="font-['Newsreader'] text-[#1A1A1A] line-clamp-3 mt-0.5" style="font-family: 'Newsreader',serif; font-weight: 400; font-size: 13px; line-height: 21.45px;">
+                            {{ cleanText($project->overview) }}
+                        </p>
+                        @endif
+                    </div>
+                    <div class="flex items-center justify-between mt-4 border-t border-gray-50 pt-3">
+                        <span style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 11.5px; line-height: 18.98px;" class="text-[#6B7280]">
+                            {{ $project->project_status }}{{ $project->end_date ? ' · ' . $project->end_date->format('M Y') : '' }}
+                        </span>
+                        <a href="{{ route('projectdetails', $project->id) }}" style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 11.5px; line-height: 18.98px;" class="text-[#A80C18] hover:underline flex items-center gap-0.5">
+                            View <span class="text-[10px]">→</span>
                         </a>
-                    </li>
-                @endforeach
-            </ul>
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
-        <button class="scroll-btn scroll-right" id="scrollRight" onclick="scrollTabs('right')" title="Scroll right">
-            <i class="fas fa-chevron-right"></i>
-        </button>
-        <div class="project-count text-muted small">
-            Showing <strong>{{ $projectCount }}</strong> projects
+        @elseif(!$featuredProject)
+        <div class="w-full text-center py-16">
+            <p style="font-family:'Newsreader',serif;font-size:18px;" class="text-[#64748B]">No projects found.</p>
         </div>
+        @endif
+
     </div>
 </section>
 
-<script>
-    function scrollTabs(direction) {
-        const filterTabs = document.getElementById('filterTabs');
-        const scrollAmount = 200;
-        const currentTransform = parseInt(filterTabs.style.transform.match(/-?\d+/)?.[0] || 0);
-        
-        if (direction === 'left') {
-            filterTabs.style.transform = `translateX(${currentTransform + scrollAmount}px)`;
-        } else {
-            filterTabs.style.transform = `translateX(${currentTransform - scrollAmount}px)`;
-        }
-        
-        updateScrollButtons();
-    }
-    
-    function updateScrollButtons() {
-        const filterTabs = document.getElementById('filterTabs');
-        const wrapper = document.querySelector('.filter-tabs-wrapper');
-        const scrollLeftBtn = document.getElementById('scrollLeft');
-        const scrollRightBtn = document.getElementById('scrollRight');
-        
-        const translateX = parseInt(filterTabs.style.transform.match(/-?\d+/)?.[0] || 0);
-        const maxScroll = -(filterTabs.scrollWidth - wrapper.clientWidth);
-        
-        scrollLeftBtn.disabled = translateX >= 0;
-        scrollRightBtn.disabled = translateX <= maxScroll;
-    }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        updateScrollButtons();
-        window.addEventListener('resize', updateScrollButtons);
-    });
-</script>
 
-<section class="project-grid-section py-5">
-    <div class="container-custom">
-        <div class="row g-4">
-            @forelse($projects as $project)
-                @php
-                    $projectImage     = $project->heroImageUrl() ?? '';
-                    $projectYear      = $project->start_date?->format('Y');
-                    $projectYearEnd   = $project->end_date?->format('Y');
-                    $projectYearLabel = $projectYear && $projectYearEnd ? $projectYear . '-' . $projectYearEnd : ($projectYear ?? $projectYearEnd ?? '');
-                    $firstSvc         = $project->services->first();
-                    $projectCategory  = $firstSvc?->section ?? $firstSvc?->service_name ?? $project->project_standard ?? '';
-                    $projectTags      = $project->services->take(3);
-                    $projectDesc      = stripPTags($project->overview) ?? '';
-                @endphp
-                <div class="col-xl-4 col-lg-4 col-md-6">
-                    <div class="project-card h-100 shadow-sm">
-                        <div class="project-img-box">
-                            <img src="{{ $projectImage }}" alt="{{ $project->project_title }}">
-                            <span class="category-tag">{{ $projectCategory }}</span>
-                            <span class="year-badge">{{ $projectYearLabel ?: ($project->project_status ?? '') }}</span>
-                        </div>
+<!-- IMPACT STATS SECTION -->
+<section class="proj-impact w-full py-[48px] md:py-[88px] px-4 bg-[#F7F9FB] select-none flex items-center justify-center">
+    <div class="w-full max-w-[1204px] mx-auto px-4 md:px-0 flex flex-col gap-[40px] md:gap-[52px]">
 
-                        <div class="project-content">
-                            <h6 class="client-name text-uppercase">{{ abbreviateClientName($project->client) ?? '' }}</h6>
-                            <h4 class="project-standard">{{ $project->project_standard ?: '' }}</h4>
-                            <h4 class="project-title">{{ $project->project_title }}</h4>
-                            <p class="project-bio text-muted">{{ \Illuminate\Support\Str::limit($projectDesc, 140) }}</p>
-
-                            <div class="project-tags">
-                                @forelse($projectTags as $tag)
-                                    <span>{{ $tag->section ?: $tag->service_name }}</span>
-                                @empty
-                                    <span>{{ $project->project_standard ?: $project->project_status }}</span>
-                                @endforelse
-                            </div>
-
-                            <div class="project-footer d-flex justify-content-between align-items-center">
-                                <span class="status text-muted">{{ $projectYearLabel ?: 'Ongoing' }} • {{ $project->project_status }}</span>
-                                <a href="{{ route('projectdetails', $project) }}" class="view-link">View Project <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @empty
-                <div class="col-12">
-                    <div class="text-center py-5 text-muted border rounded bg-white">
-                        No projects found yet.
-                    </div>
-                </div>
-            @endforelse
+        <!-- HEADER -->
+        <div class="w-full text-left">
+            @if($projectsImpact?->section)
+            <span class="font-['Newsreader'] font-semibold text-[11px] leading-[18.15px] tracking-[1.54px] uppercase text-[#0E606B] block mb-2">
+                {{ $projectsImpact->section }}
+            </span>
+            @endif
+            <h2 class="font-['Newsreader'] font-extrabold text-[38px] leading-[44.84px] tracking-[-0.38px] text-[#0F172A]">
+                {{ $projectsImpact?->heading }}
+            </h2>
         </div>
+
+        <!-- 4-COLUMN STATS GRID -->
+        @if($projectsStats->isNotEmpty())
+        <div class="w-full max-w-[1204px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-[1px] border border-[#EEF3F8] overflow-hidden rounded-[4px] bg-[#EEF3F8]">
+            @foreach($projectsStats as $stat)
+            <div class="bg-white pt-[36px] pr-[28px] pb-[36px] pl-[28px] flex flex-col gap-[16px] text-left">
+                <div class="flex flex-col gap-[10px]">
+                    <div class="font-['Newsreader'] font-extrabold text-[44px] leading-none flex items-baseline">
+                        <span class="text-[#A80C18]">{{ $stat->heading }}</span>
+                    </div>
+                    <div class="w-[36px] h-[3px] rounded-sm bg-[#18909C]"></div>
+                </div>
+                <span class="font-['Newsreader'] font-medium text-[13px] leading-[21.45px] tracking-[0.78px] uppercase text-[#6B7280]">
+                    {{ $stat->section }}
+                </span>
+            </div>
+            @endforeach
         </div>
+        @endif
     </div>
 </section>
 
-@include('frontend.layout.cta')
+
+<!-- WORK WITH US SECTION -->
+<section class="proj-wwu w-full h-auto md:h-[421px] bg-[#F1F5F9] relative overflow-hidden border-b border-[#CBD5E1] flex items-center justify-center py-[48px] md:py-0">
+
+    <div class="hidden md:block absolute pointer-events-none" style="width:320px;height:320px;top:-60px;right:-60px;border-radius:160px;background:rgba(0,48,84,0.05);"></div>
+
+    <div class="w-full max-w-[1204px] mx-auto px-4 mt-10 md:px-0 flex flex-col items-center justify-center text-center relative z-10 gap-[13px]">
+
+        @if($projectsWorkWithUs?->section)
+        <span class="text-[#0E606B] font-['Newsreader'] font-semibold text-[11px] uppercase tracking-[1.54px]">
+            {{ $projectsWorkWithUs->section }}
+        </span>
+        @endif
+
+        <h2 class="text-[#003054] font-['Newsreader'] font-extrabold text-[38px] leading-[45.6px] max-w-[800px] m-0">
+            {{ $projectsWorkWithUs?->heading }}
+        </h2>
+
+        @if($projectsWorkWithUs?->description)
+        <p class="text-[#475569] font-['Newsreader'] text-[16px] leading-[28px] max-w-[620px] m-0">
+            {{ cleanText($projectsWorkWithUs->description) }}
+        </p>
+        @endif
+
+        <div class="flex items-center gap-4 mt-[15px] mb-10">
+            @if($projectsWorkWithUs?->sub_heading)
+            <a href="{{ route('contact') }}"
+               class="btn-primary-wwu bg-[#003054] px-[32px] py-[14px] rounded-[6px] inline-flex items-center justify-center gap-1 text-white text-[14px] font-bold transition-all duration-200 hover:bg-[#002040] shadow-sm">
+                <span>{{ $projectsWorkWithUs->sub_heading }}</span>
+                <span class="inline-block translate-y-[-1px]">→</span>
+            </a>
+            @endif
+
+            @if($projectsWorkWithUs?->design_word)
+            <a href="{{ route('about') }}"
+               class="btn-outline-wwu border-[2px] border-[#003054]/30 px-[32px] py-[14px] rounded-[6px] inline-flex items-center justify-center text-[#003054] text-[14px] font-bold transition-all duration-200 hover:bg-[#003054]/10">
+                <span>{{ $projectsWorkWithUs->design_word }}</span>
+            </a>
+            @endif
+        </div>
+    </div>
+</section>
 @endsection

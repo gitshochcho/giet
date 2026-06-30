@@ -13,6 +13,7 @@ class ProjectPhaseDetail extends Model
     protected $fillable = [
         'project_id',
         'phase_description',
+        'icon',
         'attachment',
         'sort_order',
     ];
@@ -20,6 +21,11 @@ class ProjectPhaseDetail extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function iconUrl(): ?string
+    {
+        return $this->icon ? asset('storage/' . ltrim($this->icon, '/')) : null;
     }
 
     public function attachmentUrl(): ?string

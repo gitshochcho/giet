@@ -719,3 +719,35 @@ li {
 		background-size: 22px 34px;
 	}
 }
+
+
+/* ===== CKEditor Rich Text Prose Styles ===== */
+.ck-prose p,
+.prose p {
+  margin-bottom: 1em;
+  margin-top: 0;
+}
+.ck-prose p:last-child,
+.prose p:last-child {
+  margin-bottom: 0;
+}
+.ck-prose ul,
+.ck-prose ol,
+.prose ul,
+.prose ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+.ck-prose li,
+.prose li {
+  margin-bottom: 0.35em;
+}
+.ck-prose strong,
+.prose strong {
+  font-weight: 700;
+}
+.ck-prose a,
+.prose a {
+  color: #0E606B;
+  text-decoration: underline;
+}

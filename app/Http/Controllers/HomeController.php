@@ -3,14 +3,18 @@ namespace App\Http\Controllers;
 
 use App\Mail\ForgetPassMail;
 use App\Models\ContactInfo;
+use App\Models\Faq;
 use App\Models\Country;
 use App\Models\Gender;
 use App\Models\Insight;
 use App\Models\InsightArticle;
+use App\Models\InsightType;
 use App\Models\JobApplication;
 use App\Models\JobPosting;
+use App\Models\Event;
 use App\Models\Partner;
 use App\Models\Project;
+use App\Models\ProjectCategory;
 use App\Models\Service;
 use App\Models\Slider;
 use App\Models\SliderItem;
@@ -39,8 +43,13 @@ class HomeController extends Controller
         $homeAboutTraceTwo   = contentBlock('home_about_trace_two');
         $homeAboutTraceThree = contentBlock('home_about_trace_three');
         $homeYearsExpertise  = contentBlock('home_years_of_expertise');
-        $slider              = Slider::with('media')->first();
-        $sliderItems         = SliderItem::with('media')->where('active', true)->orderBy('sort_order')->orderBy('id')->get();
+        $homeFocusAreas      = contentBlock('home_focus_areas');
+        $homeProjectsBlock   = contentBlock('home_projects');
+        $homePartnersBlock   = contentBlock('home_partners');
+        $homeMission         = contentBlock('home_mission');
+
+        $slider      = Slider::with('media')->first();
+        $sliderItems = SliderItem::with('media')->where('active', true)->orderBy('sort_order')->orderBy('id')->get();
 
         $homeServices = Service::query()
             ->with(['content', 'media', 'solutions'])
@@ -49,25 +58,29 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
-        // Projects — latest 3টা
         $homeProjects = Project::query()
             ->with(['services', 'media'])
             ->orderBy('sort_order')
             ->latest('id')
-            ->limit(3)
+            ->limit(6)
             ->get();
 
-             $partners = Partner::with('media')->latest()->get(); 
+        $partners = Partner::with('media')->latest()->get();
 
-        return view('frontend.pages.home', compact('slider', 'sliderItems', 'homeServices', 'homeProjects', 'homeAboutTrace', 'homeAboutTraceOne', 'homeAboutTraceTwo', 'homeAboutTraceThree', 'homeYearsExpertise', 'partners'));
+        return view('frontend.pages.home', compact(
+            'slider', 'sliderItems', 'homeServices', 'homeProjects', 'partners',
+            'homeAboutTrace', 'homeAboutTraceOne', 'homeAboutTraceTwo', 'homeAboutTraceThree',
+            'homeYearsExpertise', 'homeFocusAreas', 'homeProjectsBlock', 'homePartnersBlock', 'homeMission'
+        ));
     }
 
     public function services(Request $request)
     {
-        $servicesHero = contentBlock('services-page')
+        $servicesHero       = contentBlock('services-page')
             ?? contentBlock('service-hero')
             ?? contentBlock('service hero');
-        $workWithUs   = contentBlock('work-with-us');
+        $workWithUs         = contentBlock('work-with-us');
+        $workKeyFocusAreas  = contentBlock('work_key_focus_areas');
         // dd($servicesHero);
 
         $services = Service::query()
@@ -91,7 +104,7 @@ class HomeController extends Controller
             ];
         })->values();
 
-        return view('frontend.pages.services', compact('servicesHero', 'workWithUs', 'serviceCards'));
+        return view('frontend.pages.work', compact('servicesHero', 'workWithUs', 'serviceCards', 'workKeyFocusAreas'));
     }
 
     
@@ -99,53 +112,88 @@ class HomeController extends Controller
     public function serviceDetails(Request $request, $id)
     {
         $service = Service::query()
-            ->with(['details' => fn($q) => $q->orderBy('sort_order'), 'solutions' => fn($q) => $q->orderBy('sort_order'), 'media'])
+            ->with([
+                'details'   => fn($q) => $q->orderBy('sort_order'),
+                'solutions' => fn($q) => $q->with('media')->orderBy('sort_order'),
+                'projects'  => fn($q) => $q->with(['media', 'services'])->orderBy('sort_order')->take(3),
+                'media',
+            ])
             ->findOrFail($id);
+
+        $relatedProjects = $service->projects->count()
+            ? $service->projects
+            : Project::query()
+                ->with(['media', 'services'])
+                ->orderBy('sort_order')
+                ->latest('id')
+                ->take(3)
+                ->get();
+
+        $experts = Team::query()
+            ->with(['media', 'experties'])
+            ->whereIn('type', [1, 2])
+            ->orderBy('sort_order')
+            ->take(4)
+            ->get();
 
         $otherServices = Service::query()
             ->where('active', true)
+            ->whereKeyNot($id)
             ->orderBy('sort_order')
             ->get(['id', 'service_name', 'section']);
 
-        return view('frontend.pages.service-details', compact('service', 'otherServices'));
+        $wdOverview        = contentBlock('workdetails_overview');
+        $wdServicesInclude = contentBlock('workdetails_services_include');
+        $wdSolutions       = contentBlock('workdetails_solutions');
+        $wdRelatedProjects = contentBlock('workdetails_related_projects');
+        $wdExperts         = contentBlock('workdetails_experts');
+
+        return view('frontend.pages.workdetails', compact(
+            'service', 'experts', 'otherServices', 'relatedProjects',
+            'wdOverview', 'wdServicesInclude', 'wdSolutions', 'wdRelatedProjects', 'wdExperts'
+        ));
     }
 
     public function projects(Request $request)
     {
-        $projectsHero = contentBlock('projects-page');
+        $projectsHero       = contentBlock('projects-page');
+        $projectsPortfolio  = contentBlock('projects_portfolio');
+        $projectsImpact     = contentBlock('projects_impact');
+        $projectsWorkWithUs = contentBlock('projects_work_with_us');
 
-        $services = Service::query()
-            ->whereHas('projects')
-            ->withCount('projects')
-            ->orderBy('service_name')
-            ->get();
+        $projectsStats = collect([
+            contentBlock('projects_stat_1'),
+            contentBlock('projects_stat_2'),
+            contentBlock('projects_stat_3'),
+            contentBlock('projects_stat_4'),
+        ])->filter();
 
-        $selectedService = $request->integer('service');
+        $categories      = ProjectCategory::where('active', true)->orderBy('sort_order')->orderBy('name')->get();
+        $selectedCategory = $request->integer('category');
 
         $projects = Project::query()
-            ->with(['services', 'media'])
-            ->withCount('services')
-            ->when($selectedService, function ($query, $serviceId) {
-                $query->whereHas('services', function ($serviceQuery) use ($serviceId) {
-                    $serviceQuery->where('services.id', $serviceId);
-                });
-            })
+            ->with(['category', 'services', 'locations', 'media'])
+            ->when($selectedCategory, fn($q, $id) => $q->where('project_category_id', $id))
             ->orderBy('sort_order')
             ->latest('id')
             ->get();
 
-        return view('frontend.pages.projects', compact('projectsHero', 'services', 'projects', 'selectedService'));
+        return view('frontend.pages.projects', compact(
+            'projectsHero', 'projectsPortfolio', 'projectsImpact',
+            'projectsWorkWithUs', 'projectsStats',
+            'categories', 'selectedCategory', 'projects'
+        ));
     }
 
     public function projectdetails(Request $request, ?Project $project = null)
     {
         $project ??= Project::query()
-            ->with(['services', 'locations', 'phaseDetails', 'outcomes', 'media'])
+            ->with(['services', 'locations', 'phaseDetails', 'outcomes', 'media', 'teams.media'])
             ->orderBy('sort_order')
             ->latest('id')
             ->firstOrFail();
 
-        $project->load(['services', 'locations', 'phaseDetails', 'outcomes', 'media']);
+        $project->load(['services', 'locations', 'phaseDetails', 'outcomes', 'media', 'teams.media']);
 
         $relatedProjects = Project::query()
             ->with(['services', 'media'])
@@ -155,7 +203,14 @@ class HomeController extends Controller
             ->take(3)
             ->get();
 
-        return view('frontend.pages.projectdetails', compact('project', 'relatedProjects'));
+        $pdSidebar  = contentBlock('projectdetails_sidebar');
+        $pdTeam     = contentBlock('projectdetails_team');
+        $pdActions  = contentBlock('projectdetails_actions');
+
+        return view('frontend.pages.projectdetails', compact(
+            'project', 'relatedProjects',
+            'pdSidebar', 'pdTeam', 'pdActions'
+        ));
     }
 
     // public function insights(Request $request)
@@ -191,18 +246,45 @@ class HomeController extends Controller
 
     public function insights()
     {
-        $insights = Insight::with(['insightType', 'media', 'articles' => function($q) {
-            $q->where('active', true)->orderBy('sort_order');
-        }])
-        ->where('active', true)
-        ->orderBy('sort_order')
-        ->latest('id')
-        ->get();
+        $resourceTypes = InsightType::where('status', 1)->orderBy('id')->get();
 
-        $insightsPageContent = contentBlock('insights-page')
-            ?? contentBlock('insights-page-header');
+        $all = Insight::with(['insightType', 'media'])
+            ->withCount('articles')
+            ->where('active', true)
+            ->orderBy('sort_order')
+            ->latest('id')
+            ->get();
 
-        return view('frontend.pages.insights', compact('insights', 'insightsPageContent'));
+        $resourcesHero     = contentBlock('resources_hero');
+        $resourcesResearch = contentBlock('resources_research_cta');
+
+        return view('frontend.pages.resources', compact('all', 'resourceTypes', 'resourcesHero', 'resourcesResearch'));
+    }
+
+    public function resourcedetails(Request $request, ?Insight $insight = null)
+    {
+        $insight ??= Insight::with(['insightType', 'media', 'articles'])
+            ->where('active', true)
+            ->latest('id')
+            ->firstOrFail();
+
+        $insight->load(['insightType', 'media', 'articles' => function($q) {
+            $q->orderBy('sort_order')->orderBy('id');
+        }]);
+
+        $authors = collect();
+        if (!empty($insight->author_team_ids)) {
+            $authors = Team::with('media')->whereIn('id', $insight->author_team_ids)->get();
+        }
+
+        $relatedInsights = Insight::with(['insightType', 'media'])
+            ->where('active', true)
+            ->where('id', '!=', $insight->id)
+            ->latest('id')
+            ->take(3)
+            ->get();
+
+        return view('frontend.pages.resourcedetails', compact('insight', 'authors', 'relatedInsights'));
     }
     public function articleDetails(Request $request, ?InsightArticle $article = null)
     {
@@ -299,30 +381,84 @@ class HomeController extends Controller
         }
     }
 
+    public function events(Request $request)
+    {
+        $eventsHero      = contentBlock('events_page_header');
+        $eventsUpcoming  = contentBlock('events_upcoming');
+        $eventsPast      = contentBlock('events_past');
+        $eventsCta       = contentBlock('events_cta');
+
+        $upcomingEvents = Event::with(['speakers', 'media'])
+            ->where('is_past', false)
+            ->orderBy('sort_order')
+            ->orderBy('event_date')
+            ->get();
+
+        $pastEvents = Event::with(['media'])
+            ->where('is_past', true)
+            ->orderBy('sort_order')
+            ->orderByDesc('event_date')
+            ->get();
+
+        return view('frontend.pages.events', compact(
+            'eventsHero', 'eventsUpcoming', 'eventsPast', 'eventsCta',
+            'upcomingEvents', 'pastEvents'
+        ));
+    }
+
+    public function eventdetails(Request $request, ?Event $event = null)
+    {
+        $event ??= Event::query()
+            ->with(['speakers', 'eventPartners', 'media'])
+            ->orderBy('sort_order')
+            ->orderByDesc('event_date')
+            ->firstOrFail();
+
+        $event->load(['speakers', 'eventPartners', 'media']);
+
+        $relatedEvents = Event::query()
+            ->with(['media'])
+            ->whereKeyNot($event->id)
+            ->orderBy('sort_order')
+            ->orderByDesc('event_date')
+            ->take(3)
+            ->get();
+
+        return view('frontend.pages.eventdetails', compact('event', 'relatedEvents'));
+    }
+
     public function contact(Request $request)
     {
-        $heroContent      = contentBlock('contact-page');
-        $contactHeader = contentBlock('contact-us-head');
-        $contactPhones    = ContactInfo::where('type', 'phone')->active()->ordered()->get();
-        $contactEmails    = ContactInfo::where('type', 'email')->active()->ordered()->get();
-        $contactAddresses = ContactInfo::where('type', 'address')->active()->ordered()->get();
-        return view('frontend.pages.contact', compact('heroContent', 'contactHeader', 'contactPhones', 'contactEmails', 'contactAddresses'));
+        $heroContent       = contentBlock('contact-page');
+        $contactFormHeader = contentBlock('contact_form_section');
+        $contactInfoLabel  = contentBlock('contact-us-head');
+        $contactMap        = contentBlock('contact_map');
+        $contactFollowUs   = contentBlock('contact_follow_us');
+        $faqSection        = contentBlock('contact-faq-section');
+        $contactPhones     = ContactInfo::where('type', 'phone')->active()->ordered()->get();
+        $contactEmails     = ContactInfo::where('type', 'email')->active()->ordered()->get();
+        $contactAddresses  = ContactInfo::where('type', 'address')->active()->ordered()->get();
+        $contactCareers    = ContactInfo::where('type', 'career')->active()->ordered()->get();
+        $faqs              = Faq::active()->ordered()->get();
+        return view('frontend.pages.contact', compact(
+            'heroContent', 'contactFormHeader', 'contactInfoLabel',
+            'contactMap', 'contactFollowUs',
+            'faqSection', 'contactPhones', 'contactEmails', 'contactAddresses', 'contactCareers', 'faqs'
+        ));
     }
 
     public function about(Request $request)
     {
-        $aboutPageContent           = contentBlock('about-page') ?? contentBlock('about');
-        $aboutCommitmentContent     = contentBlock('about_us_section_3');
-        $aboutFrameworkContent      = contentBlock('about_us_how_we_work');
-        $aboutUniqueFeaturesContent = contentBlock('about_us_we_make_trace_different');
         $aboutHeader                = contentBlock('about_us_header');
+        $whoWeAre                   = contentBlock('about_us_who_we_are');
+        $ourMission                 = contentBlock('about_us_our_mission');
+        $missionContent             = contentBlock('about_us_mission');
+        $visionContent              = contentBlock('about_us_vision');
+        $goalsContent               = contentBlock('about_us_goals');
         $aboutTrace                 = contentBlock('about_trace');
-        // Who We Are এবং Mission সেকশন
-        $whoWeAre               = contentBlock('about_us_who_we_are');
-        $ourMission             = contentBlock('about_us_our_mission');
-        $aboutCommitmentContent = contentBlock('about_us_section_3');
-        $aboutFrameworkContent  = contentBlock('about_us_how_we_work');
-        $partnersContent        = contentBlock('about_us_partners');
+        $aboutUniqueFeaturesContent = contentBlock('about_us_we_make_trace_different');
+        $aboutFrameworkContent      = contentBlock('about_us_how_we_work');
+        $partnersContent            = contentBlock('about_us_partners');
 
         $frameworkItems = collect([
             contentBlock('about_us_insight'),
@@ -337,38 +473,30 @@ class HomeController extends Controller
             contentBlock('about_us_end_to_end_integrated_solutions'),
         ])->filter();
 
-        $aboutProjects = Project::query()
-            ->with(['services', 'media'])
-            ->orderBy('sort_order')
-            ->latest('id')
-            ->take(3)
-            ->get();
+        $storyItems = collect();
+        for ($i = 1; $i <= 10; $i++) {
+            $item = contentBlock("about_story_{$i}");
+            if ($item) {
+                $storyItems->push($item);
+            }
+        }
 
         $partners = Partner::with('media')->get();
 
-        $aboutInsights = Insight::query()
-            ->with(['articles.author.media', 'articles.media', 'media'])
-            ->where('active', true)
-            ->orderBy('sort_order')
-            ->latest('id')
-            ->take(4)
-            ->get();
-
         return view('frontend.pages.about', compact(
-            'aboutPageContent',
-            'aboutCommitmentContent',
-            'aboutFrameworkContent',
-            'frameworkItems',
-            'aboutUniqueFeaturesContent',
-            'uniqueFeatureCards',
-            'aboutProjects',
-            'aboutInsights',
             'aboutHeader',
-            'aboutTrace',
             'whoWeAre',
             'ourMission',
+            'missionContent',
+            'visionContent',
+            'goalsContent',
+            'aboutTrace',
+            'storyItems',
+            'aboutUniqueFeaturesContent',
+            'frameworkItems',
+            'aboutFrameworkContent',
+            'uniqueFeatureCards',
             'partnersContent',
-            'aboutProjects',
             'partners'
         ));
     }
@@ -380,49 +508,63 @@ class HomeController extends Controller
         $coreTeamContent   = contentBlock('team-core');
         $expertsContent    = contentBlock('team-experts');
 
-        $advisors = Team::query()
+        $leadership = Team::query()
+            ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
+            ->where('type', 1)
+            ->orderBy('sort_order')
+            ->latest('id')
+            ->get();
+
+        $coreTeams = Team::query()
             ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
             ->where('type', 2)
             ->orderBy('sort_order')
             ->latest('id')
             ->get();
 
-        $teams = Team::query()
-            ->with(['experties.media', 'socialMedia.media', 'projects', 'media']) 
-            ->where('type', 1)
-            ->orderBy('sort_order')         
+        $nationalAdvisors = Team::query()
+            ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
+            ->where('type', 3)
+            ->where('advisor_category', 'national')
+            ->orderBy('sort_order')
             ->latest('id')
             ->get();
-    
-        $leadTeam = $teams->first();
-        $coreTeams = $teams->filter(function (Team $member) use ($leadTeam) {
-            return ! $leadTeam || $member->id !== $leadTeam->id;
-        })->values();
 
-        return view('frontend.pages.team', compact('teamPageContent', 'leadershipContent', 'coreTeamContent', 'expertsContent', 'teams', 'leadTeam', 'coreTeams', 'advisors'));
+        $internationalAdvisors = Team::query()
+            ->with(['projects', 'experties.media', 'socialMedia.media', 'media'])
+            ->where('type', 3)
+            ->where('advisor_category', 'international')
+            ->orderBy('sort_order')
+            ->latest('id')
+            ->get();
+
+        return view('frontend.pages.expert', compact('teamPageContent', 'leadershipContent', 'coreTeamContent', 'expertsContent', 'leadership', 'coreTeams', 'nationalAdvisors', 'internationalAdvisors'));
     }
 
     public function teamdetails(Request $request, ?Team $team = null)
     {
         $team ??= Team::query()
-            ->with(['experties.media', 'socialMedia.media', 'projects', 'media'])
             ->orderBy('sort_order')
             ->latest('id')
             ->firstOrFail();
 
-        $team->load(['experties.media', 'socialMedia.media', 'projects', 'media']);
+        $team->load(['experties.media', 'socialMedia.media', 'projects.media', 'projects.category', 'media', 'insightArticles.insight.insightType']);
 
-        $otherTeamMembers = Team::query()
+        $speakingEvents = \App\Models\Event::whereHas('speakers', fn($q) => $q->where('team_id', $team->id))
+            ->orderByDesc('event_date')
+            ->get();
+
+        $relatedTeams = Team::query()
             ->with(['media'])
             ->whereKeyNot($team->id)
             ->orderBy('sort_order')
             ->latest('id')
-            ->take(3)
+            ->take(4)
             ->get();
 
-        $allTeamMembersCount = Team::query()->count();
+        $expertRelated = contentBlock('expertdetails_related_experts');
 
-        return view('frontend.pages.teamdetails', compact('team', 'otherTeamMembers', 'allTeamMembersCount'));
+        return view('frontend.pages.expertdetails', compact('team', 'relatedTeams', 'expertRelated', 'speakingEvents'));
     }
 
     public function dashboard(Request $request)

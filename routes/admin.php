@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\InsightController;
 use App\Http\Controllers\Admin\JobApplicationController;
 use App\Http\Controllers\Admin\JobPostingController;
+use App\Http\Controllers\Admin\ProjectCategoryController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -15,6 +16,10 @@ use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\CvSubmissionController;
 use App\Http\Controllers\Admin\InsightTypeController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\EventProposalController;
+use App\Http\Controllers\Admin\ResearchIdeaController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -61,12 +66,12 @@ Route::prefix('admin')->group(function () {
         });
 
         Route::controller(ServiceController::class)->group(function () {
-            Route::get('services-manager', 'index')->name('admin.services.index');
-            Route::get('services-manager/create', 'create')->name('admin.services.create');
-            Route::post('services-manager', 'store')->name('admin.services.store');
-            Route::get('services-manager/{service}/edit', 'edit')->name('admin.services.edit');
-            Route::put('services-manager/{service}', 'update')->name('admin.services.update');
-            Route::delete('services-manager/{service}', 'destroy')->name('admin.services.destroy');
+            Route::get('work-manager', 'index')->name('admin.services.index');
+            Route::get('work-manager/create', 'create')->name('admin.services.create');
+            Route::post('work-manager', 'store')->name('admin.services.store');
+            Route::get('work-manager/{service}/edit', 'edit')->name('admin.services.edit');
+            Route::put('work-manager/{service}', 'update')->name('admin.services.update');
+            Route::delete('work-manager/{service}', 'destroy')->name('admin.services.destroy');
         });
 
         Route::controller(ProjectController::class)->group(function () {
@@ -79,13 +84,26 @@ Route::prefix('admin')->group(function () {
             Route::delete('projects-manager/{project}/images/{mediaId}', 'destroyImage')->name('admin.projects.images.destroy');
         });
 
+        Route::controller(ProjectCategoryController::class)->group(function () {
+            Route::get('project-categories', 'index')->name('admin.project-categories.index');
+            Route::get('project-categories/create', 'create')->name('admin.project-categories.create');
+            Route::post('project-categories', 'store')->name('admin.project-categories.store');
+            Route::get('project-categories/{projectCategory}/edit', 'edit')->name('admin.project-categories.edit');
+            Route::put('project-categories/{projectCategory}', 'update')->name('admin.project-categories.update');
+            Route::delete('project-categories/{projectCategory}', 'destroy')->name('admin.project-categories.destroy');
+        });
+
+        Route::get('teams-manager', fn() => redirect()->route('admin.experts.index'));
+        Route::get('teams-manager/create', fn() => redirect()->route('admin.experts.create'));
+        Route::get('teams-manager/{team}/edit', fn($team) => redirect()->route('admin.experts.edit', $team));
+
         Route::controller(TeamController::class)->group(function () {
-            Route::get('teams-manager', 'index')->name('admin.teams.index');
-            Route::get('teams-manager/create', 'create')->name('admin.teams.create');
-            Route::post('teams-manager', 'store')->name('admin.teams.store');
-            Route::get('teams-manager/{team}/edit', 'edit')->name('admin.teams.edit');
-            Route::put('teams-manager/{team}', 'update')->name('admin.teams.update');
-            Route::delete('teams-manager/{team}', 'destroy')->name('admin.teams.destroy');
+            Route::get('experts-manager', 'index')->name('admin.experts.index');
+            Route::get('experts-manager/create', 'create')->name('admin.experts.create');
+            Route::post('experts-manager', 'store')->name('admin.experts.store');
+            Route::get('experts-manager/{team}/edit', 'edit')->name('admin.experts.edit');
+            Route::put('experts-manager/{team}', 'update')->name('admin.experts.update');
+            Route::delete('experts-manager/{team}', 'destroy')->name('admin.experts.destroy');
         });
 
         Route::controller(PartnerController::class)->group(function () {
@@ -102,7 +120,7 @@ Route::prefix('admin')->group(function () {
             Route::get('insights-manager/create', 'create')->name('admin.insights.create');
             Route::post('insights-manager', 'store')->name('admin.insights.store');
 
-            Route::get('/insights/{insight}', 'show')->name('admin.insights.show');
+            Route::get('/insights/{insight}', fn($insight) => redirect()->route('admin.insights.edit', $insight))->name('admin.insights.show');
 
             Route::get('insights-manager/{insight}/edit', 'edit')->name('admin.insights.edit');
             Route::put('insights-manager/{insight}', 'update')->name('admin.insights.update');
@@ -161,6 +179,37 @@ Route::prefix('admin')->group(function () {
             Route::get('insight-types/{insightType}/edit', 'edit')->name('admin.insight-types.edit');
             Route::put('insight-types/{insightType}', 'update')->name('admin.insight-types.update');
             Route::delete('insight-types/{insightType}', 'destroy')->name('admin.insight-types.destroy');
+        });
+
+        Route::controller(FaqController::class)->group(function () {
+            Route::get('faqs', 'index')->name('admin.faq.index');
+            Route::get('faqs/create', 'create')->name('admin.faq.create');
+            Route::post('faqs', 'store')->name('admin.faq.store');
+            Route::get('faqs/{faq}/edit', 'edit')->name('admin.faq.edit');
+            Route::put('faqs/{faq}', 'update')->name('admin.faq.update');
+            Route::delete('faqs/{faq}', 'destroy')->name('admin.faq.destroy');
+            Route::post('faqs/update-order', 'updateOrder')->name('admin.faq.update-order');
+        });
+
+        Route::controller(EventController::class)->group(function () {
+            Route::get('events-manager', 'index')->name('admin.events.index');
+            Route::get('events-manager/create', 'create')->name('admin.events.create');
+            Route::post('events-manager', 'store')->name('admin.events.store');
+            Route::get('events-manager/{event}/edit', 'edit')->name('admin.events.edit');
+            Route::put('events-manager/{event}', 'update')->name('admin.events.update');
+            Route::delete('events-manager/{event}', 'destroy')->name('admin.events.destroy');
+        });
+
+        Route::controller(EventProposalController::class)->group(function () {
+            Route::get('event-proposals', 'index')->name('admin.event-proposals.index');
+            Route::get('event-proposals/{eventProposal}', 'show')->name('admin.event-proposals.show');
+            Route::delete('event-proposals/{eventProposal}', 'destroy')->name('admin.event-proposals.destroy');
+        });
+
+        Route::controller(ResearchIdeaController::class)->group(function () {
+            Route::get('research-ideas', 'index')->name('admin.research-ideas.index');
+            Route::get('research-ideas/{researchIdea}', 'show')->name('admin.research-ideas.show');
+            Route::delete('research-ideas/{researchIdea}', 'destroy')->name('admin.research-ideas.destroy');
         });
 
     });

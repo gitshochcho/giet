@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class SliderItem extends Model implements HasMedia
 {
@@ -16,6 +17,7 @@ class SliderItem extends Model implements HasMedia
         'tagline',
         'description',
         'design_word',
+        'url',
         'sort_order',
         'active',
     ];
@@ -24,8 +26,23 @@ class SliderItem extends Model implements HasMedia
         'active' => 'boolean',
     ];
 
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('webp')
+            ->format('webp')
+            ->quality(82)
+            ->performOnCollections('image')
+            ->nonQueued();
+    }
+
     public function imageUrl(): ?string
     {
         return $this->getFirstMediaUrl('image') ?: null;
+    }
+
+    public function webpUrl(): ?string
+    {
+        $url = $this->getFirstMediaUrl('image', 'webp');
+        return $url ?: null;
     }
 }

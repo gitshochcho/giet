@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use App\Models\InsightType;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
@@ -24,10 +25,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::share('siteSettings', $this->loadSiteSettings());
-        // Make `setting` available in all views (used by admin sidebar)
         View::share('setting', $this->loadSiteSettings());
+        View::share('navInsightTypes', $this->loadNavInsightTypes());
 
-        Gate::before(function ($user, $ability) {
+        Gate::before(function ($user) {
             return $user->hasRole('SuperAdmin') ? true : null;
         });
 
@@ -37,6 +38,17 @@ class AppServiceProvider extends ServiceProvider
         });
         $view->with('setting', $setting);
     });
+    }
+
+    private function loadNavInsightTypes(): \Illuminate\Support\Collection
+    {
+        if (app()->runningInConsole() || ! Schema::hasTable('insight_types')) {
+            return collect();
+        }
+
+        return Cache::remember('nav_insight_types', now()->addHour(), function () {
+            return InsightType::orderBy('id')->get();
+        });
     }
 
     private function loadSiteSettings(): ?Setting
